@@ -1,0 +1,218 @@
+<template>
+<div class="tags">
+
+<div class="tags-title">
+<h1>Tags</h1>
+
+    </div>
+
+    <div class="tags-container">
+
+      <div>
+      <ul class="tags-list">
+
+        <li v-for="tag in sortedTags" @click="findTag(tag)"><span>{{ tag }}</span></li>
+
+      </ul>
+    </div>
+
+
+
+
+    </div>
+    </div>
+
+</template>
+<script>
+
+
+export default {
+
+data(){
+    return {
+      selectedTag: ''
+
+    }
+},
+name: 'Tags',
+
+
+    computed: {
+
+        recipes(){
+            return this.$store.state.recipes;
+        },
+
+        tags(){
+          return this.recipes.map(recipe => recipe.tags);
+        },
+
+        tagsList(){
+
+          var t = this.tags;
+
+          return [].concat(...t);
+
+        },
+
+        uniqueTags(){
+
+          var list = this.tagsList;
+
+          var unique = [...new Set(list)];
+
+          return unique;
+        },
+
+        sortedTags(){
+
+          return this.uniqueTags.sort();
+        }
+    },
+
+    methods: {
+
+
+
+      findTag: function(tag){
+
+      this.selectedTag = tag;
+
+      this.$router.push({ name: 'TagResults', params: { selectedTag: this.selectedTag }});
+
+      }
+
+
+    },
+
+    filters: {
+        pick: function (objects, key) {
+            return objects.map(function(object) {
+    	       return object[key];
+
+     })
+        }
+    }
+
+}
+</script>
+<style>
+
+    .draggable-item-horizontal {
+        height: 300px;
+        width: 100px;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+.tags {
+display: grid;
+min-height: 500px;
+max-width: 900px;
+padding: 30px;
+align-content: flex-start;
+    background-color: #f9f9f9;
+}
+
+
+
+    .tags-title {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    }
+
+    .tags h1 {
+    padding-top: 0;
+margin-top: 0;
+font-weight: 300;
+font-size: 34px;
+text-align: center;
+    }
+
+
+
+    .tags-list {
+    list-style-type: none;
+margin: 0;
+        }
+
+        .tags-list li {
+
+    display: block;
+    border: none;
+        }
+
+        .tags-list li span {
+            margin: 6px;
+            color: #F08080;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 2px;
+            cursor: pointer;
+            font-size: 18px;
+            display: inline-block;
+          }
+
+          .tags-list li span:hover {
+              color: #000;
+          }
+
+
+    .recipes-nav {
+
+    }
+
+    .recipes-nav a {
+    text-decoration: none;
+    color: #F08080;
+
+    }
+
+.tags-container {
+display: grid;
+align-content: flex-start;
+padding: 30px;
+font-size: 18px;
+}
+
+
+
+
+   .greybtn {
+     border: none;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #ddd;
+    padding: 6px 10px;
+    font-size: 16px;
+    color: #444;
+    cursor: pointer;
+   max-width: 150px;
+    }
+
+    .pinkbtn {
+     border: none;
+    border: 1px solid #F08080;
+    border-radius: 6px;
+    background-color: #F08080;
+    padding: 6px 10px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+   max-width: 150px;
+    }
+
+     .blackbtn {
+       border: none;
+    border: 1px solid #000;
+    border-radius: 6px;
+    background-color: #000;
+    padding: 6px 10px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+   max-width: 150px;
+    }
+
+
+</style>

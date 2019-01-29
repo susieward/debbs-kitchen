@@ -1,29 +1,267 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+      <div class="header">
+
+         <div class="header-container">
+             <div class="title">
+              <h1>Debb's kitchen</h1>
+             </div>
+
+             <div class="links">
+              <nav>
+            <router-link to="/">planner</router-link>
+            <router-link to="/recipes">recipes</router-link>
+            <router-link to="/menus">menus</router-link>
+            <router-link to="/tags">index</router-link>
+
+            </nav>
+             </div>
+
+             <div class="search">
+            <input type="text" id="bar" v-model="search" placeholder="search..." @keyup.enter="startSearch"/>
+            </div>
+          </div>
+      </div>
+      <div class="main">
+
+
+      <div class="content">
+        <div v-if="search">
+          {{ searchResults }}
+        </div>
+
+    <router-view @route="displayPrevRoute"></router-view>
+          </div>
+      </div>
+
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+export default {
+  data(){
+    return {
+      prevRoute: null,
+      name: '',
+      search: ''
+    }
+  },
+  name: 'App',
+
+  computed: {
+
+    recipes(){
+
+      return this.$store.state.recipes;
+    },
+
+      recipeNames(){
+
+        return this.recipes.map(recipe => recipe.name);
+
+
+      },
+
+      tags(){
+        return this.recipes.map(recipe => recipe.tags);
+      },
+
+      tagsList(){
+
+        var t = this.tags;
+
+        return [].concat(...t);
+
+      },
+
+      uniqueTags(){
+
+        var list = this.tagsList;
+
+        var unique = [...new Set(list)];
+
+        return unique;
+      },
+
+      tagsAndRecipes(){
+
+        var arr1 = this.recipeNames;
+        var arr2 = this.uniqueTags;
+
+        var arrs = [arr1, arr2];
+
+        return [].concat(...arrs);
+
+      },
+
+
+
+
+    searchResults(){
+
+      var lowSearch = this.search.toLowerCase();
+
+      return this.tagsAndRecipes.filter(item => item.toLowerCase() === lowSearch);
+
+
+
+    }
+
+  },
+
+  methods: {
+
+    startSearch: function(){
+
+      this.$router.push({ name: 'SearchResults', params: { search: this.search }});
+    },
+
+    displayPrevRoute: function(prevRoute){
+      this.prevRoute = prevRoute;
+
+      this.name = this.prevRoute.params.name;
+
     }
   }
 }
+</script>
+<style>
+
+#app {
+display: grid;
+grid-template-areas: "header header"
+                    "main main"
+                    "footer footer";
+min-height: 100vh;
+padding-bottom: 100px;
+
+}
+
+.header {
+grid-area: header;
+display: grid;
+padding: 40px;
+width: 100vw;
+text-align: center;
+background-color: #ecc77e;
+margin-bottom: 60px;
+
+}
+
+.header-container {
+display: grid;
+grid-template-areas: "title links search";
+align-content: center;
+}
+
+.title {
+grid-area: title;
+display: grid;
+justify-content: flex-start;
+}
+
+.header h1 {
+margin: 0;
+padding: 0;
+color: #fff;
+text-transform: uppercase;
+font-weight: normal;
+font-size: 35px;
+font-family: 'Gotham Rounded Medium';
+letter-spacing: 0.03em;
+margin: auto;
+text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+}
+
+/* MAIN */
+.main {
+grid-area: main;
+display: grid;
+grid-gap: 40px;
+justify-content: center;
+width: 100vw;
+}
+
+/* CONTENT */
+
+.content {
+display: grid;
+min-width: 900px;
+padding: 0;
+}
+
+.back-button {
+
+    display: grid;
+    justify-content: flex-start;
+    align-content: center;
+    padding-bottom: 20px;
+
+}
+/* LINKS */
+
+.links {
+grid-area: links;
+display: grid;
+align-content: center;
+justify-content: flex-start;
+}
+
+.links-container {
+display: grid;
+padding: 10px;
+}
+
+
+nav {
+display: grid;
+grid-gap: 30px;
+grid-template-columns: auto auto auto auto;
+margin: auto;
+
+}
+
+nav a {
+display: inline-block;
+text-align: center;
+color: #fff;
+padding: 0px;
+font-size: 18px;
+letter-spacing: 0.03em;
+transition: 0.3s;
+font-family: 'Gotham Rounded Medium';
+text-transform: uppercase;
+
+}
+
+nav a:hover {
+color: #444;
+}
+
+nav a.router-link-exact-active {
+color: #444;
+}
+
+/* SEARCH BAR */
+
+.search {
+grid-area: search;
+display: grid;
+align-content: center;
+justify-content: flex-end;
+
+}
+
+#bar {
+width: 200px;
+border: 2px solid #eee;
+border-radius: 8px;
+padding: 6px 12px;
+font-family: 'Proxima Nova Light';
+font-size: 18px;
+color: #aaa;
+}
+
+
+
 </style>
