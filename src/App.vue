@@ -26,9 +26,6 @@
 
 
       <div class="content">
-        <div v-if="search">
-          {{ searchResults }}
-        </div>
 
     <router-view @route="displayPrevRoute"></router-view>
           </div>

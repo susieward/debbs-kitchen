@@ -105,8 +105,9 @@ props: ['selectedTag'],
 
             axios.delete(path).then((response) => {
                 this.$store.commit('deleteRecipe', {id: response.data});
+
+                this.$router.push('/recipes');
                 this.$store.dispatch('loadRecipes');
-                this.$router.push('/recipes/all');
                  });
 
 

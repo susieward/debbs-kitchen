@@ -13,19 +13,26 @@
     </div>
 
     <div class="tags-container">
-      <div v-for="recipe in searchTagged">
-        {{ recipe.name }}
-      </div>
+      <p>
+        Recipes:
+      <br />
+      <ul>
+        <li v-for="recipe in searchTagged">
+          {{ recipe.name }}
+        </li>
+      </ul>
+</p>
 
-      <div v-for="result in searchResults">
+<p>
+  Tags:
+<br />
+<ul>
+  <li v-for="tag in searchTags">
+    {{ tag }}
+  </li>
+</ul>
 
-
-{{ result }}
-
-
-
-      </div>
-
+</p>
 
     </div>
     </div>
@@ -43,9 +50,19 @@ name: 'SearchResults',
 
     computed: {
 
+      searchesCombined(){
+
+        var arr1 = this.searchTags;
+        var arr2 = this.searchTagged;
+
+        var arrs = [arr1, arr2];
+        return [].concat(...arrs);
+      },
+
       searchTotal(){
 
-        return this.searchResults.length;
+        return this.searchesCombined.length;
+
       },
 
         search(){
@@ -60,13 +77,13 @@ name: 'SearchResults',
 
           recipeNames(){
 
-            return this.recipes.map(recipe => recipe.name);
+            return this.$store.getters.recipeNames;
 
 
           },
 
           tags(){
-            return this.recipes.map(recipe => recipe.tags);
+            return this.$store.getters.tags;
           },
 
           tagsList(){
@@ -79,21 +96,12 @@ name: 'SearchResults',
 
           uniqueTags(){
 
-            var list = this.tagsList;
-
-            var unique = [...new Set(list)];
-
-            return unique;
+            return this.$store.getters.uniqueTags;
           },
 
           tagsAndRecipes(){
 
-            var arr1 = this.recipeNames;
-            var arr2 = this.uniqueTags;
-
-            var arrs = [arr1, arr2];
-
-            return [].concat(...arrs);
+            return this.$store.getters.tagsAndRecipes;
 
           },
 
@@ -146,16 +154,7 @@ name: 'SearchResults',
 
         return this.results.sort(compare);
       }
-  },
-
-    filters: {
-        pick: function (objects, key) {
-            return objects.map(function(object) {
-    	       return object[key];
-
-     })
-        }
-    }
+  }
 
 }
 </script>

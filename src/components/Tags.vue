@@ -44,29 +44,12 @@ name: 'Tags',
         },
 
         tags(){
-          return this.recipes.map(recipe => recipe.tags);
-        },
-
-        tagsList(){
-
-          var t = this.tags;
-
-          return [].concat(...t);
-
-        },
-
-        uniqueTags(){
-
-          var list = this.tagsList;
-
-          var unique = [...new Set(list)];
-
-          return unique;
+          return this.$store.getters.tags;
         },
 
         sortedTags(){
 
-          return this.uniqueTags.sort();
+          return this.$store.getters.sortedTags;
         }
     },
 

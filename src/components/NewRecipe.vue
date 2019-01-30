@@ -84,9 +84,14 @@ methods: {
 
         }).then((response) => {
             this.$store.commit('saveRecipe', {recipe: response.data});
-            this.$store.dispatch('loadRecipes');
-            this.$router.push('/recipes');
+
+              this.$router.push('/recipes');
+              this.$store.dispatch('loadRecipes');
+
+
+
         });
+
     }
 
 
