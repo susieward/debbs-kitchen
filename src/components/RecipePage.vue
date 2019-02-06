@@ -3,7 +3,7 @@
 
   <div class="recipe-back">
     <router-link :to="{ name: 'TagResults', params: { selectedTag: this.tag }}" class="regular" v-if="this.tag">&#x27F5; tagged: {{ tag }}</router-link>
-      <router-link to="/recipes" class="regular">&#x27F5; all recipes</router-link>
+      <router-link to="/recipes" class="regular" v-if="!this.tag">&#x27F5; all recipes</router-link>
       </div>
     <div class="recipe-page-container">
     <div class="recipe-top">

@@ -109,6 +109,36 @@ state: {
 
       },
 
+      recipeNameWords: (state, getters) => {
+
+        var names = getters.recipeNames;
+
+
+        var newArr = [];
+        names.forEach((name) => {
+
+
+
+          newArr.push.apply(newArr, name.split(" "));
+
+        })
+
+        return newArr;
+
+      },
+
+      uniqueWords: (state, getters) => {
+
+        var words = getters.recipeNameWords;
+
+        var unique = [...new Set(words)];
+
+        return unique;
+
+      },
+
+
+
       tagsAndRecipes: (state, getters) => {
 
         var arr1 = getters.recipeNames;
@@ -119,6 +149,7 @@ state: {
         return [].concat(...arrs);
 
       },
+
          getMenuById: (state, getters) => (id) => {
             return state.menus.find(menu => menu._id == id)
         },

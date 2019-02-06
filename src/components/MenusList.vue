@@ -1,22 +1,35 @@
 <template>
 <div class="menus-list">
     <div class="menus-list-title">
-<h1>Menus List</h1>
+<h1>Menu Archive</h1>
         </div>
  <div class="menus-list-container">
-     <span>Sort by month: <select v-model="selectedMonth">
+
+   <p>
+     <span>
+     <span>Select year: <select v-model="selectedYear">
         <option disabled value="">select</option>
-      <option v-for="month in months" v-bind:value="month"> {{ month }}
+      <option v-for="year in years" v-bind:value="year"> {{ year }}
          </option>
           </select>
      </span>
 
-       <div v-for="menu in menus">
-    <div v-if="selectedMonth === menu.month">
+     <span v-if="selectedYear"> Select month: <select v-model="selectedMonth">
+        <option disabled value="">select</option>
+      <option v-for="month in availableMonths" v-bind:value="month"> {{ month }}
+         </option>
+          </select>
+     </span>
+   </span>
+   </p>
+
+
+       <div v-for="menu in chronologicalMenus">
+    <div v-if="selectedMonth === menu.month && selectedYear === menu.year">
 
       {{ menu.month }} {{ menu.date }} -
      <ul>
-     <li v-for="dish in menu.dishes"> {{ dish.name }}</li>
+     <li v-for="dish in menu.dishes"> <router-link :to="{ name: 'RecipePage', params: { id: dish._id }}">{{ dish.name }}</router-link></li>
      </ul>
 
     </div>
@@ -32,14 +45,89 @@ import moment from 'moment'
 export default {
 data() {
     return {
+      today: moment(),
+      dateContext: moment(),
         selectedMonth: '',
-       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        selectedYear: '',
+        allMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     }
 },
     computed: {
         menus(){
             return this.$store.state.menus;
+        },
+
+        chronologicalMenus: function(){
+
+          var menuDates = this.menus.map(menu => menu.date);
+          var sortedDates = menuDates.sort();
+
+          function compare(a, b) {
+            return a.date - b.date;
+          }
+
+        return this.menus.sort(compare);
+
+
+
+        },
+
+        months(){
+
+          var menuMonths = this.menus.map(menu => menu.month);
+
+          var uniqueMonths = [...new Set(menuMonths)];
+
+
+          return uniqueMonths;
+        },
+
+        availableMonths(){
+
+          if(this.selectedYear){
+
+            var selectedYearMenus = this.menus.filter(menu => menu.year === this.selectedYear);
+
+            var months = selectedYearMenus.map(menu => menu.month);
+
+            var unique = [... new Set(months)];
+
+          return unique;
+          }
+        },
+
+        years(){
+
+          var menuYears = this.menus.map(menu => menu.year);
+
+          var uniqueYears = [...new Set(menuYears)];
+
+
+          return uniqueYears;
+        },
+
+        year: function() {
+            var t = this;
+            return t.dateContext.format('Y');
+
+        },
+
+        month: function(){
+            var t = this;
+            return t.dateContext.format('MMMM');
+
         }
+    },
+
+    methods: {
+
+      onChange: function(event){
+
+        var year = event.target.value;
+
+
+
+      }
     },
 
 name: 'MenusList'

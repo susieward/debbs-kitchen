@@ -95,10 +95,10 @@ data(){
 
         axios.put(path, data).then((response) => {
             this.$store.commit('editRecipe', {recipe: response.data});
-            
+
         });
         this.$emit('close');
-            this.$store.dispatch('loadRecipes');
+
         }
     }
 }
@@ -139,7 +139,6 @@ border: none;
     }
 
     label {
-    font-family: 'Montserrat Medium';
     }
 
     .ingredients {
@@ -156,7 +155,6 @@ border: none;
 
     .ingr li {
   margin-left: 50px;
-  font-family: 'Montserrat Regular';
     color: #555;
     }
 
@@ -174,7 +172,7 @@ border: none;
 
    .tags-list li {
         display: inline-block;
-        padding: 5px;
+
 
 
     }
@@ -183,7 +181,6 @@ border: none;
 
 
     .recipe-textarea {
-    font-family: 'Montserrat Regular';
     font-size: 16px;
     padding: 10px 12px;
     width: 650px;

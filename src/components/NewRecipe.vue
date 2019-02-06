@@ -5,7 +5,7 @@
 
        <span><label for="name">Name:</label> <input id="name" type="text" class="recipe-input" v-model="newRecipe.name"/></span>
 
-        <span><label for="ingredients">Ingredients:</label> <input type="text" id="ingredient" class="recipe-input" v-model="newIngredient" placeholder="eggs, flour, pasta, etc"/> <button class="blackbtn" @click="addIngredient">add ingredient</button></span>
+        <span><label for="ingredients">Ingredients:</label> <input type="text" id="ingredient" class="recipe-input" v-model="newIngredient" placeholder="eggs, flour, pasta, etc"/> <button class="blackbtn" @click="addIngredient">add ingredient</button><span style="color: red">{{ ingrErr }}</span></span>
 
         <div class="ingredients">
         <ul class="ingr">
@@ -17,7 +17,7 @@
         <label for="instructions">Instructions:</label>
         <textarea v-model="newRecipe.instructions" name="instructions" class="recipe-textarea"></textarea>
 
-      <span><label for="tags">Tags:</label> <input type="text" id="tag" class="recipe-input" v-model="newTag" placeholder="dinner, holiday, etc"/> <button class="blackbtn" @click="addTag">add tag</button></span>
+      <span><label for="tags">Tags:</label> <input type="text" id="tag" class="recipe-input" v-model="newTag" placeholder="dinner, holiday, etc"/> <button class="blackbtn" @click="addTag">add tag</button> <span style="color: red">{{ tagErr }}</span></span>
 
         <div class="tags-container">
         <ul class="tags-list">
@@ -27,7 +27,7 @@
         </div>
 
       <button class="pinkbtn" @click="saveRecipe">save recipe</button>
-
+<span style="color: red">{{ error }}</span>
     </div>
 
 
@@ -44,16 +44,22 @@ data(){
         newIngredient: '',
         ingredients: [],
         newTag: '',
-        tags: []
+        tags: [],
+        error: '',
+        tagErr: '',
+        ingrErr: ''
     }
 },
 
 methods: {
 
     addIngredient: function(){
-
+      if(this.newIngredient !== ''){
             this.ingredients.push(this.newIngredient);
             this.newIngredient = '';
+          } else {
+            this.ingrErr = "*Input can't be blank."
+          }
         },
 
         removeIngr: function(index){
@@ -63,9 +69,12 @@ methods: {
         },
 
     addTag: function(){
-
+      if(this.newTag !== ''){
             this.tags.push(this.newTag);
             this.newTag = '';
+          } else {
+            this.tagErr = "*Input can't be blank."
+          }
         },
 
         removeTag: function(index){
@@ -75,6 +84,8 @@ methods: {
         },
 
     saveRecipe: function(){
+
+      if(this.newRecipe.name && this.ingredients && this.newRecipe.instructions && this.tags){
 
         axios.post('http://localhost:3000/recipes', {
             name: this.newRecipe.name,
@@ -88,9 +99,10 @@ methods: {
               this.$router.push('/recipes');
               this.$store.dispatch('loadRecipes');
 
-
-
         });
+      } else {
+        this.error = "*Please fill out all fields"
+      }
 
     }
 
@@ -108,6 +120,7 @@ grid-gap: 20px;
 padding: 25px;
 align-content: flex-start;
 min-height: 500px;
+font-family: 'Roboto';
 }
 
 .recipe-input{
@@ -134,7 +147,7 @@ border: none;
     }
 
     label {
-    font-weight: 400;
+      font-weight: 400;
     }
 
     .ingredients {
@@ -169,7 +182,6 @@ border: none;
 
     .tags-list li {
         display: inline-block;
-        padding: 5px;
 
 
     }

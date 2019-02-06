@@ -8,22 +8,24 @@
 
 
 
-             <div class="inputs">
-               Add recipe:
-             <input type="text" class="dish-item" v-model="newDish" placeholder="Start typing"/>
-             <p>
-               results:
-             </p>
-             <div v-if="newDish">
+                   <div class="inputs">
+                  <input type="text" class="dish-item" v-model="newDish" placeholder="Start typing recipe name"/>
+
+                  <div v-if="newDish">
+
+                     <div class="results-dropdown">
 
 
-              <ul>
-                <li class="dishes-select" v-for="result in dishResults" @click="addToDishes(result)">{{ result.name }}</li>
-              </ul>
+                   <ul>
+                     <li class="dishes-select" v-for="result in dishResults" @click="addToDishes(result)">{{ result.name }}</li>
+                   </ul>
+
+                     </div>
+       </div>
 
 
-        </div>
-             </div>
+                  <p v-if="disabled === true" style="color: red">Can't add dish if input is empty</p>
+                  </div>
 
     </div>
 
@@ -129,6 +131,7 @@ methods: {
                 _id: this.menu._id,
                 date: this.menu.date,
                 month: this.menu.month,
+                year: this.menu.year,
                 dishes: this.menuEdit.dishes
             };
 

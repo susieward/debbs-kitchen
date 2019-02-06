@@ -5,7 +5,7 @@
      <div class="modal-content">
 
          <div class="modal-title">
-             <h2 class="menu-date">Menu for {{ month + ' ' + thisDate }}</h2>
+             <h2 class="menu-date">Menu for {{ month + ' ' + thisDate + ' ' + year }}</h2>
 
              <span class="close"><span class="close-button" @click="$emit('close')">&times;</span></span>
          </div>
@@ -86,7 +86,6 @@
 </template>
 <script>
 import MenuEditor from './MenuEditor.vue'
-import moment from 'moment'
 import axios from 'axios'
 export default {
 data() {
@@ -114,7 +113,7 @@ data() {
 
     },
 
-    props: ['this-date', 'month'],
+    props: ['this-date', 'month', 'year'],
 
     computed: {
 
@@ -142,15 +141,13 @@ data() {
 
       },
 
-
-
           dishResults: function(){
               var lowSearch = this.newDish.toLowerCase();
 
 
               return this.recipes.filter(recipe => recipe.name.toLowerCase().includes(lowSearch)
              );
-              }
+          }
 
     },
 
@@ -217,6 +214,7 @@ data() {
             axios.post('http://localhost:3000/menus', {
                 date: this.thisDate,
                 month: this.month,
+                year: this.year,
                 dishes: this.dishes
 
             }).then((response) => {

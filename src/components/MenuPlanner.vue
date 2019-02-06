@@ -15,7 +15,7 @@
     <div class="week">
         <div class="day" v-for="blank in firstDayOfMonth">&nbsp;</div>
 
-        <div class="day" v-for="thisDate in daysInMonth" @click="openModal(thisDate, month)">
+        <div class="day" v-for="thisDate in daysInMonth" @click="openModal(thisDate, month, year)">
             {{ thisDate }}
 
            <div v-for="menu in menus">
@@ -34,7 +34,7 @@
 
         </div>
 
-       <modal v-if="showModal" @close="closeModal" :this-date="thisDate" :month="month"></modal>
+       <modal v-if="showModal" @close="closeModal" :this-date="thisDate" :month="month" :year="year"></modal>
 
      </div>
         </div>
@@ -135,9 +135,10 @@ data() {
         t.dateContext = moment(t.dateContext).subtract(1, 'month');
     },
 
-    openModal: function(thisDate, month){
+    openModal: function(thisDate, month, year){
            this.thisDate = thisDate;
             this.month = month;
+            this.year = year;
            this.showModal = true;
        },
 

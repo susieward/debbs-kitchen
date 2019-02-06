@@ -13,22 +13,22 @@
     </div>
 
     <div class="tags-container">
-      <p>
+      <p v-if="recipeNameResults.length">
         Recipes:
       <br />
       <ul>
-        <li v-for="recipe in searchTagged">
-          {{ recipe.name }}
+        <li v-for="recipe in recipeNameResults">
+          <router-link :to="{ name: 'RecipePage', params: { id: recipe._id }}">{{ recipe.name }}</router-link>
         </li>
       </ul>
 </p>
 
-<p>
+<p v-if="tagSearchResults.length">
   Tags:
 <br />
-<ul>
-  <li v-for="tag in searchTags">
-    {{ tag }}
+<ul class="tags-ul">
+  <li v-for="tag in tagSearchResults" @click="findTag(tag)">
+  <span>{{ tag }}</span>
   </li>
 </ul>
 
@@ -52,8 +52,8 @@ name: 'SearchResults',
 
       searchesCombined(){
 
-        var arr1 = this.searchTags;
-        var arr2 = this.searchTagged;
+        var arr1 = this.tagSearchResults;
+        var arr2 = this.recipeNameResults;
 
         var arrs = [arr1, arr2];
         return [].concat(...arrs);
@@ -82,21 +82,38 @@ name: 'SearchResults',
 
           },
 
+
+          recipeNameWords(){
+
+            var names = this.recipeNames;
+
+
+            var newArr = [];
+            names.forEach((name) => {
+
+
+
+              newArr.push.apply(newArr, name.split(" "));
+
+            })
+
+            return newArr;
+
+          },
+
           tags(){
             return this.$store.getters.tags;
           },
 
-          tagsList(){
-
-            var t = this.tags;
-
-            return [].concat(...t);
-
-          },
 
           uniqueTags(){
 
             return this.$store.getters.uniqueTags;
+          },
+
+          uniqueWords(){
+
+            return this.$store.getters.uniqueWords;
           },
 
           tagsAndRecipes(){
@@ -106,7 +123,7 @@ name: 'SearchResults',
           },
 
 
-          searchTags(){
+          tagSearchResults(){
 
             var lowSearch = this.search.toLowerCase();
 
@@ -114,11 +131,21 @@ name: 'SearchResults',
 
           },
 
-          searchTagged(){
+          taggedRecipeResults(){
 
             var lowSearch = this.search.toLowerCase();
 
             return this.recipes.filter(recipe => recipe.tags.some(tag => tag === lowSearch));
+
+
+          },
+
+          recipeNameResults(){
+
+            var lowSearch = this.search.toLowerCase();
+
+
+           return this.recipes.filter(recipe => recipe.name.toLowerCase().includes(lowSearch));
 
 
           },
@@ -154,6 +181,16 @@ name: 'SearchResults',
 
         return this.results.sort(compare);
       }
+  },
+
+  methods: {
+    findTag: function(tag){
+
+    this.selectedTag = tag;
+
+    this.$router.push({ name: 'TagResults', params: { selectedTag: this.selectedTag }});
+
+  }
   }
 
 }
@@ -195,6 +232,19 @@ align-content: flex-start;
 font-weight: 300;
 font-size: 34px;
 text-align: center;
+    }
+
+    .tags-ul {
+
+    }
+
+    .tags-ul li span {
+      color: #F08080;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 2px;
+      cursor: pointer;
+      font-size: 18px;
+      display: inline;
     }
 
     .results-recipe-name {

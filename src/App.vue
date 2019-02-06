@@ -256,7 +256,7 @@ border-radius: 8px;
 padding: 6px 12px;
 font-family: 'Proxima Nova Light';
 font-size: 18px;
-color: #aaa;
+
 }
 
 
