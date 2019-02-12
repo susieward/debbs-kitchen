@@ -16,6 +16,7 @@
     "vue": "^2.5.21",
     "vue-full-calendar": "^2.7.0",
     "vue-router": "^3.0.1",
+    "vuedraggable": "^2.17.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

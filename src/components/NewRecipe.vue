@@ -9,19 +9,49 @@
 
         <div class="ingredients">
         <ul class="ingr">
-            <li v-for="(ingredient, index) in ingredients">
+            <li v-for="(ingredient, index) in ingredients" :key="index">
                 <span class="remove" @click="removeIngr(index)">x</span> <span class="tag">{{ ingredient }}</span></li>
             </ul>
         </div>
 
-        <label for="instructions">Instructions:</label>
-        <textarea v-model="newRecipe.instructions" name="instructions" class="recipe-textarea"></textarea>
+
+
+    <label for="instructions">Instructions:</label>
+{{ editId }}<br />
+{{ editText }}
+    <div class="instructions">
+
+        <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="index">
+
+
+
+            <span v-if="editId !== box.id">{{ box }} {{ index }} <button @click="remove(index)">X
+            </button> <button @click="editTrue(box.id)">edit</button></span><br />
+
+            <span v-if="editing === true && editId === box.id">
+              <textarea class="recipe-textarea" v-model="editText" :placeholder="box.text"></textarea><br />
+              <button @click="editBox(box.id)">save changes</button> <button @click="cancel">cancel</button>
+
+            </span><br />
+
+
+
+
+        </div>
+<div v-if="editing === false">
+
+
+        <textarea class="recipe-textarea" v-model="newBox.text" placeholder="Add text"></textarea><br /><br />
+
+        <button @click="addBox">add instruction</button>
+</div>
+    </div>
 
       <span><label for="tags">Tags:</label> <input type="text" id="tag" class="recipe-input" v-model="newTag" placeholder="dinner, holiday, etc"/> <button class="blackbtn" @click="addTag">add tag</button> <span style="color: red">{{ tagErr }}</span></span>
 
         <div class="tags-container">
         <ul class="tags-list">
-            <li v-for="(tag, index) in tags">
+            <li v-for="(tag, index) in tags" :key="index">
                 <span class="remove" @click="removeTag(index)">x</span> <span class="tag">{{ tag }}</span></li>
             </ul>
         </div>
@@ -34,24 +64,111 @@
 </div>
 </template>
 <script>
+import draggable from 'vuedraggable'
+import axios from 'axios'
 export default {
 data(){
     return {
         newRecipe: {
             name: '',
-            instructions: ''
+            instructions: []
         },
+        newBox: {
+          text: '',
+          id: ''
+        },
+        editText: '',
         newIngredient: '',
         ingredients: [],
         newTag: '',
         tags: [],
         error: '',
         tagErr: '',
-        ingrErr: ''
-    }
+        ingrErr: '',
+        newText: {
+          text: '',
+          order: undefined
+        },
+        contentArray: [],
+        editing: false,
+        editId: ''
+      }
+},
+
+components: {
+  draggable
 },
 
 methods: {
+
+  onInput: function(value, index){
+    this.newText.text = value;
+    this.newText.order = index;
+
+    this.contentArray.push(this.newtext);
+    this.newText = {}
+
+
+  },
+
+    addBox: function(){
+
+      var number = Date.now() + Math.random().toString().slice(18);
+
+  var id = 'a' + number;
+
+        this.newBox.id = id;
+
+
+      this.newRecipe.instructions.push(this.newBox);
+      this.newBox = {};
+
+
+    },
+
+    editTrue: function(id){
+
+      this.editing = true;
+
+      this.editId = id;
+
+
+    },
+
+    editBox: function(id){
+
+
+
+  var boxId = id;
+
+      var index = this.newRecipe.instructions.findIndex(b => b.id === boxId);
+
+      var updatedBox = {
+        text: this.editText,
+      }
+
+      this.newRecipe.instructions.splice(index, 1, updatedBox);
+      this.editing = false;
+      this.editId = ''
+      this.editText = ''
+
+
+
+    },
+
+    cancel: function(){
+      this.editing = false;
+      this.editId = '';
+      this.editText = '';
+    },
+
+
+
+    remove: function(index){
+
+      this.newRecipe.instructions.splice(index, 1);
+
+    },
 
     addIngredient: function(){
       if(this.newIngredient !== ''){
