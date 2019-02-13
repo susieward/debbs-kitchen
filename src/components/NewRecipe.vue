@@ -18,25 +18,25 @@
 
     <label for="instructions">Instructions:</label>
 
-    <div class="instructions">
+      <div class="instructions">
 
-        <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="index">
+    <draggable :options="{draggable:'.recipe-text', animation: 200}">
+
+      <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="box">
+
+        <div class="box-item" v-if="editId !== box.id">{{ box.text }} <button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-remove" @click="remove(index)">X
+        </button></div>
+
+        <div class="box-edit-item" v-if="editing === true && editId === box.id">
+          <textarea name="instructions" class="recipe-textarea" v-model="editText">{{ box.text }}</textarea><br />
+          <span><button @click="editBox(box.id)" class="box-remove">save changes</button> <button class="box-remove" @click="cancel">cancel</button></span>
+
+        </div><br />
+
+      </div>
+  </draggable>
 
 
-
-            <div class="box-item" v-if="editId !== box.id">{{ box.text }} <button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-remove" @click="remove(index)">X
-            </button></div>
-
-            <div class="box-edit-item" v-if="editing === true && editId === box.id">
-              <textarea name="instructions" class="recipe-textarea" v-model="editText">{{ box.text }}</textarea><br />
-              <span><button @click="editBox(box.id)" class="box-remove">save changes</button> <button class="box-remove" @click="cancel">cancel</button></span>
-
-            </div><br />
-
-
-
-
-        </div>
 <div v-if="editing === false">
 
 
@@ -239,6 +239,10 @@ background-color: #eee;
 padding: 20px;
 border: 1px solid transparent;
 border-radius: 6px;
+}
+
+.box-item:hover {
+  cursor: pointer;
 }
 
 .box-edit-item {
