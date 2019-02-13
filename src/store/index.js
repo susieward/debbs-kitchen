@@ -69,23 +69,7 @@ state: {
           deleteRecipe: (state, id) => {
         let index = state.recipes.findIndex(recipe => recipe._id === id);
             state.recipes.splice(index, 1);
-        },
-
-        addBox: (state, {box}) =>{
-        state.boxes.push({box});
-     },
-
-        editBox: (state, {box}) =>{
-          var id = box.id;
-        let index = state.boxes.findIndex(boxItem => boxItem.id === id);
-            state.boxes.splice(index, 1, box);
-        },
-
-
-        deleteBox: (state, id) => {
-        let index = state.boxes.findIndex(box => box.id === id);
-            state.boxes.splice(index, 1);
-        },
+        }
 
     },
 

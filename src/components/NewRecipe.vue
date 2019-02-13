@@ -17,22 +17,21 @@
 
 
     <label for="instructions">Instructions:</label>
-{{ editId }}<br />
-{{ editText }}
+
     <div class="instructions">
 
         <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="index">
 
 
 
-            <span v-if="editId !== box.id">{{ box }} {{ index }} <button @click="remove(index)">X
-            </button> <button @click="editTrue(box.id)">edit</button></span><br />
+            <div class="box-item" v-if="editId !== box.id">{{ box.text }} <button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-remove" @click="remove(index)">X
+            </button></div>
 
-            <span v-if="editing === true && editId === box.id">
-              <textarea class="recipe-textarea" v-model="editText" :placeholder="box.text"></textarea><br />
-              <button @click="editBox(box.id)">save changes</button> <button @click="cancel">cancel</button>
+            <div class="box-edit-item" v-if="editing === true && editId === box.id">
+              <textarea name="instructions" class="recipe-textarea" v-model="editText">{{ box.text }}</textarea><br />
+              <span><button @click="editBox(box.id)" class="box-remove">save changes</button> <button class="box-remove" @click="cancel">cancel</button></span>
 
-            </span><br />
+            </div><br />
 
 
 
@@ -145,6 +144,7 @@ methods: {
 
       var updatedBox = {
         text: this.editText,
+        id: boxId
       }
 
       this.newRecipe.instructions.splice(index, 1, updatedBox);
@@ -230,6 +230,40 @@ name: 'NewRecipe'
 }
 </script>
 <style>
+
+.box-item {
+display: grid;
+grid-template-columns: auto 50px 50px;
+grid-template-rows: auto;
+background-color: #eee;
+padding: 20px;
+border: 1px solid transparent;
+border-radius: 6px;
+}
+
+.box-edit-item {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  background-color: #eee;
+  padding: 20px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.box-remove {
+background-color: #aaa;
+border: 1px solid transparent;
+border-radius: 6px;
+color: #fff;
+padding: 4px 6px;
+font-weight: 400;
+line-height: normal;
+width: auto;
+max-height: 30px;
+cursor: pointer;
+
+}
 
 .recipe-form {
 display: grid;
