@@ -24,12 +24,15 @@
 
       <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="box">
 
-        <div class="box-item" v-if="editId !== box.id">{{ box.text }} <button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-remove" @click="remove(index)">X
-        </button></div>
+        <div class="box-item" v-if="editId !== box.id && box.hasImage === false">{{ box.text }} <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
+        </button></span></div>
+
+        <div class="box-item" v-if="editId !== box.id && box.hasImage === true"><img class="box-img" :src="box.image" /> <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
+        </button></span></div>
 
         <div class="box-edit-item" v-if="editing === true && editId === box.id">
           <textarea name="instructions" class="recipe-textarea" v-model="editText">{{ box.text }}</textarea><br />
-          <span><button @click="editBox(box.id)" class="box-remove">save changes</button> <button class="box-remove" @click="cancel">cancel</button></span>
+          <span><button @click="editBox(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
 
         </div><br />
 
@@ -39,10 +42,52 @@
 
 <div v-if="editing === false">
 
+<div class="new-box">
 
-        <textarea class="recipe-textarea" v-model="newBox.text" placeholder="Add text"></textarea><br /><br />
+  <div class="new-box-text-cover" @click="showText" v-if="itemChosen === false">
+    <p>
+      add text
+    </p>
+    </div>
 
-        <button @click="addBox">add instruction</button>
+  <div class="new-box-text" v-if="text === true && image === false">
+
+
+        <textarea class="box-textarea" v-model="newBox.text" placeholder="Add text"></textarea><br /><br />
+</div>
+
+<div v-if="itemChosen === true && image === false">
+        <button class="box-edit" @click="addText">add instruction</button><br />
+        <p class="back-to-selection" v-if="itemChosen === true" @click="backToSelection">back to selection
+        </p>
+        </div>
+
+
+  <div class="new-box-img-cover" @click="showImage" v-if="itemChosen === false">
+    <p>
+      add image
+    </p>
+  </div>
+      <div class="new-box-img" v-if="itemChosen === true">
+        <div v-if="!newBox.image">
+          <input type="file" @change="onFileChange">
+        </div>
+
+        <img class="box-img" v-bind:src="newBox.image"/>
+
+        <button @click="removeImage">Remove image</button>
+
+    </div>
+  </div>
+
+<div v-if="itemChosen === true && text === false">
+        <button class="box-edit" @click="addImage">add instruction</button><br />
+        <p class="back-to-selection" v-if="itemChosen === true" @click="backToSelection">back to selection
+        </p>
+        </div>
+
+
+
 </div>
     </div>
 
@@ -70,12 +115,19 @@ data(){
     return {
         newRecipe: {
             name: '',
-            instructions: []
+            instructions: [],
+            images: []
         },
         newBox: {
           text: '',
-          id: ''
+          id: '',
+          image: '',
+          hasImage: false
         },
+        newImage: '',
+        text: false,
+        image: false,
+        itemChosen: false,
         editText: '',
         newIngredient: '',
         ingredients: [],
@@ -100,6 +152,47 @@ components: {
 
 methods: {
 
+  backToSelection: function(){
+
+    this.itemChosen = false;
+    this.text = false;
+    this.image = false;
+
+  },
+
+  showText: function(){
+    this.text = true;
+    this.itemChosen = true;
+  },
+
+  showImage: function(){
+    this.image = true;
+    this.itemChosen = true;
+  },
+
+  onFileChange(e) {
+    var files = e.target.files || e.dataTransfer.files;
+       if (!files.length)
+      return;
+    this.createImage(files[0]);
+  },
+
+  createImage(file) {
+    var image = new Image();
+    var reader = new FileReader();
+    var vm = this;
+
+    reader.onload = (e) => {
+      vm.image = e.target.result;
+        this.newBox.image = vm.image;
+    };
+    reader.readAsDataURL(file);
+  },
+
+  removeImage: function (e) {
+    this.newBox.image = '';
+  },
+
   onInput: function(value, index){
     this.newText.text = value;
     this.newText.order = index;
@@ -110,13 +203,30 @@ methods: {
 
   },
 
-    addBox: function(){
+    addText: function(){
 
       var number = Date.now() + Math.random().toString().slice(18);
 
   var id = 'a' + number;
 
         this.newBox.id = id;
+        this.newBox.hasImage = false;
+
+
+      this.newRecipe.instructions.push(this.newBox);
+      this.newBox = {};
+
+
+    },
+
+    addImage: function(){
+
+      var number = Date.now() + Math.random().toString().slice(18);
+
+  var id = 'a' + number;
+
+        this.newBox.id = id;
+        this.newBox.hasImage = true;
 
 
       this.newRecipe.instructions.push(this.newBox);
@@ -231,18 +341,76 @@ name: 'NewRecipe'
 </script>
 <style>
 
+.box-img {
+  width: 300px;
+}
+
+.new-box {
+display: grid;
+grid-template-columns: 1fr 1fr;
+grid-gap: 10px;
+margin-bottom: 10px;
+}
+
+.new-box-text-cover {
+display: grid;
+background-color: #ddd;
+border: 1px solid #ddd;
+border-radius: 6px;
+width: auto;
+height: 200px;
+justify-content: center;
+align-content: center;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.new-box-text-cover:hover {
+  background-color: #848484;
+  border: 1px solid #848484;
+  color: #fff;
+}
+
+.new-box-img-cover {
+  display: grid;
+  background-color: #ddd;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  width: auto;
+  height: 200px;
+  justify-content: center;
+  align-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.new-box-img-cover:hover {
+  background-color: #848484;
+  border: 1px solid #848484;
+  color: #fff;
+}
+
 .box-item {
 display: grid;
-grid-template-columns: auto 50px 50px;
+grid-template-columns: auto 1fr;
 grid-template-rows: auto;
 background-color: #eee;
 padding: 20px;
 border: 1px solid transparent;
 border-radius: 6px;
+font-size: 16px;
+line-height: 25px;
 }
 
 .box-item:hover {
   cursor: pointer;
+}
+
+.box-item-buttons {
+display: grid;
+justify-content: flex-end;
+grid-template-columns: auto auto;
+grid-gap: 10px;
 }
 
 .box-edit-item {
@@ -253,20 +421,42 @@ border-radius: 6px;
   padding: 20px;
   border: 1px solid transparent;
   border-radius: 6px;
+
 }
 
 .box-remove {
-background-color: #aaa;
-border: 1px solid transparent;
-border-radius: 6px;
-color: #fff;
+border: none;
+background-color: #eee;
+  color: #000;
+
+
 padding: 4px 6px;
-font-weight: 400;
+font-family: 'Proxima Nova Regular';
+font-size: 14px;
 line-height: normal;
-width: auto;
 max-height: 30px;
 cursor: pointer;
+}
 
+.box-edit {
+  background-color: #aaa;
+  border: 1px solid transparent;
+  transition: 0.3s;
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 6px;
+  font-weight: 400;
+  line-height: normal;
+font-family: 'Proxima Nova Regular';
+font-size: 14px;
+  cursor: pointer;
+  max-height: 30px;
+}
+
+.box-edit:hover {
+  background-color: #767676;
+  border: 1px solid transparent;
+  color: #fff;
 }
 
 .recipe-form {
@@ -342,6 +532,15 @@ border: none;
     }
 
 
+.box-textarea {
+  font-weight: 300;
+  font-size: 16px;
+  padding: 10px 12px;
+  width: 650px;
+  min-height: 150px;
+  border: 1px solid #777;
+  border-radius: 8px;
+}
 
 
 
@@ -402,5 +601,21 @@ border: none;
     color: #fff;
     cursor: pointer;
    max-width: 150px;
+    }
+
+
+    .back-to-selection {
+    cursor: pointer;
+    text-decoration: none;
+    color: #F08080;
+    transition: 0.3s;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    display: inline-block;
+    font-size: 16px;
+    }
+
+    .back-to-selection:hover {
+      border-bottom: 1px solid #F08080;
     }
 </style>
