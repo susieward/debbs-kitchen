@@ -36,7 +36,7 @@ min-height: 500px;
 max-width: 900px;
 padding: 30px;
 align-content: flex-start;
-    background-color: #f9f9f9;
+background-color: #f9f9f9;
 }
 
 

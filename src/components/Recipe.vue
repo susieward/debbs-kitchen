@@ -49,9 +49,14 @@ export default {
 }
 </script>
 <style>
+
+.recipe {
+
+}
  .recipe-name {
     font-weight: 400;
     font-size: 22px;
+    
     }
 
     .recipe-name:hover {

@@ -55,8 +55,10 @@ export default {
 
     .all-recipes {
     display: grid;
-    grid-gap: 30px;
-        background-color: #f9f9f9;
+align-content: flex-start;
+  padding: 30px;
+  grid-gap: 30px;
+    background-color: #f9f9f9;
     }
 
     .recipe-name {
