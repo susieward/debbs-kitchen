@@ -26,7 +26,13 @@
             <ul>
             <li v-for="ingredient in recipe.ingredients">{{ ingredient }}</li>
             </ul>
-            <p>{{ recipe.instructions }}</p>
+            <p>Directions:</p>
+                        <div v-for="box in recipe.instructions">
+                          <p v-if="box.hasImage === false">
+                            {{ box.text}}
+                          </p>
+                          <img class="recipe-box-img" v-if="box.hasImage === true" :src="box.image" />
+                        </div>
             <p><span class="tags-title">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p>
     </div>
 
@@ -119,6 +125,11 @@ props: ['selectedTag'],
 }
 </script>
 <style>
+
+.recipe-box-img {
+    width: 300px;
+}
+
     .recipe-page {
 display: grid;
 

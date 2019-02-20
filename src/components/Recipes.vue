@@ -79,7 +79,6 @@ text-align: center;
 .recipes-container {
 display: grid;
 align-content: flex-start;
-padding: 30px;
 font-size: 18px;
 }
 

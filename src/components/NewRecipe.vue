@@ -10,13 +10,17 @@
         <div class="ingredients">
         <ul class="ingr">
             <li v-for="(ingredient, index) in ingredients" :key="index">
-                <span class="remove" @click="removeIngr(index)">x</span> <span class="tag">{{ ingredient }}</span></li>
+                <span class="remove" @click="removeIngr(index)">x</span> {{ ingredient }}</li>
             </ul>
         </div>
 
 
 
-    <label for="instructions">Instructions:</label>
+    <label for="instructions">Directions:</label>
+
+    <p v-for="(box, index) in newRecipe.instructions">
+      {{ index }}
+    </p>
 
       <div class="instructions">
 
@@ -24,7 +28,7 @@
 
       <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="box">
 
-        <div class="box-item" v-if="editId !== box.id && box.hasImage === false">{{ box.text }} <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
+        <div class="box-item" v-if="editId !== box.id && box.hasImage === false">{{ box.text }}<span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
         </button></span></div>
 
         <div class="box-item" v-if="editId !== box.id && box.hasImage === true"><img class="box-img" :src="box.image" /> <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
@@ -34,7 +38,10 @@
           <textarea name="instructions" class="recipe-textarea" v-model="editText">{{ box.text }}</textarea><br />
           <span><button @click="editBox(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
 
-        </div><br />
+        </div>
+
+
+        <br />
 
       </div>
   </draggable>
@@ -50,17 +57,19 @@
     </p>
     </div>
 
-  <div class="new-box-text" v-if="text === true && image === false">
+  <div class="new-box-text" v-if="text === true && itemChosen === true">
 
 
-        <textarea class="box-textarea" v-model="newBox.text" placeholder="Add text"></textarea><br /><br />
+        <textarea class="box-textarea" v-model="newBox.text" placeholder="Add text"></textarea>
+        <button class="box-edit" @click="addText">add text</button>
+        <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
+        </button>
+        <p style="color: red">{{ textError }}</p>
 </div>
 
 <div v-if="itemChosen === true && image === false">
-        <button class="box-edit" @click="addText">add instruction</button><br />
-        <p class="back-to-selection" v-if="itemChosen === true" @click="backToSelection">back to selection
-        </p>
-        </div>
+
+      </div>
 
 
   <div class="new-box-img-cover" @click="showImage" v-if="itemChosen === false">
@@ -68,22 +77,28 @@
       add image
     </p>
   </div>
-      <div class="new-box-img" v-if="itemChosen === true">
+      <div class="new-box-img" v-if="itemChosen === true && text === false">
         <div v-if="!newBox.image">
           <input type="file" @change="onFileChange">
         </div>
 
+        <div v-else>
+
+
         <img class="box-img" v-bind:src="newBox.image"/>
 
         <button @click="removeImage">Remove image</button>
-
+</div>
     </div>
   </div>
 
 <div v-if="itemChosen === true && text === false">
-        <button class="box-edit" @click="addImage">add instruction</button><br />
-        <p class="back-to-selection" v-if="itemChosen === true" @click="backToSelection">back to selection
+        <button class="box-edit" @click="addImage">add image</button> <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
+        </button>
+        <p>
+          <span style="color: red">{{ imgError }}</span>
         </p>
+
         </div>
 
 
@@ -93,16 +108,16 @@
 
       <span><label for="tags">Tags:</label> <input type="text" id="tag" class="recipe-input" v-model="newTag" placeholder="dinner, holiday, etc"/> <button class="blackbtn" @click="addTag">add tag</button> <span style="color: red">{{ tagErr }}</span></span>
 
-        <div class="tags-container">
-        <ul class="tags-list">
-            <li v-for="(tag, index) in tags" :key="index">
-                <span class="remove" @click="removeTag(index)">x</span> <span class="tag">{{ tag }}</span></li>
+        <p>
+        <ul class="tag-ul">
+            <li v-for="(t, index) in tags" :key="index">
+                <span class="remove" @click="removeTag(index)">x</span> <span class="tag-text">{{ t }}</span></li>
             </ul>
-        </div>
+        </p>
 
       <button class="pinkbtn" @click="saveRecipe">save recipe</button>
 <span style="color: red">{{ error }}</span>
-    </div>
+</div>
 
 
 </div>
@@ -115,8 +130,7 @@ data(){
     return {
         newRecipe: {
             name: '',
-            instructions: [],
-            images: []
+            instructions: []
         },
         newBox: {
           text: '',
@@ -124,6 +138,8 @@ data(){
           image: '',
           hasImage: false
         },
+        imgError: '',
+        textError: '',
         newImage: '',
         text: false,
         image: false,
@@ -141,6 +157,7 @@ data(){
           order: undefined
         },
         contentArray: [],
+        boxes: [],
         editing: false,
         editId: ''
       }
@@ -157,6 +174,8 @@ methods: {
     this.itemChosen = false;
     this.text = false;
     this.image = false;
+    this.imgError = '';
+    this.textError = '';
 
   },
 
@@ -203,8 +222,9 @@ methods: {
 
   },
 
-    addText: function(){
+    addText: function(index){
 
+if(this.newBox.text){
       var number = Date.now() + Math.random().toString().slice(18);
 
   var id = 'a' + number;
@@ -215,11 +235,18 @@ methods: {
 
       this.newRecipe.instructions.push(this.newBox);
       this.newBox = {};
+      this.itemChosen = false;
+      this.text = false;
+    } else {
 
+      this.textError = "Text field cannot be blank"
+    }
 
     },
 
     addImage: function(){
+
+      if(this.newBox.image){
 
       var number = Date.now() + Math.random().toString().slice(18);
 
@@ -231,7 +258,12 @@ methods: {
 
       this.newRecipe.instructions.push(this.newBox);
       this.newBox = {};
+      this.itemChosen = false;
+      this.image = false;
+} else {
 
+  this.imgError = "Please select an image"
+}
 
     },
 
@@ -245,8 +277,6 @@ methods: {
     },
 
     editBox: function(id){
-
-
 
   var boxId = id;
 
@@ -362,7 +392,7 @@ height: 200px;
 justify-content: center;
 align-content: center;
 cursor: pointer;
-transition: 0.3s;
+transition: 0.2s;
 }
 
 .new-box-text-cover:hover {
@@ -381,7 +411,7 @@ transition: 0.3s;
   justify-content: center;
   align-content: center;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .new-box-img-cover:hover {
@@ -469,11 +499,15 @@ font-family: 'Roboto';
 }
 
 .recipe-input{
-    width: 200px;
-    border: 1px solid #777;
-    border-radius: 6px;
-    padding: 6px 8px;
-    font-size: 16px;
+  width: 200px;
+  border: 1px solid #777;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 18px;
+  font-family: 'Roboto';
+  font-weight: 300;
+  margin-left: 10px;
+  margin-right: 5px;
     }
 
 
@@ -492,7 +526,7 @@ border: none;
     }
 
     label {
-      font-weight: 400;
+
     }
 
     .ingredients {
@@ -509,7 +543,6 @@ border: none;
 
     .ingr li {
   margin-left: 50px;
-  font-weight: 400;
     color: #555;
     }
 
@@ -530,6 +563,28 @@ border: none;
 
 
     }
+
+    .tag-ul {
+      list-style-type: none;
+    }
+
+    .tag-ul li {
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    .tag-text {
+
+      color: #F08080;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 2px;
+      cursor: pointer;
+      font-size: 18px;
+      }
+
+  .tag-text:hover {
+      color: #000;
+  }
 
 
 .box-textarea {
@@ -555,7 +610,7 @@ border: none;
 
     }
 
-    .remove {
+    .remove-btn {
     font-weight: 400;
     color: #aaa;
     margin-right: 4px;
@@ -563,7 +618,7 @@ border: none;
 
     }
 
-    .remove:hover {
+    .remove-btn:hover {
     color: #000;
     }
 
@@ -618,4 +673,21 @@ border: none;
     .back-to-selection:hover {
       border-bottom: 1px solid #F08080;
     }
+
+
+    .remove {
+        font-family: 'Proxima Nova Regular';
+
+            color: #e50000;
+            font-size: 18px;
+            margin-right: 5px;
+            padding: 2px;
+            cursor: pointer;
+        }
+
+
+
+        .remove:hover {
+        color: #000;
+        }
 </style>

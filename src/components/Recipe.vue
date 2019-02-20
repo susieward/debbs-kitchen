@@ -6,8 +6,14 @@
             <ul>
             <li v-for="ingredient in recipe.ingredients">{{ ingredient }}</li>
             </ul>
+<p>Directions:</p>
+            <div v-for="box in recipe.instructions">
+              <p v-if="box.hasImage === false">
+                {{ box.text}}
+              </p>
+              <img class="recipe-box-img" v-if="box.hasImage === true" :src="box.image" />
+            </div>
 
-            <p>{{ recipe.instructions }}</p>
             <p><span class="tags-title">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p>
 
 
@@ -62,6 +68,10 @@ export default {
     .tags-title {
     font-weight: 400;
 
+    }
+
+    .recipe-box-img {
+        width: 300px;
     }
 
 
