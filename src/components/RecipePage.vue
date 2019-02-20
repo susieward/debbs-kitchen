@@ -8,7 +8,7 @@
     <div class="recipe-page-container">
     <div class="recipe-top">
 
-        <div class="recipe-name">{{ recipe.name }}</div>
+        <div class="recipe-name-div">{{ recipe.name }}</div>
 
         <div class="recipebtns">
             <span>
@@ -20,13 +20,14 @@
     </div>
     </div>
     <div class="recipe-container" v-if="showRecipeEditor == false">
-          <span>
-            Ingredients:
-          </span>
-            <ul>
+
+      <img class="recipe-box-img" :src="recipe.photo"><br />
+
+          <span style="font-weight: 400">Ingredients:</span>
+            <ul class="recipe-ingredients">
             <li v-for="ingredient in recipe.ingredients">{{ ingredient }}</li>
-            </ul>
-            <p>Directions:</p>
+          </ul><br />
+            <span style="font-weight: 400">Directions:</span>
                         <div v-for="box in recipe.instructions">
                           <p v-if="box.hasImage === false">
                             {{ box.text}}
@@ -177,11 +178,11 @@ font-size: 18px;
     justify-content: flex-end;
     }
 
- .recipe-name {
+ .recipe-name-div {
       display: grid;
     justify-content: flex-start;
-    font-weight: 400;
-    font-size: 26px;
+    font-weight: 300;
+    font-size: 24px;
 
     }
 
@@ -189,6 +190,24 @@ font-size: 18px;
     font-weight: 400;
 
     }
+
+
+        .recipe-ingredients {
+        list-style-type: none;
+    margin-left: 8px;
+    padding: 0;
+        }
+
+        .recipe-ingredients li {
+          display: block;
+          border-left: 1px solid #F08080;
+          padding-left: 25px;
+
+
+
+
+
+        }
 
 
 

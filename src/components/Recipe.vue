@@ -1,12 +1,15 @@
 <template>
 <div class="recipe">
 
-    <router-link :to="url"><p class="recipe-name">{{ recipe.name }}</p></router-link>
-     <span>Ingredients:</span>
-            <ul>
+    <router-link :to="url"><p><span class="recipe-name">{{ recipe.name }}</span></p></router-link>
+
+    <img class="recipe-box-img" :src="recipe.photo"><br /><br />
+
+     <span style="font-weight: 400">Ingredients:</span>
+            <ul class="recipe-ingredients">
             <li v-for="ingredient in recipe.ingredients">{{ ingredient }}</li>
             </ul>
-<p>Directions:</p>
+<p style="font-weight: 400">Directions:</p>
             <div v-for="box in recipe.instructions">
               <p v-if="box.hasImage === false">
                 {{ box.text}}
@@ -56,7 +59,8 @@ export default {
  .recipe-name {
     font-weight: 400;
     font-size: 22px;
-    
+    display: inline;
+
     }
 
     .recipe-name:hover {
@@ -77,6 +81,23 @@ export default {
 
     .recipe-box-img {
         width: 300px;
+    }
+
+    .recipe-ingredients {
+    list-style-type: none;
+margin-left: 8px;
+padding: 0;
+    }
+
+    .recipe-ingredients li {
+      display: block;
+      border-left: 1px solid #F08080;
+      padding-left: 25px;
+
+
+
+
+
     }
 
 

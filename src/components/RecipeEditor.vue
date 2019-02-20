@@ -1,8 +1,22 @@
 <template>
       <div class="recipe-editor">
 
-    <div class="recipe-form">
+    <div class="recipe-edit-form">
        <span><label for="name">Name:</label> <input  type="text" class="recipe-edit-input" v-model="recipeEdit.name" :placeholder="recipe.name"/></span>
+
+       <span style="font-weight: 400">Finished recipe photo:</span>
+
+         <div v-if="!recipeEdit.photo">
+           <input type="file" @change="onPhotoChange">
+         </div>
+
+         <div v-else>
+
+
+         <img class="box-img" v-bind:src="recipeEdit.photo"/>
+
+         <button @click="removeRecipePhoto">Remove image</button>
+ </div>
 
         <span><label for="ingredients">Ingredients:</label> <input type="text" class="recipe-edit-input" v-model="newIngredient" placeholder="e.g. eggs, flour, etc"/> <button class="blackbtn" @click="addIngredient">add</button></span>
 
@@ -126,7 +140,8 @@ data(){
             name: '',
             instructions: [],
            ingredients: [],
-            tags: []
+            tags: [],
+            photo: ''
         },
         newIngredient: '',
         newTag: '',
@@ -179,6 +194,30 @@ components: {
           this.image = true;
           this.itemChosen = true;
         },
+
+        onPhotoChange(e) {
+          var files = e.target.files || e.dataTransfer.files;
+             if (!files.length)
+            return;
+          this.createPhoto(files[0]);
+        },
+
+        createPhoto(file) {
+          var image = new Image();
+          var reader = new FileReader();
+          var vm = this;
+
+          reader.onload = (e) => {
+            vm.image = e.target.result;
+              this.recipeEdit.photo = vm.image;
+          };
+          reader.readAsDataURL(file);
+        },
+
+        removeRecipePhoto: function (e) {
+          this.recipeEdit.photo = '';
+        },
+
 
         onFileChange(e) {
           var files = e.target.files || e.dataTransfer.files;
@@ -337,7 +376,8 @@ components: {
             name: this.recipeEdit.name,
             ingredients: this.recipeEdit.ingredients,
             instructions: this.recipeEdit.instructions,
-            tags: this.recipeEdit.tags
+            tags: this.recipeEdit.tags,
+            photo: this.recipeEdit.photo
 
             };
 
@@ -354,9 +394,9 @@ components: {
 </script>
 <style>
 
-    .recipe-form {
+    .recipe-edit-form {
 display: grid;
-grid-gap: 20px;
+grid-gap: 25px;
 padding: 25px;
 align-content: flex-start;
 min-height: 500px;
@@ -391,6 +431,7 @@ border: none;
     }
 
     label {
+      font-weight: 400;
     }
 
     .ingredients {
@@ -412,7 +453,6 @@ border: none;
 
       .tags-container {
     display: grid;
-    border: 1px solid #333;
     justify-content: flex-start;
 
     }

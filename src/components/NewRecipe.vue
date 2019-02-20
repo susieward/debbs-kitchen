@@ -5,6 +5,20 @@
 
        <span><label for="name">Name:</label> <input id="name" type="text" class="recipe-input" v-model="newRecipe.name"/></span>
 
+       <span style="font-weight: 400">Finished recipe photo:</span>
+
+         <div v-if="!newRecipe.photo">
+           <input type="file" @change="onPhotoChange">
+         </div>
+
+         <div v-else>
+
+
+         <img class="box-img" v-bind:src="newRecipe.photo"/>
+
+         <button @click="removeRecipePhoto">Remove image</button>
+ </div>
+
         <span><label for="ingredients">Ingredients:</label> <input type="text" id="ingredient" class="recipe-input" v-model="newIngredient" placeholder="eggs, flour, pasta, etc"/> <button class="blackbtn" @click="addIngredient">add ingredient</button><span style="color: red">{{ ingrErr }}</span></span>
 
         <div class="ingredients">
@@ -130,7 +144,8 @@ data(){
     return {
         newRecipe: {
             name: '',
-            instructions: []
+            instructions: [],
+            photo: ''
         },
         newBox: {
           text: '',
@@ -188,6 +203,30 @@ methods: {
     this.image = true;
     this.itemChosen = true;
   },
+
+
+    onPhotoChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+         if (!files.length)
+        return;
+      this.createPhoto(files[0]);
+    },
+
+    createPhoto(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.image = e.target.result;
+          this.newRecipe.photo = vm.image;
+      };
+      reader.readAsDataURL(file);
+    },
+
+    removeRecipePhoto: function (e) {
+      this.newRecipe.photo = '';
+    },
 
   onFileChange(e) {
     var files = e.target.files || e.dataTransfer.files;
@@ -342,13 +381,14 @@ if(this.newBox.text){
 
     saveRecipe: function(){
 
-      if(this.newRecipe.name && this.ingredients && this.newRecipe.instructions && this.tags){
+      if(this.newRecipe.name && this.ingredients && this.newRecipe.instructions && this.tags && this.newRecipe.photo){
 
         axios.post('http://localhost:3000/recipes', {
             name: this.newRecipe.name,
             ingredients: this.ingredients,
             instructions: this.newRecipe.instructions,
-            tags: this.tags
+            tags: this.tags,
+            photo: this.newRecipe.photo
 
         }).then((response) => {
             this.$store.commit('saveRecipe', {recipe: response.data});
@@ -491,7 +531,7 @@ font-size: 14px;
 
 .recipe-form {
 display: grid;
-grid-gap: 20px;
+grid-gap: 25px;
 padding: 25px;
 align-content: flex-start;
 min-height: 500px;

@@ -61,10 +61,7 @@ align-content: flex-start;
     background-color: #f9f9f9;
     }
 
-    .recipe-name {
-    font-weight: 400;
-    font-size: 22px;
-    }
+
 
     .tags-title {
     font-weight: 400;
