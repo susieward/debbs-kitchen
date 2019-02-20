@@ -66,8 +66,8 @@
 
 
                 <textarea class="box-textarea" v-model="newBox.text" placeholder="Add text"></textarea>
-                <button class="box-edit" @click="addText">add text</button>
-                <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
+                <button class="box-img-buttons" @click="addText">add text</button>
+                <button class="box-img-buttons" v-if="itemChosen === true" @click="backToSelection">back
                 </button>
                 <p style="color: red">{{ textError }}</p>
         </div>
@@ -102,7 +102,7 @@
           </div>
 
         <div v-if="itemChosen === true && text === false">
-                <button class="box-edit" @click="addImage">add image</button> <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
+                <button class="box-img-buttons" @click="addImage">add image</button> <button class="box-img-buttons" v-if="itemChosen === true" @click="backToSelection">back
                 </button>
                 <p>
                   <span style="color: red">{{ imgError }}</span>
@@ -182,6 +182,7 @@ components: {
           this.image = false;
           this.imgError = '';
           this.textError = '';
+          this.newBox.image = '';
 
         },
 
@@ -559,6 +560,10 @@ border: none;
     grid-gap: 10px;
     }
 
+    .photo-buttons {
+
+    }
+
     .box-edit-item {
       display: grid;
       grid-template-columns: auto auto;
@@ -591,12 +596,13 @@ border: none;
       border-radius: 4px;
       color: #fff;
       padding: 4px 6px;
-      font-weight: 400;
+      font-weight: 300;
       line-height: normal;
-    font-family: 'Proxima Nova Regular';
-    font-size: 14px;
+    font-family: 'Roboto';
+    font-size: 16px;
       cursor: pointer;
       max-height: 30px;
+
     }
 
     .box-edit:hover {
@@ -604,6 +610,29 @@ border: none;
       border: 1px solid transparent;
       color: #fff;
     }
+
+    .box-img-buttons {
+      background-color: #aaa;
+      border: 1px solid transparent;
+      transition: 0.3s;
+      border-radius: 4px;
+      color: #fff;
+      padding: 4px 6px;
+      font-weight: 300;
+      line-height: normal;
+    font-family: 'Roboto';
+    font-size: 16px;
+      cursor: pointer;
+      max-height: 30px;
+  margin-right: 8px;
+    }
+
+    .box-img-buttons:hover {
+      background-color: #767676;
+      border: 1px solid transparent;
+      color: #fff;
+    }
+
 
     .remove {
         font-family: 'Proxima Nova Regular';
