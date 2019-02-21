@@ -32,14 +32,21 @@
 
               <div class="instructions">
 
-            <draggable :options="{draggable:'.recipe-text', animation: 200}">
+            <draggable :list="recipeEdit.instructions" :options="{draggable:'.recipe-text', animation: 200}" @change="change">
 
-              <div v-for="(box, index) in recipeEdit.instructions" class="recipe-text" :key="box">
+              <div v-for="(box, index) in recipeEdit.instructions" class="recipe-text" :key="index">
 
-                <div class="box-item" v-if="editId !== box.id && box.hasImage === false">{{ box.text }} <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
+                <div class="box-item" v-if="editId !== box.id && box.hasImage === false">{{ box.text }}<br /><br />
+                  order: {{ box.order }}<br />
+                  index: {{ index }}<br />
+                  id: {{ box.id }}
+                  <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
                 </button></span></div>
 
-                <div class="box-item" v-if="editId !== box.id && box.hasImage === true"><img class="box-img" :src="box.image" /> <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
+                <div class="box-item" v-if="editId !== box.id && box.hasImage === true"><img class="box-img" :src="box.image" /> <br /><br />
+                  order: {{ box.order }}<br />
+                  index: {{ index }}<br />
+                  id: {{ box.id }}<span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
                 </button></span></div>
 
                 <div class="box-edit-item" v-if="editing === true && editId === box.id">
@@ -149,7 +156,8 @@ data(){
           text: '',
           id: '',
           image: '',
-          hasImage: false
+          hasImage: false,
+          order: undefined
         },
         imgError: '',
         textError: '',
@@ -157,7 +165,9 @@ data(){
         image: false,
         itemChosen: false,
         editing: false,
-        editText: ''
+        editText: '',
+        testIndex: undefined,
+        testId: ''
     }
 },
 
@@ -173,7 +183,6 @@ components: {
 },
 
     methods: {
-
 
         backToSelection: function(){
 
@@ -268,6 +277,7 @@ components: {
             this.newBox = {};
             this.itemChosen = false;
             this.text = false;
+            this.addIndex();
           } else {
 
             this.textError = "Text field cannot be blank"
@@ -291,10 +301,37 @@ components: {
             this.newBox = {};
             this.itemChosen = false;
             this.image = false;
+            this.addIndex();
       } else {
 
         this.imgError = "Please select an image"
       }
+
+          },
+
+          addIndex: function(){
+
+            this.recipeEdit.instructions.map((item, index) => {
+
+              return item.order = index;
+
+            });
+
+          },
+
+          change: function(evt){
+
+            var i = evt.moved.newIndex;
+           this.testIndex = i;
+
+           var e = evt.moved.element;
+           this.testId = e.id;
+
+            this.recipeEdit.instructions.forEach((item, index) => {
+
+              item.order = index;
+
+            });
 
           },
 
@@ -340,6 +377,12 @@ components: {
           remove: function(index){
 
             this.recipeEdit.instructions.splice(index, 1);
+
+            this.recipeEdit.instructions.forEach((item, index) => {
+
+              item.order = index;
+
+            });
 
           },
 
