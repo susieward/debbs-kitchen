@@ -44,14 +44,30 @@
                 </button></span></div>
 
                 <div class="box-item" v-if="editId !== box.id && box.hasImage === true"><img class="box-img" :src="box.image" /> <br /><br />
-                  order: {{ box.order }}<br />
-                  index: {{ index }}<br />
-                  id: {{ box.id }}<span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
+                  <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
                 </button></span></div>
 
-                <div class="box-edit-item" v-if="editing === true && editId === box.id">
-                  <textarea name="instructions" class="recipe-textarea" v-model="editText">{{ box.text }}</textarea><br />
+                <div class="box-edit-item" v-if="editing === true && editId === box.id && box.hasImage === false">
+
+                  <textarea class="recipe-textarea" v-model="box.text">{{ box.text }}</textarea><br />
+
                   <span><button @click="editBox(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
+
+                </div>
+
+                <div class="box-edit-item" v-if="editing === true && editId === box.id && box.hasImage === true">
+
+                            <div v-if="!editImg">
+                              <img class="box-img" v-bind:src="box.image"/>
+                            </div>
+
+                            <div v-else>
+                              <img class="box-img" v-bind:src="editImg"/>
+                    </div>
+
+                    <input type="file" @change="onImgChange">
+                          <br />
+                            <span><button @click="editImage(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
 
                 </div><br />
 
@@ -167,7 +183,8 @@ data(){
         editing: false,
         editText: '',
         testIndex: undefined,
-        testId: ''
+        testId: '',
+        editImg: ''
     }
 },
 
@@ -251,6 +268,31 @@ components: {
         removeImage: function (e) {
           this.newBox.image = '';
         },
+
+        onImgChange(e) {
+          var files = e.target.files || e.dataTransfer.files;
+           if (!files.length)
+           return;
+           this.createEditImage(files[0]);
+         },
+
+              createEditImage(file) {
+                    var image = new Image();
+                    var reader = new FileReader();
+                    var vm = this;
+
+                    reader.onload = (e) => {
+                      vm.image = e.target.result;
+                      this.editImg = vm.image;
+              };
+                reader.readAsDataURL(file);
+          },
+
+            removeEditImage: function (e) {
+                this.editImg = '';
+          },
+
+
 
         onInput: function(value, index){
           this.newText.text = value;
@@ -352,9 +394,14 @@ components: {
 
             var index = this.recipeEdit.instructions.findIndex(b => b.id === boxId);
 
+            var box = this.recipeEdit.instructions.find(b => b.id === boxId);
+
             var updatedBox = {
-              text: this.editText,
-              id: boxId
+              text: box.text,
+              id: boxId,
+              image: box.image,
+              hasImage: false,
+              order: box.order
             }
 
             this.recipeEdit.instructions.splice(index, 1, updatedBox);
@@ -363,6 +410,29 @@ components: {
             this.editText = ''
 
 
+
+          },
+
+          editImage: function(id){
+
+            var boxId = id;
+
+                var index = this.recipeEdit.instructions.findIndex(b => b.id === boxId);
+
+                var box = this.recipeEdit.instructions.find(b => b.id === boxId);
+
+                var updatedBox = {
+                  text: box.text,
+                  id: boxId,
+                  image: this.editImg,
+                  hasImage: true,
+                  order: box.order
+                }
+
+                this.recipeEdit.instructions.splice(index, 1, updatedBox);
+                this.editing = false;
+                this.editId = '';
+                this.editImg = ''
 
           },
 
