@@ -486,7 +486,7 @@ padding: 0;
     background-color: #ddd;
     color: #444;
     cursor: pointer;
-    padding: 2px 4px;
+    padding: 4px 6px;
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
     }

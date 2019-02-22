@@ -16,8 +16,8 @@
                      <div class="results-dropdown">
 
 
-                   <ul>
-                     <li class="dishes-select" v-for="result in dishResults" @click="addToDishes(result)">{{ result.name }}</li>
+                   <ul class="dishes-select">
+                     <li v-for="result in dishResults" @click="addToDishes(result)">{{ result.name }}</li>
                    </ul>
 
                      </div>
@@ -373,5 +373,35 @@ border: 1px solid rgba(245, 108, 124, 0.6);
 
     .material-icons {
         cursor: pointer;
+    }
+
+    .results-dropdown {
+  width: 300px;
+    background-color: #ddd;
+    min-height: 50px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    .dishes-select {
+      list-style-type: none;
+margin: 0;
+padding: 0;
+    }
+
+    .dishes-select li {
+    display: block;
+    background-color: #ddd;
+    color: #444;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    }
+
+    .dishes-select li:hover {
+      background-color: #aaa;
+      color: #fff;
+      border-left: 1px solid #aaa;
+      border-right: 1px solid #aaa;
     }
 </style>
