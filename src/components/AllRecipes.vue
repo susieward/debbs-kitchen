@@ -23,6 +23,11 @@ export default {
         Recipe
     },
 
+mounted: function(){
+
+  this.$store.dispatch('loadRecipes');
+
+},
 
     computed: {
         recipes() {
@@ -56,17 +61,13 @@ export default {
     .all-recipes {
     display: grid;
 align-content: flex-start;
+justify-content: center;
   padding: 30px;
-  grid-gap: 30px;
+  grid-gap: 60px;
     background-color: #f9f9f9;
     }
 
 
-
-    .tags-title {
-    font-weight: 400;
-
-    }
 
 
 

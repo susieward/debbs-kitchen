@@ -3,21 +3,16 @@
 
     <router-link :to="url"><p><span class="recipe-name">{{ recipe.name }}</span></p></router-link>
 
-    <img class="recipe-box-img" :src="recipe.photo"><br /><br />
 
-     <span style="font-weight: 400">Ingredients:</span>
-            <ul class="recipe-ingredients">
-            <li v-for="ingredient in recipe.ingredients">{{ ingredient }}</li>
-            </ul>
-<p style="font-weight: 400">Directions:</p>
-            <div v-for="box in recipe.instructions">
-              <p v-if="box.hasImage === false">
-                {{ box.text}}
-              </p>
-              <img class="recipe-box-img" v-if="box.hasImage === true" :src="box.image" />
-            </div>
+    <div class="recipe-photo-container">
 
-            <p><span class="tags-title">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p>
+
+          <img class="recipe-photo" :src="recipe.photo">
+        </div>
+
+            <div class="tags-box">
+
+          Tags: <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></div>
 
 
 
@@ -45,7 +40,8 @@ export default {
 
     this.selectedTag = tag;
 
-    this.$router.push({ name: 'TagResults', params: { selectedTag: this.selectedTag }});
+      this.$router.push({ name: 'TagResults', params: { selectedTag: this.selectedTag }});
+
 
     }
   }
@@ -54,11 +50,13 @@ export default {
 <style>
 
 .recipe {
-
+display: grid;
+justify-content: flex-start;
+width: 750px;
 }
  .recipe-name {
-    font-weight: 400;
-    font-size: 22px;
+    font-weight: 300;
+    font-size: 24px;
     display: inline;
 
     }
@@ -74,13 +72,30 @@ export default {
         margin-top: 0;
     }
 
-    .tags-title {
-    font-weight: 400;
+    .section {
+      font-family: 'Nunito Medium';
+    }
+
+    .tags-box {
+
+font-weight: 300;
+padding-top: 10px;
+padding-bottom: 20px;
 
     }
 
+      .recipe-box-img-container {
+        display: grid;
+        justify-content: center;
+
+      }
+
     .recipe-box-img {
-        width: 300px;
+      height: auto;
+width: 700px;
+      object-fit: cover;
+
+
     }
 
     .recipe-ingredients {

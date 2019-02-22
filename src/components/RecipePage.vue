@@ -8,7 +8,7 @@
     <div class="recipe-page-container">
     <div class="recipe-top">
 
-        <div class="recipe-name-div">{{ recipe.name }}</div>
+        <div class="recipe-name-div"><span v-if="showRecipeEditor === false">{{ recipe.name }}</span></div>
 
         <div class="recipebtns">
             <span>
@@ -21,20 +21,29 @@
     </div>
     <div class="recipe-container" v-if="showRecipeEditor == false">
 
-      <img class="recipe-box-img" :src="recipe.photo"><br />
+<div class="recipe-photo-container">
 
-          <span style="font-weight: 400">Ingredients:</span>
+
+      <img class="recipe-photo" :src="recipe.photo">
+    </div><br />
+
+          <span class="section">Ingredients:</span>
             <ul class="recipe-ingredients">
             <li v-for="ingredient in recipe.ingredients">{{ ingredient }}</li>
           </ul><br />
-            <span style="font-weight: 400">Directions:</span>
+            <span class="section">Directions:</span>
                         <div v-for="box in recipe.instructions">
                           <p v-if="box.hasImage === false">
                             {{ box.text}}
                           </p>
-                          <img class="recipe-box-img" v-if="box.hasImage === true" :src="box.image" />
+
+                          <div class="recipe-box-img-container" v-if="box.hasImage === true">
+
+                          <img class="recipe-box-img" :src="box.image" />
                         </div>
-            <p><span class="tags-title">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p>
+
+                        </div>
+            <p><span class="section">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p>
     </div>
 
     <recipe-editor v-if="showRecipeEditor == true" :recipe="selectedRecipe" @close="closeRecipeEditor"></recipe-editor>
@@ -127,8 +136,22 @@ props: ['selectedTag'],
 </script>
 <style>
 
-.recipe-box-img {
-    width: 300px;
+.section {
+
+font-family: 'Nunito Medium';
+}
+
+.recipe-photo-container {
+  display: grid;
+  width: 100%;
+
+margin-bottom: 20px;
+}
+
+.recipe-photo {
+  height: 400px;
+  width: 100%;
+  object-fit: cover;
 }
 
     .recipe-page {
@@ -153,6 +176,8 @@ display: grid;
 align-content: flex-start;
 padding: 30px;
 font-size: 18px;
+
+margin: auto;
 }
 
     .recipe-top {
@@ -160,6 +185,7 @@ font-size: 18px;
     display: grid;
     padding: 20px;
         padding-bottom: 0;
+        margin-bottom: 20px;
         align-content: center;
     grid-template-columns: auto auto;
 
@@ -182,12 +208,11 @@ font-size: 18px;
       display: grid;
     justify-content: flex-start;
     font-weight: 300;
-    font-size: 24px;
-
+    font-size: 30px;
     }
 
     .tags-title {
-    font-weight: 400;
+
 
     }
 

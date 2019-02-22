@@ -36,10 +36,8 @@
 
               <div v-for="(box, index) in recipeEdit.instructions" class="recipe-text" :key="index">
 
-                <div class="box-item" v-if="editId !== box.id && box.hasImage === false">{{ box.text }}<br /><br />
-                  order: {{ box.order }}<br />
-                  index: {{ index }}<br />
-                  id: {{ box.id }}
+                <div class="box-item" v-if="editId !== box.id && box.hasImage === false">{{ box.text }}<br />
+
                   <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
                 </button></span></div>
 
