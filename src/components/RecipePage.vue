@@ -30,18 +30,22 @@
           <span class="section">Ingredients:</span>
             <ul class="recipe-ingredients">
             <li v-for="ingredient in recipe.ingredients">{{ ingredient }}</li>
-          </ul><br />
-            <span class="section">Directions:</span>
+          </ul>
+            <p class="section">Directions:</p>
+            <div class="recipe-directions">
+
+
                         <div v-for="box in recipe.instructions">
-                          <p v-if="box.hasImage === false">
+                          <span class="directions-text" v-if="box.hasImage === false">
                             {{ box.text}}
-                          </p>
+                          </span>
 
                           <div class="recipe-box-img-container" v-if="box.hasImage === true">
 
                           <img class="recipe-box-img" :src="box.image" />
                         </div>
 
+                        </div>
                         </div>
             <p><span class="section">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p>
     </div>
@@ -144,13 +148,13 @@ font-family: 'Nunito Medium';
 .recipe-photo-container {
   display: grid;
   width: 100%;
-
+justify-content: center;
 margin-bottom: 20px;
 }
 
 .recipe-photo {
   height: 400px;
-  width: 100%;
+  width: 700px;
   object-fit: cover;
 }
 
@@ -219,20 +223,56 @@ margin: auto;
 
         .recipe-ingredients {
         list-style-type: none;
-    margin-left: 8px;
     padding: 0;
+    margin-left: 25px;
         }
 
         .recipe-ingredients li {
           display: block;
           border-left: 1px solid #F08080;
           padding-left: 25px;
-
-
-
+          padding-top: 0;
+          margin-top: 0;
+          padding-bottom: 4px;
+          font-size: 16px;
 
 
         }
+
+        .recipe-ingredients li:first-child {
+        padding-top: 0;
+
+        margin: 0;
+        }
+
+        .recipe-ingredients li:last-child {
+        padding-bottom: 0;
+        }
+
+        .recipe-directions {
+          display: grid;
+          align-content: flex-start;
+          grid-gap: 25px;
+        }
+
+
+        .directions-text {
+        line-height: 28px;
+        }
+
+        .recipe-box-img-container {
+          display: grid;
+          justify-content: center;
+
+        }
+
+      .recipe-box-img {
+        height: auto;
+  width: 600px;
+        object-fit: cover;
+
+
+      }
 
 
 

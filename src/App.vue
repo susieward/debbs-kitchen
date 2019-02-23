@@ -4,7 +4,7 @@
 
          <div class="header-container">
              <div class="title">
-              <h1>Debb's kitchen</h1>
+              <h1 style="cursor: pointer" @click="goToHome">Debb's kitchen</h1>
              </div>
 
              <div class="links">
@@ -107,6 +107,12 @@ export default {
   },
 
   methods: {
+
+    goToHome: function(){
+
+      this.$router.push({ name: 'Home'});
+
+    },
 
     startSearch: function(){
 

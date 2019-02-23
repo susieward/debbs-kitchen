@@ -30,7 +30,7 @@
 
 
 
-    <label for="instructions">Directions:</label>
+    <label for="instructions">Recipe directions:</label>
 
       <div class="instructions">
 
@@ -47,8 +47,8 @@
         </button></span></div>
 
         <div class="box-edit-item" v-if="editing === true && editId === box.id && box.hasImage === false">
-          <textarea name="instructions" class="recipe-textarea" v-model="box.text">{{ box.text }}</textarea><br />
-          <span><button @click="editBox(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
+          <textarea class="recipe-textarea" v-model="box.text">{{ box.text }}</textarea><br /><br />
+          <span class="lil-buttons"><button @click="editBox(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
 
         </div>
 
@@ -64,7 +64,7 @@
 
   <input type="file" @change="onImgChange">
         <br />
-          <span><button @click="editImage(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
+          <span class="lil-buttons"><button @click="editImage(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
 
         </div>
 
@@ -89,9 +89,11 @@
 
 
         <textarea class="box-textarea" v-model="newBox.text" placeholder="Add text"></textarea>
-        <button class="box-edit" @click="addText">add text</button>
+        <span class="lil-buttons">
+        <button v-if="newBox.text" class="box-edit" @click="addText">add text</button>
         <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
         </button>
+      </span>
         <p style="color: red">{{ textError }}</p>
 </div>
 
@@ -107,6 +109,9 @@
   </div>
       <div class="new-box-img" v-if="itemChosen === true && text === false">
         <div v-if="!newBox.image">
+          <p style="font-weight: 300">
+            Choose an image:
+          </p>
           <input type="file" @change="onFileChange">
         </div>
 
@@ -121,8 +126,10 @@
   </div>
 
 <div v-if="itemChosen === true && text === false">
-        <button class="box-edit" @click="addImage">add image</button> <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
+  <span class="lil-buttons">
+        <button v-if="newBox.image" class="box-edit" @click="addImage">add image</button> <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
         </button>
+        </span>
         <p>
           <span style="color: red">{{ imgError }}</span>
         </p>
@@ -543,6 +550,7 @@ name: 'NewRecipe'
 </script>
 <style>
 
+
 .box-img {
   width: auto;
   max-height: 500px;
@@ -550,7 +558,8 @@ name: 'NewRecipe'
 
 .new-box {
 display: grid;
-grid-template-columns: 1fr 1fr;
+grid-template-columns: auto auto;
+
 grid-gap: 10px;
 margin-bottom: 10px;
 }
@@ -561,7 +570,7 @@ background-color: #ddd;
 border: 1px solid #ddd;
 border-radius: 6px;
 width: auto;
-height: 200px;
+height: 100px;
 justify-content: center;
 align-content: center;
 cursor: pointer;
@@ -580,7 +589,7 @@ transition: 0.2s;
   border: 1px solid #ddd;
   border-radius: 6px;
   width: auto;
-  height: 200px;
+  height: 100px;
   justify-content: center;
   align-content: center;
   cursor: pointer;
@@ -607,6 +616,17 @@ line-height: 25px;
 
 .box-item:hover {
   cursor: pointer;
+}
+
+.drag-ghost {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px dashed #ddd;
+  border-radius: 6px;
+  min-height: 200px;
 }
 
 .box-item-buttons {

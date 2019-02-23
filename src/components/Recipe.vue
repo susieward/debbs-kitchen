@@ -52,7 +52,7 @@ export default {
 .recipe {
 display: grid;
 justify-content: flex-start;
-width: 750px;
+width: 700px;
 }
  .recipe-name {
     font-weight: 300;
@@ -84,36 +84,6 @@ padding-bottom: 20px;
 
     }
 
-      .recipe-box-img-container {
-        display: grid;
-        justify-content: center;
-
-      }
-
-    .recipe-box-img {
-      height: auto;
-width: 700px;
-      object-fit: cover;
-
-
-    }
-
-    .recipe-ingredients {
-    list-style-type: none;
-margin-left: 8px;
-padding: 0;
-    }
-
-    .recipe-ingredients li {
-      display: block;
-      border-left: 1px solid #F08080;
-      padding-left: 25px;
-
-
-
-
-
-    }
 
 
 

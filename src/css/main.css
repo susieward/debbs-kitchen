@@ -170,3 +170,12 @@ padding-bottom: 2px;
 router-link .regular:hover {
 border-bottom: 1px solid #F08080;
 }
+
+
+.lil-buttons {
+display: grid;
+justify-content: flex-start;
+grid-template-columns: auto auto;
+grid-gap: 8px;
+margin-top:12px;
+}
