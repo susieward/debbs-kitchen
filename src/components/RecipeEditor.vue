@@ -481,7 +481,7 @@ components: {
 
     editRecipe: function(recipe){
 
-        let path = 'http://localhost:3000/recipes/' +recipe._id;
+        let path = 'https://debbskitchen-server.herokuapp.com/recipes/' +recipe._id;
 
         let data = {
             _id: this.recipe._id,

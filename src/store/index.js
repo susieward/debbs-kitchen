@@ -15,14 +15,14 @@ state: {
 
     actions: {
          loadMenus: function ({commit}) {
-      axios.get('http://localhost:3000/menus').then((response) => {
+      axios.get('https://debbskitchen-server.herokuapp.com/menus').then((response) => {
         commit('setMenus', { menus: response.data})
         })
 
     },
 
         loadRecipes: function({commit}) {
-            axios.get('http://localhost:3000/recipes').then((response) => {
+            axios.get('https://debbskitchen-server.herokuapp.com/recipes').then((response) => {
                 commit('setRecipes', {recipes: response.data})
             })
         }

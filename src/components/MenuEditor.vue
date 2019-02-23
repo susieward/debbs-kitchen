@@ -125,7 +125,7 @@ methods: {
 
         editMenu: function(menu){
 
-            let path = 'http://localhost:3000/menus/' + menu._id;
+            let path = 'https://debbskitchen-server.herokuapp.com/menus/' + menu._id;
 
             let data = {
                 _id: this.menu._id,

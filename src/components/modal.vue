@@ -211,7 +211,7 @@ data() {
 
         createMenu: function(){
 
-            axios.post('http://localhost:3000/menus', {
+            axios.post('https://debbskitchen-server.herokuapp.com/menus', {
                 date: this.thisDate,
                 month: this.month,
                 year: this.year,
@@ -228,7 +228,7 @@ data() {
         deleteMenu: function(_id){
 
 
-            let path = 'http://localhost:3000/menus/' +_id;
+            let path = 'https://debbskitchen-server.herokuapp.com/menus/' +_id;
 
             axios.delete(path).then((response) => {
                 this.$store.commit('deleteMenu', {id: response.data});

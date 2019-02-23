@@ -121,7 +121,7 @@ props: ['selectedTag'],
         deleteRecipe: function(_id){
 
 
-            let path = 'http://localhost:3000/recipes/' +_id;
+            let path = 'https://debbskitchen-server.herokuapp.com/recipes/' +_id;
 
             axios.delete(path).then((response) => {
                 this.$store.commit('deleteRecipe', {id: response.data});

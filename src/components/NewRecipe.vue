@@ -521,7 +521,7 @@ if(this.newBox.text){
 
       if(this.newRecipe.name && this.ingredients && this.newRecipe.instructions && this.tags && this.newRecipe.photo){
 
-        axios.post('http://localhost:3000/recipes', {
+        axios.post('https://debbskitchen-server.herokuapp.com/recipes', {
             name: this.newRecipe.name,
             ingredients: this.ingredients,
             instructions: this.newRecipe.instructions,
