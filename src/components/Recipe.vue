@@ -7,7 +7,7 @@
     <div class="recipe-photo-container">
 
 
-          <img class="recipe-photo" :src="recipe.photo">
+          <router-link :to="url"><img class="recipe-photo-link" :src="recipe.photo"></router-link>
         </div>
 
             <div class="tags-box">
@@ -82,6 +82,13 @@ font-weight: 300;
 padding-top: 10px;
 padding-bottom: 20px;
 
+    }
+
+    .recipe-photo-link {
+      height: 400px;
+      width: 700px;
+      object-fit: cover;
+      cursor: pointer;
     }
 
 

@@ -30,7 +30,14 @@
     <router-view @route="displayPrevRoute"></router-view>
           </div>
       </div>
-
+    <div class="footer">
+      <div class="footer-container">
+        <p>
+          &copy; Debbie Ward 2019<br />
+          website by <a href="https://susieward.io">Susie Ward</a>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -136,7 +143,6 @@ grid-template-areas: "header header"
                     "main main"
                     "footer footer";
 min-height: 100vh;
-padding-bottom: 100px;
 
 }
 
@@ -263,6 +269,24 @@ padding: 6px 12px;
 font-family: 'Proxima Nova Light';
 font-size: 18px;
 
+}
+
+.footer {
+  display: grid;
+  min-height: 120px;
+  justify-content: center;
+  width: 100vw;
+  margin-top: 200px;
+}
+
+.footer-container {
+display: grid;
+align-content: center;
+padding: 20px;
+font-size: 14px;
+letter-spacing: 0.07em;
+color: #bbb;
+text-align: center;
 }
 
 

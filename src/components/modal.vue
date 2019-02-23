@@ -5,7 +5,7 @@
      <div class="modal-content">
 
          <div class="modal-title">
-             <h2 class="menu-date">Menu for {{ month + ' ' + thisDate + ' ' + year }}</h2>
+             <h2 class="menu-date">Menu for {{ month + ' ' + thisDate }}</h2>
 
              <span class="close"><span class="close-button" @click="$emit('close')">&times;</span></span>
          </div>
@@ -486,6 +486,7 @@ padding: 0;
     background-color: #ddd;
     color: #444;
     cursor: pointer;
+    letter-spacing: normal;
     padding: 4px 6px;
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;

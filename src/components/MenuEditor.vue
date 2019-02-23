@@ -13,7 +13,7 @@
 
                   <div v-if="newDish">
 
-                     <div class="results-dropdown">
+                     <div class="results-dropdown" v-if="dishResults.length">
 
 
                    <ul class="dishes-select">
@@ -393,6 +393,7 @@ padding: 0;
     background-color: #ddd;
     color: #444;
     cursor: pointer;
+    letter-spacing: normal;
     padding: 4px 6px;
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;

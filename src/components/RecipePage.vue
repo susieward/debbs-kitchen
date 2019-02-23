@@ -52,8 +52,6 @@
 
     <recipe-editor v-if="showRecipeEditor == true" :recipe="selectedRecipe" @close="closeRecipeEditor"></recipe-editor>
 
-
-
     </div>
 
 </div>

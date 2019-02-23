@@ -43,7 +43,8 @@
         <span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
         </button></span></div>
 
-        <div class="box-item" v-if="editId !== box.id && box.hasImage === true"><img class="box-img" :src="box.image" /><span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
+        <div class="box-item" v-if="editId !== box.id && box.hasImage === true">
+          <img class="box-img" :src="box.image" /><span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
         </button></span></div>
 
         <div class="box-edit-item" v-if="editing === true && editId === box.id && box.hasImage === false">
@@ -606,6 +607,7 @@ transition: 0.2s;
 display: grid;
 grid-template-columns: auto 1fr;
 grid-template-rows: auto;
+grid-gap: 5px;
 background-color: #eee;
 padding: 20px;
 border: 1px solid transparent;

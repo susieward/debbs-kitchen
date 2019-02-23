@@ -200,9 +200,8 @@ display: grid;
 width: 100%;
 height: 100%;
 border-top: 1px solid #444;
-border-right: 1px solid #444;
 border-left: 1px solid #444;
-border-bottom: 1px solid #444;
+
 grid-template-rows: repeat(5, auto);
 }
 
@@ -300,8 +299,7 @@ border-bottom: 1px solid #444;
     padding: 0;
     font-size: 14px;
     line-height: normal;
-
-
+    letter-spacing: normal;
     }
 
 
