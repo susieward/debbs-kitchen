@@ -495,6 +495,7 @@ components: {
 
         axios.put(path, data).then((response) => {
             this.$store.commit('editRecipe', {recipe: response.data});
+            this.$store.dispatch('loadRecipes');
 
         });
         this.$emit('close');
