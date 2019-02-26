@@ -238,7 +238,7 @@ padding: 10px;
 
 nav {
 display: grid;
-grid-gap: 30px;
+grid-gap: 50px;
 grid-template-columns: auto auto auto auto;
 
 }
