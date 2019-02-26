@@ -47,7 +47,9 @@
 
                         </div>
                         </div>
-            <p><span class="section">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p>
+            <div class="tags-section">
+
+          <p><span class="section">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p></div>
     </div>
 
     <recipe-editor v-if="showRecipeEditor == true" :recipe="selectedRecipe" @close="closeRecipeEditor"></recipe-editor>
@@ -178,8 +180,11 @@ display: grid;
 align-content: flex-start;
 padding: 30px;
 font-size: 18px;
-
 margin: auto;
+}
+
+.tags-section {
+  margin-top: 20px;
 }
 
     .recipe-top {
@@ -194,7 +199,7 @@ margin: auto;
     }
 
     .recipe-back {
-    display: grid;
+    display: none;
     justify-content: flex-start;
     align-content: center;
     padding-bottom: 20px;
@@ -250,7 +255,7 @@ margin: auto;
         .recipe-directions {
           display: grid;
           align-content: flex-start;
-          grid-gap: 25px;
+          grid-gap: 30px;
         }
 
 

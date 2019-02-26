@@ -337,7 +337,7 @@ methods: {
 
   },
 
-    addText: function(index){
+    addText: function(){
 
 if(this.newBox.text){
       var number = Date.now() + Math.random().toString().slice(18);

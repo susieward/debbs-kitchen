@@ -137,9 +137,10 @@ methods: {
 
             axios.put(path, data).then((response) => {
                 this.$store.commit('editMenu', {menu: response.data});
+                this.$store.dispatch('loadMenus');
             });
             this.$emit('close');
-            this.$store.dispatch('loadMenus');
+
 
                       }
 
