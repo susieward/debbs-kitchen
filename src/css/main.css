@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400');
 
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400');
+
 @font-face {
 font-family: "Proxima Nova Regular";
   src: url('./fonts/proximanova-regular-webfont.ttf') format("truetype");
