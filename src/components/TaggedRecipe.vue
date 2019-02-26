@@ -109,7 +109,7 @@ text-align: center;
     }
 
     .tagged-recipe-back {
-      display: grid;
+      display: none;
       justify-content: flex-start;
       align-content: center;
       padding-bottom: 20px;
