@@ -152,6 +152,7 @@ min-height: 100vh;
 grid-area: header;
 display: grid;
 padding: 40px;
+height: 117px;
 width: 100vw;
 text-align: center;
 background-color: #ecc77e;
@@ -178,7 +179,7 @@ grid-gap: 50px;
 grid-area: title;
 display: grid;
 justify-content: flex-start;
-width:auto;
+width:325px;
 }
 
 .header h1 {
@@ -187,6 +188,7 @@ padding: 0;
 color: #fff;
 text-transform: uppercase;
 font-weight: normal;
+text-align: left;
 font-size: 35px;
 font-family: 'Gotham Rounded Medium';
 letter-spacing: 0.03em;
@@ -225,8 +227,7 @@ padding: 0;
 grid-area: links;
 display: grid;
 align-content: center;
-
-
+margin-right: auto;
 }
 
 .links-container {
