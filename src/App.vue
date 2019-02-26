@@ -3,6 +3,8 @@
       <div class="header">
 
          <div class="header-container">
+           <div class="title-and-links">
+
              <div class="title">
               <h1 style="cursor: pointer" @click="goToHome">Debb's kitchen</h1>
              </div>
@@ -16,6 +18,7 @@
 
             </nav>
              </div>
+           </div>
 
              <div class="search">
             <input type="text" id="bar" v-model="search" placeholder="search..." @keyup.enter="startSearch"/>
@@ -159,8 +162,16 @@ margin-bottom: 60px;
 
 .header-container {
 display: grid;
-grid-template-areas: "title links search";
+grid-template-areas: "left search";
 align-content: center;
+}
+
+.title-and-links {
+display: grid;
+grid-area: left;
+grid-template-areas: "title links";
+justify-content: flex-start;
+grid-gap: 50px;
 }
 
 .title {
