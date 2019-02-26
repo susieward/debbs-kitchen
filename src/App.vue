@@ -4,7 +4,6 @@
 
          <div class="header-container">
 
-
              <div class="title">
               <h1 style="cursor: pointer" @click="goToHome">Debb's kitchen</h1>
              </div>
@@ -163,6 +162,7 @@ margin-bottom: 60px;
 .header-container {
 display: grid;
 grid-template-areas: "title links search";
+grid-template-columns: auto auto auto;
 align-content: center;
 }
 
@@ -178,6 +178,7 @@ grid-gap: 50px;
 grid-area: title;
 display: grid;
 justify-content: flex-start;
+width:auto;
 }
 
 .header h1 {
@@ -224,7 +225,8 @@ padding: 0;
 grid-area: links;
 display: grid;
 align-content: center;
-justify-content: center;
+
+
 }
 
 .links-container {
@@ -237,7 +239,6 @@ nav {
 display: grid;
 grid-gap: 30px;
 grid-template-columns: auto auto auto auto;
-margin: auto;
 
 }
 
