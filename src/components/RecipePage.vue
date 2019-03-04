@@ -5,6 +5,7 @@
     <router-link :to="{ name: 'TagResults', params: { selectedTag: this.tag }}" class="regular" v-if="this.tag">&#x27F5; tagged: {{ tag }}</router-link>
       <router-link to="/recipes" class="regular" v-if="!this.tag">&#x27F5; all recipes</router-link>
       </div>
+
     <div class="recipe-page-container">
     <div class="recipe-top">
 
@@ -169,11 +170,14 @@ align-content: flex-start;
     .recipe-page-container {
        display: grid;
 min-height: 500px;
-max-width: 900px;
+width: 900px;
 padding: 30px;
 align-content: flex-start;
+justify-content: center;
 background-color: #f9f9f9;
     }
+
+
 
     .recipe-container {
 display: grid;
@@ -313,6 +317,145 @@ margin: auto;
     color: #fff;
     cursor: pointer;
    max-width: 150px;
+    }
+
+    @media screen and (max-width: 1200px){
+      .recipe-page-container {
+
+         width: 850px;
+         padding: 30px;
+
+      }
+
+      .recipe-photo-container {
+        display: grid;
+        width: auto;
+      justify-content: center;
+      margin-bottom: 20px;
+  
+      }
+
+      .recipe-photo {
+        height: 400px;
+        width: 600px;
+        object-fit: cover;
+      }
+
+    }
+
+    @media screen and (max-width: 1000px){
+      .recipe-page-container {
+
+         width: 800px;
+
+
+      }
+
+      .recipe-photo {
+        height: 400px;
+        width: 600px;
+        object-fit: cover;
+      }
+
+    }
+
+    @media screen and (max-width: 970px){
+      .recipe-page-container {
+
+         width: 700px;
+
+
+      }
+
+      .recipe-photo {
+        height: 400px;
+        width: 500px;
+        object-fit: cover;
+      }
+
+      .recipe-container {
+
+
+        padding: 20px;
+
+    }
+
+  }
+
+    @media screen and (max-width: 766px){
+      .recipe-page-container {
+
+         width: 550px;
+
+
+      }
+
+      .recipe-name-div {
+        font-size: 25px;
+      }
+
+      .recipe-photo {
+        height: 400px;
+        width: 450px;
+        object-fit: cover;
+      }
+
+
+
+
+  }
+
+
+    @media screen and (max-width: 590px){
+
+      .recipe-page {
+
+      }
+      .recipe-page-container {
+
+         width: 420px;
+
+
+      }
+
+      .recipe-container {
+
+      }
+
+      .recipe-name-div {
+        font-size: 20px;
+      }
+
+      .recipe-photo {
+        height: 400px;
+        width: 360px;
+
+      }
+
+    }
+
+    @media screen and (max-width: 400px){
+      .recipe-page-container {
+
+         width: 350px;
+
+
+      }
+
+      .recipe-container {
+
+font-size: 16px;
+line-height: 25px;
+        padding: 10px;
+
+    }
+
+      .recipe-photo {
+        height: 400px;
+        width: 340px;
+
+      }
+
     }
 
 </style>
