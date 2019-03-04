@@ -534,9 +534,9 @@ align-content: center;
     }
 
     #bar {
-      width: 175px;
+      width: 160px;
       font-size: 16px;
-      padding: 4px 8px;
+      padding: 4px 6px;
     }
 
   }
