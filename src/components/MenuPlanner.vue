@@ -166,7 +166,7 @@ min-height: 500px;
 padding: 20px 30px 20px 30px;
 align-items: center;
 align-content: flex-start;
-min-width: 1000px;
+width: auto;
 }
 
 .menu-planner h1 {
@@ -197,8 +197,8 @@ margin-bottom: 20px;
 
 .month {
 display: grid;
-width: 100%;
-height: 100%;
+width: auto;
+height: auto;
 border-top: 1px solid #444;
 border-left: 1px solid #444;
 
@@ -213,7 +213,7 @@ height: auto;
 
 .week {
 display: grid;
-width: 100%;
+width: auto;
 grid-template-columns: repeat(7, auto);
 }
 
@@ -301,6 +301,59 @@ border-bottom: 1px solid #444;
     line-height: normal;
     letter-spacing: normal;
     }
+
+
+@media screen and (max-width: 1200px){
+
+  .menu-planner {
+  display: grid;
+  background-color:#f9f9f9;
+  min-height: 500px;
+  padding: 20px 40px 20px 40px;
+  align-items: center;
+  align-content: flex-start;
+  width: auto;
+  }
+
+  .menu-planner h1 {
+  text-align: center;
+  margin: 0px;
+  padding: 0;
+  font-weight: 300;
+  font-size: 34px;
+  line-height: 45px;
+  }
+
+  .day {
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+  opacity: 1;
+  border-right: 1px solid #444;
+  border-bottom:  1px solid #444;
+  }
+
+  .day-alt {
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+  background-color: #F8F4F4;
+      border-right: 1px solid #444;
+  }
+
+  .weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  height: auto;
+
+  }
+
+  .day-title {
+    width: 100px;
+    font-size: 16px;
+  }
+
+}
 
 
 

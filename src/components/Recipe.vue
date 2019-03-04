@@ -4,11 +4,13 @@
     <router-link :to="url"><p><span class="recipe-name">{{ recipe.name }}</span></p></router-link>
 
 
-    <div class="recipe-photo-container">
+
+
+<div class="photo-link-container">
 
 
           <router-link :to="url"><img class="recipe-photo-link" :src="recipe.photo"></router-link>
-        </div>
+</div>
 
             <div class="tags-box">
 
@@ -51,9 +53,12 @@ export default {
 
 .recipe {
 display: grid;
-justify-content: flex-start;
+align-content: flex-start;
+justify-content: center;
 width: 700px;
 }
+
+
  .recipe-name {
     font-weight: 300;
     font-size: 24px;
@@ -92,7 +97,93 @@ padding-bottom: 20px;
     }
 
 
+    @media screen and (max-width: 1200px){
 
+      .recipe {
+        width: 600px;
+      }
+
+      .photo-link-container img {
+        width: 600px;
+
+      }
+
+
+    }
+
+    @media screen and (max-width: 1000px){
+
+      .recipe {
+        width: 600px;
+      }
+
+      .photo-link-container img {
+        width: 600px;
+
+      }
+
+
+    }
+
+
+    @media screen and (max-width: 970px){
+
+      .recipe {
+        width: 600px;
+      }
+
+      .photo-link-container img {
+        width: 600px;
+
+      }
+
+
+
+    }
+
+    @media screen and (max-width: 766px){
+
+      .recipe {
+        width: 500px;
+      }
+
+      .photo-link-container img {
+        width: 500px;
+
+      }
+
+      .recipe-name {
+        font-size: 20px;
+      }
+
+    }
+
+    @media screen and (max-width: 590px){
+
+      .recipe {
+        width: 380px;
+      }
+
+      .photo-link-container img {
+        width: 380px;
+
+
+      }
+
+    }
+
+    @media screen and (max-width: 400px){
+
+      .recipe {
+        width: 345px;
+      }
+
+      .photo-link-container img {
+        width: 345px;
+
+      }
+
+    }
 
 
 

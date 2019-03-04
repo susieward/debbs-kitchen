@@ -1,4 +1,5 @@
 require('../src/css/main.css');
+require('../src/js/main.js');
 
 if (process.env.NODE_ENV === 'production') {
     window.endpoint = 'https://debbskitchen-server.herokuapp.com';

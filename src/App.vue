@@ -1,8 +1,33 @@
 <template>
   <div id="app">
+
+    <div class="menu-overlay">
+                        <a href="javascript:void(0)" class="menu-closebtn">&times;</a>
+            <ul class="menu">
+                <li><router-link to="/">planner</router-link></li>
+                <li><router-link to="/recipes">recipes</router-link></li>
+                <li><router-link to="/menus">menus</router-link></li>
+                <li><router-link to="/tags">index</router-link></li>
+
+                </ul>
+            </div>
+
       <div class="header">
 
          <div class="header-container">
+
+
+           <div class="title-and-links">
+
+             <div class="icon-nav">
+             <a href="javascript:void()" class="icon-item"><i class="material-icons">
+  menu
+  </i>
+     </a>
+
+
+
+                </div>
 
              <div class="title">
               <h1 style="cursor: pointer" @click="goToHome">Debb's kitchen</h1>
@@ -16,6 +41,7 @@
             <router-link to="/tags">index</router-link>
 
             </nav>
+             </div>
              </div>
 
 
@@ -145,7 +171,6 @@ grid-template-areas: "header header"
                     "main main"
                     "footer footer";
 min-height: 100vh;
-
 }
 
 .header {
@@ -162,9 +187,16 @@ margin-bottom: 60px;
 
 .header-container {
 display: grid;
-grid-template-areas: "title links search";
-grid-template-columns: auto auto auto;
+grid-template-areas: "left search";
+grid-template-columns: auto auto;
 align-content: center;
+
+}
+
+
+
+.icon-nav {
+  display: none;
 }
 
 .title-and-links {
@@ -179,7 +211,8 @@ grid-gap: 50px;
 grid-area: title;
 display: grid;
 justify-content: flex-start;
-width:325px;
+align-content: center;
+width: auto;
 }
 
 .header h1 {
@@ -192,7 +225,7 @@ text-align: left;
 font-size: 35px;
 font-family: 'Gotham Rounded Medium';
 letter-spacing: 0.03em;
-margin: auto;
+
 text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
 }
 
@@ -201,7 +234,6 @@ text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
 grid-area: main;
 display: grid;
 grid-gap: 40px;
-justify-content: center;
 width: 100vw;
 }
 
@@ -209,7 +241,7 @@ width: 100vw;
 
 .content {
 display: grid;
-min-width: 900px;
+justify-content: center;
 padding: 0;
 }
 
@@ -227,7 +259,6 @@ padding: 0;
 grid-area: links;
 display: grid;
 align-content: center;
-margin-right: auto;
 }
 
 .links-container {
@@ -238,9 +269,11 @@ padding: 10px;
 
 nav {
 display: grid;
-grid-gap: 50px;
+grid-gap: 30px;
 grid-template-columns: auto auto auto auto;
-
+padding: 0;
+margin: 0;
+align-content: center;
 }
 
 nav a {
@@ -253,6 +286,8 @@ letter-spacing: 0.03em;
 transition: 0.3s;
 font-family: 'Gotham Rounded Medium';
 text-transform: uppercase;
+line-height: normal;
+margin: 0;
 
 }
 
@@ -276,8 +311,8 @@ justify-content: flex-end;
 
 #bar {
 width: 200px;
-border: 2px solid #eee;
-border-radius: 8px;
+border: 1px solid #eee;
+border-radius: 6px;
 padding: 6px 12px;
 font-family: 'Proxima Nova Light';
 font-size: 18px;
@@ -301,6 +336,224 @@ letter-spacing: 0.07em;
 color: #bbb;
 text-align: center;
 }
+
+/* MEDIA QUERIES */
+
+
+@media screen and (max-width: 1200px){
+  #app {
+
+  }
+
+  .header-container {
+
+  }
+
+  .title-and-links {
+
+
+  }
+
+  .header h1 {
+    font-size: 30px;
+  }
+
+  nav {
+    grid-gap: 30px;
+  }
+
+  nav a {
+    font-size: 17px;
+  }
+
+  #bar {
+    width: 180px;
+  }
+}
+
+
+@media screen and (max-width: 1000px){
+  #app {
+
+  }
+
+  .header-container {
+
+  }
+
+  .title-and-links {
+
+
+  }
+
+
+
+
+}
+
+@media screen and (max-width: 970px){
+
+  .header {
+    padding: 30px;
+  }
+
+  .title-and-links {
+    grid-template-areas: "menu title";
+    align-content: center;
+    grid-gap: 20px;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .icon-item {
+  color: #fff;
+  display: grid;
+  align-content: center;
+
+
+
+  }
+
+      .icon-nav {
+    display: grid;
+    grid-area: menu;
+  border: none;
+  color: #fff;
+align-content: center;
+
+  }
+
+  .material-icons {
+    font-size: 35px;
+  }
+
+  .menu-overlay {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      background-color: #333;
+      overflow: hidden;
+      transition: 0.3s;
+      padding-top: 50px;
+  }
+
+  .menu-overlay a {
+  padding: 8px 8px 8px 8px;
+  display: block;
+  color: #fff;
+  }
+
+  .menu-overlay .menu-closebtn {
+  position: absolute;
+  font-size: 40px;
+  top: 5px;
+  right: 8px;
+  margin-left: 50px;
+  cursor: pointer;
+  font-weight: 300;
+  }
+
+  .menu-dropdown {
+  display: none;
+  background-color: #333;
+  opacity: 0.9;
+  width: 140px;
+  margin-top: 10px;
+
+  position: relative;
+  z-index: 500;
+  }
+
+  .menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  }
+
+  .menu li {
+
+      margin: 0;
+  }
+
+  .menu li a {
+      font-size: 18px;
+      padding: 8px 8px 8px 8px;
+      color:#fff;
+      background-color: #333;
+      font-weight: 300;
+      display: block;
+      letter-spacing: 0.07em;
+      text-align: center;
+
+  }
+
+  .menu li:first-child a {
+   padding-top: 8px;
+  }
+
+  .menu li:last-child a {
+  padding-bottom: 8px;
+  }
+
+  .menu li a:hover {
+      background-color: #999;
+  }
+}
+
+
+@media screen and (max-width: 766px){
+    #app {
+
+    }
+
+    .header-container {
+
+    }
+
+    .title-and-links {
+
+
+    }
+
+    .header h1 {
+      font-size: 30px;
+    }
+
+
+    nav {
+      grid-gap: 30px;
+    }
+
+    nav a {
+      font-size: 16px;
+    }
+
+    #bar {
+      width: 175px;
+      font-size: 16px;
+      padding: 4px 8px;
+    }
+
+  }
+
+  @media screen and (max-width: 590px){
+
+    .header-container {
+
+    }
+
+    .header h1 {
+      font-size: 20px;
+    }
+
+
+  }
+
 
 
 

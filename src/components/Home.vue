@@ -3,20 +3,20 @@
     <div class="home-content">
 
     <menu-planner></menu-planner>
-    
-    
+
+
     </div>
 
 </div>
 
 </template>
 <script>
-    
+
 import MenuPlanner from './MenuPlanner.vue'
 export default {
 
 name: 'Home',
-    
+
 components: {
     MenuPlanner
             }

@@ -33,11 +33,14 @@ name: 'Recipes'
 .recipes {
 display: grid;
 min-height: 500px;
-max-width: 900px;
+width: 900px;
 padding: 30px;
 align-content: flex-start;
+justify-content: center;
 background-color: #f9f9f9;
 }
+
+
 
 
 
@@ -119,6 +122,68 @@ font-size: 18px;
     color: #fff;
     cursor: pointer;
    max-width: 150px;
+    }
+
+    @media screen and (max-width: 1200px){
+
+    .recipes {
+      width: 850px;
+    }
+    }
+
+    @media screen and (max-width: 1000px){
+
+    .recipes {
+      width: 800px;
+    }
+
+
+    }
+
+    @media screen and (max-width: 970px){
+
+    .recipes {
+      width: 700px;
+    }
+
+    .recipes h1 {
+
+    font-size: 30px;
+    }
+    }
+
+    @media screen and (max-width: 766px){
+
+    .recipes {
+      width: 550px;
+      padding: 20px;
+    }
+
+    .recipes h1 {
+
+    font-size: 28px;
+    }
+    }
+
+    @media screen and (max-width: 590px){
+
+    .recipes {
+      width: 420px;
+    }
+    }
+
+    @media screen and (max-width: 400px){
+
+    .recipes {
+      width: 350px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .recipes h1 {
+
+    font-size: 25px;
+    }
     }
 
 
