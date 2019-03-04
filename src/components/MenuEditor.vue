@@ -406,4 +406,12 @@ padding: 0;
       border-left: 1px solid #aaa;
       border-right: 1px solid #aaa;
     }
+
+
+    @media screen and (max-width: 590px){
+      .results-dropdown {
+    width: 200px;
+
+      }
+    }
 </style>
