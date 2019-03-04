@@ -57,7 +57,7 @@ data() {
     return {
         today: moment(),
         dateContext: moment(),
-        days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
           months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         showModal: false,
          thisDate: this.thisDate,
@@ -162,8 +162,8 @@ name: 'MenuPlanner'
 .menu-planner {
 display: grid;
 background-color:#f9f9f9;
-min-height: 500px;
-padding: 20px 30px 20px 30px;
+
+padding: 20px 30px 30px 30px;
 align-items: center;
 align-content: flex-start;
 width: auto;
@@ -308,7 +308,6 @@ border-bottom: 1px solid #444;
   .menu-planner {
   display: grid;
   background-color:#f9f9f9;
-  min-height: 500px;
   padding: 20px 40px 20px 40px;
   align-items: center;
   align-content: flex-start;
@@ -355,6 +354,247 @@ border-bottom: 1px solid #444;
 
 }
 
+
+@media screen and (max-width: 1000px){
+
+
+
+
+}
+
+@media screen and (max-width: 970px){
+
+  .menu-planner {
+    padding: 20px 30px 20px 30px;
+  }
+
+
+
+  .menu-planner h1 {
+    font-size: 30px;
+    line-height: 45px;
+  }
+
+  .monthbtn {
+    font-size: 20px;
+  }
+
+
+  .page-title {
+  display: grid;
+  grid-template-columns: 100px auto 100px;
+  grid-gap: 20px;
+  padding: 10px;
+  margin-bottom: 20px;
+  }
+
+  .day {
+  width: 90px;
+  height: 90px;
+  padding: 2px;
+  opacity: 1;
+  border-right: 1px solid #444;
+  border-bottom:  1px solid #444;
+  font-size: 12px;
+  }
+
+  .day-alt {
+  width: 90px;
+  height: 90px;
+  padding: 2px;
+  background-color: #F8F4F4;
+      border-right: 1px solid #444;
+  }
+
+  .weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  height: auto;
+
+  }
+
+  .day-title {
+    width: 90px;
+    font-size: 16px;
+  }
+
+}
+
+
+
+@media screen and (max-width: 766px){
+
+  .menu-planner {
+    padding: 20px 20px 20px 20px;
+  }
+
+
+
+  .menu-planner h1 {
+    font-size: 25px;
+    line-height: 35px;
+  }
+
+  .monthbtn {
+    font-size: 20px;
+  }
+
+
+  .page-title {
+  display: grid;
+  grid-template-columns: 50px auto 50px;
+  grid-gap: 20px;
+  padding: 10px;
+  margin-bottom: 20px;
+  }
+
+  .day {
+  width: 75px;
+  height: 75px;
+  padding: 2px;
+  opacity: 1;
+  border-right: 1px solid #444;
+  border-bottom:  1px solid #444;
+  font-size: 14px;
+  }
+
+  .day-alt {
+  width: 75px;
+  height: 75px;
+  padding: 2px;
+  background-color: #F8F4F4;
+      border-right: 1px solid #444;
+  }
+
+  .weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  height: auto;
+
+  }
+
+  .day-title {
+    width: 75px;
+    font-size: 16px;
+  }
+
+}
+
+@media screen and (max-width: 590px){
+
+  .menu-planner {
+    padding: 20px 10px 20px 10px;
+  }
+
+
+
+  .menu-planner h1 {
+    font-size: 20px;
+    line-height: 25px;
+  }
+
+  .monthbtn {
+    font-size: 20px;
+  }
+
+
+  .page-title {
+  display: grid;
+  grid-template-columns: 50px auto 50px;
+  grid-gap: 20px;
+  padding: 10px;
+  margin-bottom: 10px;
+  }
+
+  .day {
+  width: 55px;
+  height: 55px;
+  padding: 2px;
+  opacity: 1;
+  border-right: 1px solid #444;
+  border-bottom:  1px solid #444;
+  font-size: 12px;
+  }
+
+  .day-alt {
+  width: 55px;
+  height: 55px;
+  padding: 2px;
+  background-color: #F8F4F4;
+      border-right: 1px solid #444;
+  }
+
+  .weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  height: auto;
+
+  }
+
+  .day-title {
+    width: 55px;
+    font-size: 12px;
+  }
+
+}
+
+@media screen and (max-width: 400px){
+
+  .menu-planner {
+    padding: 20px 10px 20px 10px;
+  }
+
+
+
+  .menu-planner h1 {
+    font-size: 20px;
+    line-height: 25px;
+  }
+
+  .monthbtn {
+    font-size: 20px;
+  }
+
+
+  .page-title {
+  display: grid;
+  grid-template-columns: 50px auto 50px;
+  grid-gap: 20px;
+  padding: 10px;
+  margin-bottom: 10px;
+  }
+
+  .day {
+  width: 50px;
+  height: 50px;
+  padding: 2px;
+  opacity: 1;
+  border-right: 1px solid #444;
+  border-bottom:  1px solid #444;
+  font-size: 12px;
+  }
+
+  .day-alt {
+  width: 50px;
+  height: 50px;
+  padding: 2px;
+  background-color: #F8F4F4;
+      border-right: 1px solid #444;
+  }
+
+  .weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  height: auto;
+
+  }
+
+  .day-title {
+    width: 50px;
+    font-size: 12px;
+  }
+
+}
 
 
 
