@@ -283,6 +283,8 @@ margin: auto;
 
 
 
+
+
        .greybtn {
      border: none;
     border: 1px solid #ddd;
@@ -332,7 +334,7 @@ margin: auto;
         width: auto;
       justify-content: center;
       margin-bottom: 20px;
-  
+
       }
 
       .recipe-photo {
@@ -400,6 +402,10 @@ margin: auto;
         object-fit: cover;
       }
 
+      .recipe-box-img {
+        width: 500px;
+      }
+
 
 
 
@@ -432,6 +438,10 @@ margin: auto;
 
       }
 
+      .recipe-box-img {
+        width: 400px;
+      }
+
     }
 
     @media screen and (max-width: 400px){
@@ -456,6 +466,15 @@ line-height: 25px;
 
       }
 
+      .recipe-box-img {
+        width: 350px;
+      }
+
     }
+
+
+
+
+
 
 </style>
