@@ -690,7 +690,29 @@ grid-gap: 25px;
 padding: 25px;
 align-content: flex-start;
 min-height: 500px;
+
 font-family: 'Roboto';
+
+}
+
+@media screen and (max-width: 766px){
+  .recipe-form textarea {
+    width: 500px;
+  }
+}
+
+
+@media screen and (max-width: 590px){
+  .recipe-form textarea {
+    width: 370px;
+  }
+}
+
+
+@media screen and (max-width: 400px){
+  .recipe-form textarea {
+    width: 300px;
+  }
 }
 
 .recipe-input{
@@ -786,8 +808,8 @@ border: none;
   font-weight: 300;
   font-size: 16px;
   padding: 10px 12px;
-  width: 650px;
   min-height: 150px;
+  width: 650px;
   border: 1px solid #777;
   border-radius: 8px;
 }
@@ -798,7 +820,7 @@ border: none;
     font-weight: 300;
     font-size: 16px;
     padding: 10px 12px;
-    width: 650px;
+    width: 100%;
     min-height: 150px;
     border: 1px solid #777;
     border-radius: 8px;
