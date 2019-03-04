@@ -315,5 +315,82 @@ font-size: 18px;
    max-width: 150px;
     }
 
+    @media screen and (max-width: 1200px){
+
+      .tag-results-container {
+      width: 850px;
+      padding: 30px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 1000px){
+
+      .tag-results-container {
+      width: 800px;
+      padding: 30px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 970px){
+
+      .tag-results-container {
+      width: 700px;
+      padding: 30px;
+      }
+
+      .tag-results h1 {
+        font-size: 30px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 766px){
+
+      .tag-results-container {
+      width: 550px;
+      padding: 20px;
+      }
+
+      .tag-results h1 {
+        font-size: 28px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 590px){
+
+      .tag-results-container {
+      width: 420px;
+
+      }
+
+      .tag-results h1 {
+        font-size: 28px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 400px){
+
+      .tag-results-container {
+      width: 350px;
+      padding-left: 5px;
+      padding-right: 5px;
+      }
+
+      .tag-results h1 {
+        font-size: 25px;
+      }
+
+
+    }
+
 
 </style>

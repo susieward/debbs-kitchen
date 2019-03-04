@@ -140,6 +140,7 @@ name: 'MenusList'
 display: grid;
 background-color:#f9f9f9;
 min-height: 800px;
+width: 900px;
 align-content: flex-start;
 padding: 30px;
 }
@@ -162,6 +163,84 @@ text-align: center;
     .menus-list-container {
     display: grid;
     padding: 30px;
+
+    }
+
+
+    @media screen and (max-width: 1200px){
+
+      .menus-list {
+      width: 850px;
+      padding: 30px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 1000px){
+
+      .menus-list {
+      width: 800px;
+      padding: 30px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 970px){
+
+      .menus-list {
+      width: 700px;
+      padding: 30px;
+      }
+
+      .menus-list h1 {
+        font-size: 30px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 766px){
+
+    .menus-list {
+      width: 550px;
+      padding: 20px;
+      }
+
+      .menus-list h1 {
+        font-size: 28px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 590px){
+
+      .menus-list {
+      width: 420px;
+
+      }
+
+      .menus-list h1 {
+        font-size: 28px;
+      }
+
+
+    }
+
+    @media screen and (max-width: 400px){
+
+      .menus-list {
+      width: 350px;
+      padding-left: 5px;
+      padding-right: 5px;
+      }
+
+      .menus-list h1 {
+        font-size: 25px;
+      }
+
 
     }
 
