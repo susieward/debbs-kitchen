@@ -520,7 +520,7 @@ if(this.newBox.text){
 
     saveRecipe: function(){
 
-      if(this.newRecipe.name && this.ingredients && this.newRecipe.instructions && this.tags && this.newRecipe.photo){
+      if(this.newRecipe.name && this.ingredients && this.newRecipe.instructions && this.tags){
 
         axios.post('https://debbskitchen-server.herokuapp.com/recipes', {
             name: this.newRecipe.name,
@@ -691,11 +691,23 @@ padding: 25px;
 align-content: flex-start;
 min-height: 500px;
 
+
 font-family: 'Roboto';
 
 }
 
+.new-recipe {
+  width: 800px;
+}
+
+
 @media screen and (max-width: 766px){
+
+  .new-recipe {
+    width: auto;
+
+  }
+
   .recipe-form textarea {
     width: 500px;
   }

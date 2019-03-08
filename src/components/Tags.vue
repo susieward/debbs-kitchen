@@ -91,7 +91,7 @@ name: 'Tags',
 .tags {
 display: grid;
 min-height: 500px;
-max-width: 900px;
+width: 900px;
 padding: 30px;
 align-content: flex-start;
     background-color: #f9f9f9;
