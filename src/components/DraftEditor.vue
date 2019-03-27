@@ -578,7 +578,7 @@ components: {
 
       if(this.draftEdit.name){
 
-        let path = 'http://localhost:3000/drafts/' +draft._id;
+        let path = 'https://debbskitchen-server.herokuapp.com/drafts/' +draft._id;
 
         let data = {
             _id: this.draft._id,
@@ -607,7 +607,7 @@ components: {
             deleteDraft: function(_id){
 
 
-                let path = 'http://localhost:3000/drafts/' +_id;
+                let path = 'https://debbskitchen-server.herokuapp.com/drafts/' +_id;
 
                 axios.delete(path).then((response) => {
                     this.$store.commit('deleteDraft', {id: response.data});
@@ -643,7 +643,7 @@ components: {
 
                         let _id = this.draftEdit._id;
 
-                        let path = 'http://localhost:3000/drafts/' +_id;
+                        let path = 'https://debbskitchen-server.herokuapp.com/drafts/' +_id;
 
                         axios.delete(path).then((response) => {
                             this.$store.commit('deleteDraft', {id: response.data});

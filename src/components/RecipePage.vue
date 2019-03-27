@@ -14,7 +14,7 @@
         <div class="recipe-name-div"><span v-if="showRecipeEditor === false">{{ recipe.name }}</span></div>
 
         <div class="recipebtns">
-            <button class="greybtn" v-print>print</button>
+            <button class="greybtn" v-if="showRecipeEditor === false" v-print>print</button>
             <span>
             <button class="greybtn" @click="openRecipeEditor(recipe)" v-if="showRecipeEditor == false">edit recipe</button>
                     <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">close editor</button>
