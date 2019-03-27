@@ -545,9 +545,7 @@ components: {
 
     editRecipe: function(recipe){
 
-      if(this.newText !== '') {
-          this.textError = "Can't save unless this text is added or deleted!"
-      } else {
+
 
         let path = 'https://debbskitchen-server.herokuapp.com/recipes/' +recipe._id;
 
@@ -568,7 +566,7 @@ components: {
         });
         this.$emit('close');
 
-        }
+
       }
     }
 }

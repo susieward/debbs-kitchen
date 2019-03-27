@@ -91,7 +91,6 @@ edit text: {{ editText }}
     </p>
     </div>
 
-{{ newBoxText }}
   <div class="new-box-text" v-if="text === true && itemChosen === true">
 
 <ckeditor class="box-editor" :editor="editor" v-model="newBoxText" :config="editorConfig"></ckeditor>
@@ -640,9 +639,7 @@ if(this.newBoxText){
 
       if(this.newRecipe.name !== '' && this.ingredients !== [] && this.newRecipe.instructions !== [] && this.tags !== [] && this.newRecipe.photo){
 
-        if(this.newText !== '') {
-            this.textError = "Can't save unless this text is added or deleted!"
-        } else {
+
 
         axios.post('https://debbskitchen-server.herokuapp.com/recipes', {
 
@@ -661,7 +658,7 @@ if(this.newBoxText){
             this.$router.push({ name: 'RecipePage', params: { id: data._id }});
 
         });
-      }
+
       } else {
         this.error = "*Please fill out all fields"
       }

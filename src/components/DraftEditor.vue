@@ -624,9 +624,7 @@ components: {
 
               if(this.draftEdit.name && this.draftEdit.ingredients && this.draftEdit.instructions && this.draftEdit.tags && this.draftEdit.photo){
 
-                if(this.newText !== '') {
-                    this.textError = "Can't save unless this text is added or deleted!"
-                } else {
+
 
                     axios.post('https://debbskitchen-server.herokuapp.com/recipes', {
 
@@ -658,7 +656,7 @@ components: {
 
                     });
 
-                  }
+
                 } else {
                     this.draftErr = "Please make sure all fields (except recipe photo) are filled"
                   }
