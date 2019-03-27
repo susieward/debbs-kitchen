@@ -33,7 +33,7 @@
 
           <span class="section">Ingredients:</span>
             <ul class="recipe-ingredients">
-            <li v-for="ingredient in recipe.ingredients">{{ ingredient.text }}</li>
+            <li v-for="(ingredient, index) in recipe.ingredients">{{ ingredient.text }}</li>
           </ul>
             <p class="section">Directions:</p>
             <div class="recipe-directions">

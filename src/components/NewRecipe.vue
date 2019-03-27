@@ -52,7 +52,6 @@
         </button></span></div>
 
         <div class="box-edit-item" v-if="editing === true && editId === box.id && box.hasImage === false">
-edit text: {{ editText }}
           <ckeditor :editor="editor" tag-name="textarea" v-model="boxText" :config="editorConfig" @input="checkEditText">{{ boxText }}</ckeditor><br /><br />
 
           <span class="lil-buttons"><button v-if="editText" @click="editBox(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel(box)">cancel</button></span>
