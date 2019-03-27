@@ -3,7 +3,7 @@
 
 <div class="recipes-title">
 <h1>Recipes</h1>
-    <div class="recipes-nav"><router-link to="/recipes">all recipes</router-link> | <router-link to="/recipes/new">add new</router-link>
+    <div class="recipes-nav"><router-link to="/recipes">all recipes</router-link> | <router-link to="/recipes/new">add new</router-link> | <router-link to="/recipes/drafts">drafts</router-link>
     </div>
     </div>
 

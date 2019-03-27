@@ -27,12 +27,18 @@ import Tags from './components/Tags.vue'
 import TagResults from './components/TagResults.vue'
 import SearchResults from './components/SearchResults.vue'
 import TaggedRecipe from './components/TaggedRecipe.vue'
+import DraftsPage from './components/DraftsPage.vue'
 import FullCalendar from 'vue-full-calendar'
 import './registerServiceWorker'
-
+import CKEditor from '@ckeditor/ckeditor5-vue';
 import "fullcalendar/dist/fullcalendar.min.css";
+import VueHtmlToPaper from 'vue-html-to-paper';
+import Print from 'vue-print-nb'
 
-Vue.use(FullCalendar)
+Vue.use(Print);
+
+Vue.use(FullCalendar);
+Vue.use( CKEditor );
 
 Vue.use(VueRouter);
 
@@ -54,7 +60,13 @@ const routes = [
 
             { path: 'new',
               name: 'NewRecipe',
-              component: NewRecipe }
+              component: NewRecipe },
+              {
+                path: 'drafts',
+                name: 'DraftsPage',
+                component: DraftsPage,
+                props: true
+              }
         ]
     },
      { path: '/recipe/:id',
@@ -91,9 +103,6 @@ const routes = [
           props: true
         }
 
-
-
-
   ]
 
 const router = new VueRouter({
@@ -114,6 +123,7 @@ new Vue({
      created() {
         this.$store.dispatch('loadMenus');
          this.$store.dispatch('loadRecipes');
+         this.$store.dispatch('loadDrafts');
 
     },
   render: h => h(App)

@@ -1,30 +1,35 @@
 <template>
-      <div class="recipe-editor">
+      <div class="draft-editor">
+        <div class="close-editor-button">
 
-    <div class="recipe-edit-form">
-       <span><label for="name">Name:</label> <input  type="text" class="recipe-edit-input" v-model="recipeEdit.name" :placeholder="recipe.name"/></span>
+                <button class="greybtn" @click="closeDraftEditor">close editor</button>
+
+     </div>
+
+    <div class="draft-edit-form">
+       <span><label for="name">Name:</label> <input  type="text" class="recipe-edit-input" v-model="draftEdit.name" :placeholder="draft.name"/></span>
 
        <span style="font-weight: 400">Finished recipe photo:</span>
 
-         <div v-if="!recipeEdit.photo">
+         <div v-if="!draftEdit.photo">
            <input type="file" @change="onPhotoChange">
          </div>
 
          <div v-else>
 
 
-         <img class="box-img" v-bind:src="recipeEdit.photo"/>
+         <img class="box-img" v-bind:src="draftEdit.photo"/>
 
-         <button @click="removeRecipePhoto">Remove image</button>
+         <button @click="removeDraftPhoto">Remove image</button>
  </div>
 
         <span><label for="ingredients">Ingredients:</label> <input type="text" class="recipe-edit-input" v-model="newIngredient.text" placeholder="e.g. eggs, flour, etc"/> <button class="blackbtn" @click="addIngredient">add</button></span>
 
         <div class="ingredients">
 
-          <draggable :list="recipeEdit.ingredients" @change="ingrChange" :options="{draggable: '.recipe-ingr', animation: 200}">
+          <draggable :list="draftEdit.ingredients" @change="ingrChange" :options="{draggable: '.recipe-ingr', animation: 200}">
 
-            <div class="recipe-ingr" v-for="(ingredient, index) in recipeEdit.ingredients" :key="index">
+            <div class="recipe-ingr" v-for="(ingredient, index) in draftEdit.ingredients" :key="index">
                 <span class="remove" @click="removeIngr(index)">x</span> {{ ingredient.text }}</li>
           </div>
 
@@ -36,9 +41,9 @@
 
               <div class="instructions">
 
-            <draggable :list="recipeEdit.instructions" :options="{draggable:'.recipe-text', animation: 200}" @change="change">
+            <draggable :list="draftEdit.instructions" :options="{draggable:'.recipe-text', animation: 200}" @change="change">
 
-              <div v-for="(box, index) in recipeEdit.instructions" class="recipe-text" :key="index">
+              <div v-for="(box, index) in draftEdit.instructions" class="recipe-text" :key="index">
 
                 <div class="box-item" v-if="editId !== box.id && box.hasImage === false"><span v-html="box.text">
 
@@ -55,7 +60,7 @@
 
                   <ckeditor :editor="editor" v-model="boxText" :config="editorConfig" @input="checkEditText"></ckeditor><br /><br />
 
-                  <span class="lil-buttons"><button v-if="editText" @click="editBox(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
+                  <span><button v-if="editText" @click="editBox(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
 
                 </div>
 
@@ -71,7 +76,7 @@
 
                     <input type="file" @change="onImgChange">
                           <br />
-                            <span><button v-if="editImg" @click="editImage(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
+                            <span><button @click="editImage(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel">cancel</button></span>
 
                 </div><br />
 
@@ -91,16 +96,18 @@
 
           <div class="new-box-text" v-if="text === true && itemChosen === true">
 
+                <ckeditor :editor="editor" v-model="newBoxText" :config="editorConfig"></ckeditor>
 
-              <ckeditor :editor="editor" v-model="newBoxText" :config="editorConfig"></ckeditor>
-
-              <span class="lil-buttons">
                 <button class="box-img-buttons" v-if="newBoxText" @click="addText">add text</button>
                 <button class="box-img-buttons" v-if="itemChosen === true" @click="backToSelection">back
                 </button>
-              </span>
                 <p style="color: red">{{ textError }}</p>
         </div>
+
+        <div v-if="itemChosen === true && image === false">
+
+              </div>
+
 
           <div class="new-box-img-cover" @click="showImage" v-if="itemChosen === false">
             <p>
@@ -144,13 +151,29 @@
 
         <p>
         <ul class="tag-ul">
-            <li v-for="(tag, index) in recipeEdit.tags">
+            <li v-for="(tag, index) in draftEdit.tags">
                 <span class="remove" @click="removeTag(index)">x</span> <span class="tag-text">{{ tag }}</span></li>
             </ul>
         </p>
 
-      <button class="pinkbtn" @click="editRecipe(recipe)">save changes</button>
+<span class="draftbtns">
 
+  <span class="draft-buttons">
+<button class="pinkbtn" @click="editDraft(draft)">save changes</button>
+      <button class="pinkbtn" @click="publishDraft">publish draft</button>
+</span>
+
+
+
+
+
+<span class="delete-draft">
+  <button class="blackbtn" @click="deleteDraft(draft._id)">delete draft</button>
+  </span>
+
+</span>
+
+  <span style="color: red">{{ draftErr }}</span>
     </div>
 
     </div>
@@ -165,8 +188,9 @@ data(){
       editor: ClassicEditor,
                 editorData: '<p>Content of the editor.</p>',
                 editorConfig: {
+                    // The configuration of the editor.
                 },
-        recipeEdit: {
+        draftEdit: {
             name: '',
             instructions: [],
            ingredients: [],
@@ -197,7 +221,8 @@ data(){
         editing: false,
         testIndex: undefined,
         testId: '',
-        editImg: ''
+        editImg: '',
+        draftErr: ''
     }
 },
 
@@ -205,14 +230,19 @@ components: {
     draggable
 },
 
-    props: ['recipe'],
-    name: 'RecipeEditor',
+    props: ['draft'],
+    name: 'DraftEditor',
 
     created(){
-    this.recipeEdit = Object.assign({}, this.recipe);
+    this.draftEdit = Object.assign({}, this.draft);
 },
 
     methods: {
+
+      closeDraftEditor: function(){
+          this.$emit('close');
+
+      },
 
         backToSelection: function(){
 
@@ -250,13 +280,15 @@ components: {
 
           reader.onload = (e) => {
             vm.image = e.target.result;
-              this.recipeEdit.photo = vm.image;
+              this.draftEdit.photo = vm.image;
+              this.draftEdit.hasPhoto = true;
           };
           reader.readAsDataURL(file);
         },
 
-        removeRecipePhoto: function (e) {
-          this.recipeEdit.photo = '';
+        removeDraftPhoto: function (e) {
+          this.draftEdit.photo = '';
+          this.draftEdit.hasPhoto = false;
         },
 
 
@@ -330,7 +362,7 @@ components: {
               this.newBox.text = this.newBoxText;
 
 
-            this.recipeEdit.instructions.push(this.newBox);
+            this.draftEdit.instructions.push(this.newBox);
             this.newBox = {};
             this.itemChosen = false;
             this.text = false;
@@ -355,7 +387,7 @@ components: {
               this.newBox.hasImage = true;
 
 
-            this.recipeEdit.instructions.push(this.newBox);
+            this.draftEdit.instructions.push(this.newBox);
             this.newBox = {};
             this.itemChosen = false;
             this.image = false;
@@ -369,7 +401,7 @@ components: {
 
           addIndex: function(){
 
-            this.recipeEdit.instructions.map((item, index) => {
+            this.draftEdit.instructions.map((item, index) => {
 
               return item.order = index;
 
@@ -385,7 +417,7 @@ components: {
            var e = evt.moved.element;
            this.testId = e.id;
 
-            this.recipeEdit.instructions.forEach((item, index) => {
+            this.draftEdit.instructions.forEach((item, index) => {
 
               item.order = index;
 
@@ -402,23 +434,22 @@ components: {
 
           },
 
+          editBoxText: function(id){
 
-              editBoxText: function(id){
+            this.editing = true;
+            this.editId = id;
 
-                this.editing = true;
-                this.editId = id;
+            var box = this.draftEdit.instructions.find(b => b.id === id);
 
-                var box = this.recipeEdit.instructions.find(b => b.id === id);
+            this.boxText = box.text;
+          },
 
-                this.boxText = box.text;
-              },
-
-              checkEditText: function(){
+          checkEditText: function(){
 
 
-                this.editText = this.boxText;
+            this.editText = this.boxText;
 
-              },
+          },
 
           editBox: function(id){
 
@@ -426,9 +457,9 @@ components: {
 
         var boxId = id;
 
-            var index = this.recipeEdit.instructions.findIndex(b => b.id === boxId);
+            var index = this.draftEdit.instructions.findIndex(b => b.id === boxId);
 
-            var box = this.recipeEdit.instructions.find(b => b.id === boxId);
+            var box = this.draftEdit.instructions.find(b => b.id === boxId);
 
             var updatedBox = {
               text: this.editText,
@@ -438,7 +469,7 @@ components: {
               order: box.order
             }
 
-            this.recipeEdit.instructions.splice(index, 1, updatedBox);
+            this.draftEdit.instructions.splice(index, 1, updatedBox);
             this.editing = false;
             this.editId = ''
             this.editText = ''
@@ -452,9 +483,9 @@ components: {
 
             var boxId = id;
 
-                var index = this.recipeEdit.instructions.findIndex(b => b.id === boxId);
+                var index = this.draftEdit.instructions.findIndex(b => b.id === boxId);
 
-                var box = this.recipeEdit.instructions.find(b => b.id === boxId);
+                var box = this.draftEdit.instructions.find(b => b.id === boxId);
 
                 var updatedBox = {
                   text: box.text,
@@ -464,7 +495,7 @@ components: {
                   order: box.order
                 }
 
-                this.recipeEdit.instructions.splice(index, 1, updatedBox);
+                this.draftEdit.instructions.splice(index, 1, updatedBox);
                 this.editing = false;
                 this.editId = '';
                 this.editImg = ''
@@ -482,9 +513,9 @@ components: {
 
           remove: function(index){
 
-            this.recipeEdit.instructions.splice(index, 1);
+            this.draftEdit.instructions.splice(index, 1);
 
-            this.recipeEdit.instructions.forEach((item, index) => {
+            this.draftEdit.instructions.forEach((item, index) => {
 
               item.order = index;
 
@@ -493,95 +524,183 @@ components: {
           },
 
 
-              addIngredient: function(){
-                if(this.newIngredient.text !== ''){
+        addIngredient: function(){
+              if(this.newIngredient.text !== ''){
 
-                  var number = Date.now() + Math.random().toString().slice(18);
-                  var id = 'b' + number;
+              var number = Date.now() + Math.random().toString().slice(18);
+              var id = 'b' + number;
 
-                  this.newIngredient.id = id;
+              this.newIngredient.id = id;
 
-                      this.recipeEdit.ingredients.push(this.newIngredient);
-                      this.newIngredient = {};
+              this.draftEdit.ingredients.push(this.newIngredient);
+              this.newIngredient = {};
 
-                      this.addIngrIndex();
-                    } else {
-                      this.ingrErr = "*Input can't be blank."
-                    }
-                  },
+                this.addIngrIndex();
+                } else {
+                  this.ingrErr = "*Input can't be blank."
+              }
+          },
 
-                  addIngrIndex: function(){
+          addIngrIndex: function(){
 
-                    this.recipeEdit.ingredients.map((item, index) => {
+            this.draftEdit.ingredients.map((item, index) => {
 
-                      return item.order = index;
+              return item.order = index;
 
-                    });
+            });
 
-                  },
+        },
 
-                  removeIngr: function(index){
+          removeIngr: function(index){
 
-                      this.recipeEdit.ingredients.splice(index, 1);
+              this.draftEdit.ingredients.splice(index, 1);
 
-                      this.recipeEdit.ingredients.forEach((item, index) => {
+              this.draftEdit.ingredients.forEach((item, index) => {
 
-                        item.order = index;
-                  });
-                },
+                item.order = index;
+              });
+          },
 
     addTag: function(){
 
-            this.recipeEdit.tags.push(this.newTag);
+            this.draftEdit.tags.push(this.newTag);
             this.newTag = '';
         },
 
     removeTag: function(index){
-            var tags = this.recipeEdit.tags;
+            var tags = this.draftEdit.tags;
 
             tags.splice(index, 1);
         },
 
 
-    editRecipe: function(recipe){
+    editDraft: function(draft){
 
-      if(this.newText !== '') {
-          this.textError = "Can't save unless this text is added or deleted!"
-      } else {
+      if(this.draftEdit.name){
 
-        let path = 'https://debbskitchen-server.herokuapp.com/recipes/' +recipe._id;
+        let path = 'http://localhost:3000/drafts/' +draft._id;
 
         let data = {
-            _id: this.recipe._id,
-            name: this.recipeEdit.name,
-            ingredients: this.recipeEdit.ingredients,
-            instructions: this.recipeEdit.instructions,
-            tags: this.recipeEdit.tags,
-            photo: this.recipeEdit.photo
+            _id: this.draft._id,
+            name: this.draftEdit.name,
+            ingredients: this.draftEdit.ingredients,
+            instructions: this.draftEdit.instructions,
+            tags: this.draftEdit.tags,
+            photo: this.draftEdit.photo
 
             };
 
         axios.put(path, data).then((response) => {
-            this.$store.commit('editRecipe', {recipe: response.data});
-            this.$store.dispatch('loadRecipes');
+            this.$store.commit('editDraft', {draft: response.data});
+            this.$store.dispatch('loadDrafts');
 
         });
         this.$emit('close');
 
-        }
+      } else {
+        this.draftErr = 'Draft must have a name'
       }
+
+      },
+
+
+            deleteDraft: function(_id){
+
+
+                let path = 'http://localhost:3000/drafts/' +_id;
+
+                axios.delete(path).then((response) => {
+                    this.$store.commit('deleteDraft', {id: response.data});
+
+                    this.$router.push('/recipes/drafts');
+                    this.$store.dispatch('loadDrafts');
+                     });
+                    this.$emit('close');
+
+
+                },
+
+            publishDraft: function(){
+
+              if(this.draftEdit.name && this.draftEdit.ingredients && this.draftEdit.instructions && this.draftEdit.tags && this.draftEdit.photo){
+
+                if(this.newText !== '') {
+                    this.textError = "Can't save unless this text is added or deleted!"
+                } else {
+
+                    axios.post('https://debbskitchen-server.herokuapp.com/recipes', {
+
+                      name: this.draftEdit.name,
+                      ingredients: this.draftEdit.ingredients,
+                      instructions: this.draftEdit.instructions,
+                      tags: this.draftEdit.tags,
+                      photo: this.draftEdit.photo,
+                      hasPhoto: this.draftEdit.hasPhoto
+
+                    }).then((response) => {
+                        this.$store.commit('saveRecipe', {recipe: response.data});
+
+
+                        let _id = this.draftEdit._id;
+
+                        let path = 'http://localhost:3000/drafts/' +_id;
+
+                        axios.delete(path).then((response) => {
+                            this.$store.commit('deleteDraft', {id: response.data});
+
+
+                          });
+
+                            var data = response.data;
+
+                        this.$store.dispatch('loadRecipes');
+                        this.$router.push({ name: 'RecipePage', params: { id: data._id }});
+
+                    });
+
+                  }
+                } else {
+                    this.draftErr = "Please make sure all fields (except recipe photo) are filled"
+                  }
+
+
     }
+}
 }
 
 </script>
 <style>
 
-.recipe-editor {
+.close-editor-button {
   display: grid;
-  width: 800px;
+  justify-content: flex-end;
 }
 
-    .recipe-edit-form {
+.draftbtns {
+  display: grid;
+  grid-template-columns: auto auto;
+grid-gap: 10px;
+
+}
+
+.delete-draft {
+  display: grid;
+  justify-content: flex-end;
+}
+
+.draft-buttons {
+display: grid;
+grid-template-columns: auto auto;
+grid-gap: 20px;
+justify-content: flex-start;
+}
+
+.draft-editor {
+width: 750px;
+}
+
+
+    .draft-edit-form {
 display: grid;
 grid-gap: 25px;
 padding: 25px;
@@ -590,7 +709,7 @@ min-height: 500px;
 }
 
 
-.recipe-edit-input{
+.draft-edit-input{
     width: 200px;
     border: 1px solid #777;
     padding: 4px 8px;
@@ -860,20 +979,41 @@ border: none;
 
       @media screen and (max-width: 1000px){
 
-        .recipe-editor {
-          width: auto;
+
+        .draft-editor {
+          width: 700px;
+        }
+
+        .new-box-text {
+          width: 600px;
+        }
+      }
+
+      @media screen and (max-width: 970px){
+
+        .draft-editor {
+          width: 600px;
         }
 
         .new-box-text {
           width: 500px;
         }
+
+
       }
+
 
       @media screen and (max-width: 766px){
 
-        .recipe-editor {
-          width: auto;
+        .draft-editor {
+          width: 450px;
+
         }
+
+        .draft-edit-form {
+          padding: 0;
+        }
+
 
         .new-box-text {
           width: 500px;
@@ -882,14 +1022,24 @@ border: none;
 
 
       @media screen and (max-width: 590px){
-        .new-box-text  {
+
+        .draft-editor {
+          width: auto;
+        }
+        .new-box-text {
           width: 370px;
         }
       }
 
 
       @media screen and (max-width: 400px){
-        .new-box-text  {
+
+
+        .draft-edit-form {
+          padding: 0;
+        }
+
+        .new-box-text {
           width: 300px;
         }
       }

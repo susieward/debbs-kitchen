@@ -52,7 +52,6 @@
       </div>
       <div class="main">
 
-
       <div class="content">
 
     <router-view @route="displayPrevRoute"></router-view>
@@ -62,7 +61,7 @@
       <div class="footer-container">
         <p>
           &copy; Debbie Ward 2019<br />
-          website by <a href="https://susieward.io">Susie Ward</a>
+          website by <a href="https://susieward.dev">Susie Ward</a>
         </p>
       </div>
     </div>
@@ -171,6 +170,10 @@ grid-template-areas: "header header"
                     "main main"
                     "footer footer";
 min-height: 100vh;
+}
+
+.drafts-link {
+  margin-left: 30px;
 }
 
 .header {
@@ -554,7 +557,21 @@ align-content: center;
 
   }
 
+@media print {
 
+  .header {
+    display: none;
+  }
+
+  .main {
+    margin-top: 30px;
+  }
+
+.footer {
+  display: none;
+}
+
+}
 
 
 </style>

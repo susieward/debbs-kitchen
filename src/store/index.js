@@ -10,7 +10,8 @@ state: {
 
     menus: [],
     recipes: [],
-    boxes: []
+    boxes: [],
+    drafts: []
 },
 
     actions: {
@@ -25,6 +26,14 @@ state: {
             axios.get('https://debbskitchen-server.herokuapp.com/recipes').then((response) => {
                 commit('setRecipes', {recipes: response.data})
             })
+        },
+
+        loadDrafts: function({commit}){
+
+          axios.get('https://debbskitchen-server.herokuapp.com/drafts').then((response) => {
+              commit('setDrafts', {drafts: response.data})
+          })
+
         }
 
 
@@ -69,6 +78,26 @@ state: {
           deleteRecipe: (state, id) => {
         let index = state.recipes.findIndex(recipe => recipe._id === id);
             state.recipes.splice(index, 1);
+        },
+
+        setDrafts: (state, {drafts}) => {
+            state.drafts = drafts
+        },
+
+        saveDraft: (state, {draft}) =>{
+        state.drafts.push({draft});
+      },
+
+        editDraft: (state, {draft}) =>{
+          var id = draft._id;
+        let index = state.drafts.findIndex(draftItem => draftItem._id === id);
+            state.drafts.splice(index, 1, draft);
+        },
+
+
+        deleteDraft: (state, id) => {
+        let index = state.drafts.findIndex(draft => draft._id === id);
+            state.drafts.splice(index, 1);
         }
 
     },

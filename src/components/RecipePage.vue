@@ -5,6 +5,8 @@
     <router-link :to="{ name: 'TagResults', params: { selectedTag: this.tag }}" class="regular" v-if="this.tag">&#x27F5; tagged: {{ tag }}</router-link>
       <router-link to="/recipes" class="regular" v-if="!this.tag">&#x27F5; all recipes</router-link>
       </div>
+<div id="recipePrint">
+
 
     <div class="recipe-page-container">
     <div class="recipe-top">
@@ -12,6 +14,7 @@
         <div class="recipe-name-div"><span v-if="showRecipeEditor === false">{{ recipe.name }}</span></div>
 
         <div class="recipebtns">
+            <button class="greybtn" v-print>print</button>
             <span>
             <button class="greybtn" @click="openRecipeEditor(recipe)" v-if="showRecipeEditor == false">edit recipe</button>
                     <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">close editor</button>
@@ -30,16 +33,18 @@
 
           <span class="section">Ingredients:</span>
             <ul class="recipe-ingredients">
-            <li v-for="ingredient in recipe.ingredients">{{ ingredient }}</li>
+            <li v-for="ingredient in recipe.ingredients">{{ ingredient.text }}</li>
           </ul>
             <p class="section">Directions:</p>
             <div class="recipe-directions">
 
 
                         <div v-for="box in recipe.instructions">
-                          <span class="directions-text" v-if="box.hasImage === false">
-                            {{ box.text}}
-                          </span>
+                          <div v-if="box.hasImage === false">
+                            <p class="directions-text" v-html="box.text">
+
+                            </p>
+                          </div>
 
                           <div class="recipe-box-img-container" v-if="box.hasImage === true">
 
@@ -50,11 +55,12 @@
                         </div>
             <div class="tags-section">
 
-          <p><span class="section">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p></div>
+          <p id="tags-paragraph"><span class="section">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p></div>
     </div>
 
     <recipe-editor v-if="showRecipeEditor == true" :recipe="selectedRecipe" @close="closeRecipeEditor"></recipe-editor>
 
+    </div>
     </div>
 
 </div>
@@ -66,7 +72,8 @@ export default {
 data(){
     return {
         showRecipeEditor: false,
-        selectedRecipe: undefined
+        selectedRecipe: undefined,
+        output: null
 
     }
 },
@@ -140,6 +147,7 @@ props: ['selectedTag'],
 }
 </script>
 <style>
+
 
 .section {
 
@@ -265,6 +273,14 @@ margin: auto;
 
         .directions-text {
         line-height: 28px;
+        margin: 0;
+        padding: 0;
+
+        }
+
+        .directions-text p {
+          margin: 0;
+          padding: 0;
         }
 
         .recipe-box-img-container {
@@ -360,6 +376,7 @@ margin: auto;
       }
 
     }
+
 
     @media screen and (max-width: 970px){
       .recipe-page-container {
@@ -474,6 +491,39 @@ line-height: 25px;
 
 
 
+        @media print {
+
+          .recipe-page-container {
+
+             width: 800px;
+             border: 1px solid #eee;
+
+
+          }
+
+          .recipe-container {
+            min-width: 700px;
+          }
+
+          .recipe-photo {
+            height: 400px;
+            width: 450px;
+            object-fit: cover;
+          }
+
+          .recipe-box-img {
+            width: 300px;
+          }
+
+          .recipebtns {
+            display: none;
+          }
+
+          #tags-paragraph {
+            display: none;
+          }
+
+        }
 
 
 
