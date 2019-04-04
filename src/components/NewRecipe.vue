@@ -41,7 +41,6 @@
 
       <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="index">
 
-
         <div class="box-item" v-if="editId !== box.id && box.hasImage === false"><span v-html="box.text"></span>
         <span class="box-item-buttons"><button class="box-edit" @click="editBoxText(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
         </button></span></div>
@@ -103,15 +102,13 @@
         <p style="color: red">{{ textError }}</p>
 </div>
 
-
-
   <div class="new-box-img-cover" @click="showImage" v-if="itemChosen === false">
     <p>
       add image
     </p>
   </div>
       <div class="new-box-img" v-if="itemChosen === true && text === false">
-        <div v-if="!newBox.image">
+        <div v-if="!newBoxImg">
           <p style="font-weight: 300">
             Choose an image:
           </p>
@@ -121,7 +118,7 @@
         <div v-else>
 
 
-        <img class="box-img" v-bind:src="newBox.image"/>
+        <img class="box-img" v-bind:src="newBoxImg"/>
 
         <button @click="removeImage">Remove image</button>
 </div>
@@ -130,7 +127,7 @@
 
 <div v-if="itemChosen === true && text === false">
   <span class="lil-buttons">
-        <button v-if="newBox.image" class="box-edit" @click="addImage">add image</button> <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
+        <button v-if="newBoxImg" class="box-edit" @click="addImage">add image</button> <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
         </button>
         </span>
         <p>
@@ -187,6 +184,7 @@ data(){
           order: undefined
         },
         newBoxText: '',
+        newBoxImg: '',
         boxText: '',
         editText: '',
         newIngredient: {
@@ -265,10 +263,11 @@ methods: {
     this.itemChosen = false;
     this.text = false;
     this.image = false;
-    this.newBoxText = '';
+    this.newBox = {};
     this.imgError = '';
     this.textError = '';
-
+    this.newBoxText = '';
+    this.newBoxImg = '';
   },
 
   showText: function(){
@@ -282,28 +281,6 @@ methods: {
   },
 
 
-    onPhotoChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-         if (!files.length)
-        return;
-      this.createPhoto(files[0]);
-    },
-
-    createPhoto(file) {
-      var image = new Image();
-      var reader = new FileReader();
-      var vm = this;
-
-      reader.onload = (e) => {
-        vm.image = e.target.result;
-          this.newRecipe.photo = vm.image;
-      };
-      reader.readAsDataURL(file);
-    },
-
-    removeRecipePhoto: function (e) {
-      this.newRecipe.photo = '';
-    },
 
   onFileChange(e) {
     var files = e.target.files || e.dataTransfer.files;
@@ -312,20 +289,21 @@ methods: {
     this.createImage(files[0]);
   },
 
-  createImage(file) {
+  createImage: function(file) {
     var image = new Image();
     var reader = new FileReader();
     var vm = this;
 
     reader.onload = (e) => {
       vm.image = e.target.result;
-        this.newBox.image = vm.image;
+        this.newBoxImg = vm.image;
     };
     reader.readAsDataURL(file);
+
   },
 
   removeImage: function (e) {
-    this.newBox.image = '';
+    this.newBoxImg = '';
   },
 
 // FINISHED RECIPE PHOTO UPLOAD
@@ -338,13 +316,13 @@ methods: {
   },
 
   createPhoto(file) {
-    var image = new Image();
+    var im = new Image();
     var reader = new FileReader();
     var vm = this;
 
     reader.onload = (e) => {
-      vm.image = e.target.result;
-        this.newRecipe.photo = vm.image;
+      vm.im = e.target.result;
+        this.newRecipe.photo = vm.im;
         this.newRecipe.hasPhoto = true;
     };
     reader.readAsDataURL(file);
@@ -363,13 +341,13 @@ methods: {
    },
 
         createEditImage(file) {
-              var image = new Image();
+              var im = new Image();
               var reader = new FileReader();
               var vm = this;
 
               reader.onload = (e) => {
-                vm.image = e.target.result;
-                this.editImg = vm.image;
+                vm.im = e.target.result;
+                this.editImg = vm.im;
         };
           reader.readAsDataURL(file);
     },
@@ -453,7 +431,7 @@ if(this.newBoxText){
 
     addImage: function(){
 
-      if(this.newBox.image){
+      if(this.newBoxImg){
 
       var number = Date.now() + Math.random().toString().slice(18);
 
@@ -461,9 +439,12 @@ if(this.newBoxText){
 
         this.newBox.id = id;
         this.newBox.hasImage = true;
+        this.newBox.image = this.newBoxImg;
+
 
 
       this.newRecipe.instructions.push(this.newBox);
+      this.newBoxImg = '';
       this.newBox = {};
       this.itemChosen = false;
       this.image = false;

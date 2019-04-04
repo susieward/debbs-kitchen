@@ -109,7 +109,7 @@
           </div>
 
               <div class="new-box-img" v-if="itemChosen === true && text === false">
-                <div v-if="!newBox.image">
+                <div v-if="!newBoxImg">
                   <p style="font-weight: 400">
                     Choose an image:
                   </p>
@@ -119,7 +119,7 @@
                 <div v-else>
 
 
-                <img class="box-img" v-bind:src="newBox.image"/>
+                <img class="box-img" v-bind:src="newBoxImg"/>
 
                 <button @click="removeImage">Remove image</button>
         </div>
@@ -127,7 +127,7 @@
           </div>
 
         <div v-if="itemChosen === true && text === false">
-                <button class="box-img-buttons" v-if="newBox.image" @click="addImage">add image</button> <button class="box-img-buttons" v-if="itemChosen === true" @click="backToSelection">back
+                <button class="box-img-buttons" v-if="newBoxImg" @click="addImage">add image</button> <button class="box-img-buttons" v-if="itemChosen === true" @click="backToSelection">back
                 </button>
                 <p>
                   <span style="color: red">{{ imgError }}</span>
@@ -187,6 +187,7 @@ data(){
           order: undefined
         },
         newBoxText: '',
+        newBoxImg: '',
         boxText: '',
         editText: '',
         imgError: '',
@@ -221,8 +222,8 @@ components: {
           this.image = false;
           this.imgError = '';
           this.textError = '';
-          this.newBox.image = '';
           this.newBoxText = '';
+          this.newBoxImg = '';
 
         },
 
@@ -274,13 +275,13 @@ components: {
 
           reader.onload = (e) => {
             vm.image = e.target.result;
-              this.newBox.image = vm.image;
+              this.newBoxImg = vm.image;
           };
           reader.readAsDataURL(file);
         },
 
         removeImage: function (e) {
-          this.newBox.image = '';
+          this.newBoxImg = '';
         },
 
         onImgChange(e) {
@@ -345,7 +346,7 @@ components: {
 
           addImage: function(){
 
-            if(this.newBox.image){
+            if(this.newBoxImg){
 
             var number = Date.now() + Math.random().toString().slice(18);
 
@@ -353,10 +354,12 @@ components: {
 
               this.newBox.id = id;
               this.newBox.hasImage = true;
+              this.newBox.image = this.newBoxImg;
 
 
             this.recipeEdit.instructions.push(this.newBox);
             this.newBox = {};
+            this.newBoxImg = '';
             this.itemChosen = false;
             this.image = false;
             this.addIndex();
