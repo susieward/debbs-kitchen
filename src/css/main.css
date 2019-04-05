@@ -114,7 +114,7 @@ padding: 0;
    .greybtn {
      border: none;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 4px;
     background-color: #ddd;
     padding: 6px 8px;
     font-size: 16px;
@@ -125,10 +125,23 @@ padding: 0;
        font-weight: 400;
     }
 
+    .darkgreybtn {
+      border: none;
+     border: 1px solid #696969;
+     background-color: #696969;
+     padding: 8px 10px;
+     border-radius: 4px;
+     font-size: 16px;
+     color: #eee;
+     cursor: pointer;
+   font-family: 'Roboto';
+        font-weight: 400;
+     }
+
     .pinkbtn {
      border: none;
     border: 1px solid #F08080;
-    border-radius: 6px;
+    border-radius: 4px;
     background-color: #F08080;
     padding: 6px 8px;
     font-size: 16px;

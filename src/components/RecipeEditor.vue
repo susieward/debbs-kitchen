@@ -149,7 +149,14 @@
             </ul>
         </p>
 
-      <button class="pinkbtn" @click="editRecipe(recipe)">save changes</button>
+<span class="btnsrow">
+  <span class="item1">
+      <button class="pinkbtn" @click="editRecipe(recipe)">save changes</button></span>
+
+      <span class="item2">
+      <button class="blackbtn" @click="deleteRecipe(recipe._id)">delete recipe</button>
+    </span>
+    </span>
 
     </div>
 
@@ -570,12 +577,58 @@ components: {
         this.$emit('close');
 
 
-      }
+      },
+
+
+
+              deleteRecipe: function(_id){
+
+
+                  let path = 'https://debbskitchen-server.herokuapp.com/recipes/' +_id;
+
+                  axios.delete(path).then((response) => {
+                      this.$store.commit('deleteRecipe', {id: response.data});
+
+                      this.$router.push('/recipes');
+                      this.$store.dispatch('loadRecipes');
+                       });
+
+
+
+                  }
     }
 }
 
 </script>
 <style>
+
+.btnsrow {
+  display: grid;
+  grid-template-columns: auto auto;
+
+}
+
+.item1 {
+  display: grid;
+  justify-content: flex-start;
+}
+
+.item2 {
+  display: grid;
+  justify-content: flex-end;
+}
+
+.delete-draft {
+  display: grid;
+  justify-content: flex-end;
+}
+
+.draft-buttons {
+display: grid;
+grid-template-columns: auto auto;
+grid-gap: 20px;
+justify-content: flex-start;
+}
 
 .recipe-editor {
   display: grid;

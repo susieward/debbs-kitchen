@@ -11,15 +11,13 @@
     <div class="recipe-page-container">
     <div class="recipe-top">
 
-        <div class="recipe-name-div"><span v-if="showRecipeEditor === false">{{ recipe.name }}</span></div>
+        <div class="recipe-name-div"><span v-if="showRecipeEditor === false">{{ recipe.name }}</span><span v-if="showRecipeEditor === true">Edit recipe</span></div>
 
         <div class="recipebtns">
-            <button class="greybtn" v-if="showRecipeEditor === false" v-print>print</button>
+            <span><button class="pinkbtn" @click="openRecipeEditor(recipe)" v-if="showRecipeEditor == false">edit recipe</button><button class="greybtn" v-if="showRecipeEditor === false" v-print>print</button> </span>
             <span>
-            <button class="greybtn" @click="openRecipeEditor(recipe)" v-if="showRecipeEditor == false">edit recipe</button>
-                    <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">close editor</button>
 
-        <button class="blackbtn" @click="deleteRecipe(recipe._id)" v-if="showRecipeEditor == false">delete recipe</button>
+                    <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">close editor</button>
                 </span>
     </div>
     </div>
@@ -123,24 +121,7 @@ props: ['selectedTag'],
         closeRecipeEditor: function(){
             this.showRecipeEditor = false;
 
-        },
-
-
-        deleteRecipe: function(_id){
-
-
-            let path = 'https://debbskitchen-server.herokuapp.com/recipes/' +_id;
-
-            axios.delete(path).then((response) => {
-                this.$store.commit('deleteRecipe', {id: response.data});
-
-                this.$router.push('/recipes');
-                this.$store.dispatch('loadRecipes');
-                 });
-
-
-
-            }
+        }
 
 
     }
@@ -148,6 +129,14 @@ props: ['selectedTag'],
 </script>
 <style>
 
+
+.button-link {
+  text-decoration: none;
+  color: #F08080;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+
+}
 
 .section {
 

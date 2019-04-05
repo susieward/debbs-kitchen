@@ -150,7 +150,13 @@
             </ul>
         </p>
 
-      <button class="pinkbtn" @click="saveRecipe">publish recipe</button> <button class="pinkbtn" @click="saveDraft">save as draft</button>
+<span class="btnsrow-simple">
+
+      <button class="pinkbtn" @click="saveRecipe">publish recipe</button>
+
+
+<button class="darkgreybtn" @click="saveDraft">save as draft</button>
+    </span>
       <span style="color: red">{{ draftErr }}</span>
 <span style="color: red">{{ error }}</span>
 </div>
@@ -650,6 +656,14 @@ name: 'NewRecipe'
 }
 </script>
 <style>
+
+.btnsrow-simple {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: flex-start;
+  grid-gap: 15px;
+
+}
 
 .recipe-ingr {
 cursor: pointer;
