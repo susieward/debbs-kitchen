@@ -35,7 +35,7 @@
 
              <div class="icon-nav">
              <span class="icon-item">
-               <div class="bm-burger-button" @click="openMenu">
+               <div ref="bmBurgerButton" class="bm-burger-button" @click="openMenu">
             <span class="bm-burger-bars line-style" :style="{top:20 * (index * 2) + '%'}" v-for="(x, index) in 3" :key="index"></span>
         </div>
 </span>
@@ -103,6 +103,16 @@ export default {
 
   components: {
     Login
+  },
+
+  created: function(){
+
+    document.addEventListener('click', this.documentClick);
+  },
+
+  destroyed: function(){
+    document.removeEventListener('click', this.documentClick);
+
   },
 
   computed: {
@@ -184,6 +194,19 @@ export default {
       this.$emit('closeMenu');
       this.isSideBarOpen = false;
       this.$refs.sideNav.style.width = "0px";
+    },
+
+    documentClick: function(e){
+      let element = this.$refs.bmBurgerButton;
+      let target = null;
+      if (e && e.target) {
+        target = e.target;
+      }
+
+      if (element && element !== target && !element.contains(target) && e.target.className !== 'bm-menu' && this.isSideBarOpen){
+        this.closeMenu();
+      }
+
     },
 
     toggleClass: function(event){
@@ -290,7 +313,7 @@ display: grid;
 justify-content: center;
 align-items: center;
 align-content: flex-start;
-     transition: 0.4s; /*0.5 second transition effect to slide in the sidenav*/
+     transition: 0.3s; /*0.5 second transition effect to slide in the sidenav*/
    }
 
    .bm-overlay {
@@ -320,7 +343,7 @@ align-content: flex-start;
      }
 
      .menu li {
-       width: 310px;
+width: 200px;
          margin: 0;
      }
 
@@ -370,8 +393,7 @@ transition: 0.3s;
 .menu-overlay-extended {
 
 
-margin-top: 45px;
-
+margin-top: 55px;
 background-color: #333;
 display: grid;
 justify-content: center;
