@@ -8,7 +8,11 @@
 
     <div class="app-container" v-if="isAuthenticated">
 
-      <Slide width="200">
+      <div ref="sideNav" class="bm-menu">
+        <span class="bm-cross-button cross-style" @click="closeMenu">
+               <span v-for="(x, index) in 2" :key="x" class="bm-cross" :style="{ position: 'absolute', width: '3px', height: '14px',transform: index === 1 ? 'rotate(45deg)' : 'rotate(-45deg)'}">
+               </span>
+           </span>
         <div class="menu-overlay-extended">
 
                 <ul class="menu">
@@ -20,7 +24,7 @@
 
                     </ul>
                 </div>
-                </Slide>
+              </div>
 
       <div class="header">
 
@@ -31,6 +35,9 @@
 
              <div class="icon-nav">
              <span class="icon-item">
+               <div class="bm-burger-button" @click="openMenu">
+            <span class="bm-burger-bars line-style" :style="{top:20 * (index * 2) + '%'}" v-for="(x, index) in 3" :key="index"></span>
+        </div>
 </span>
 
 
@@ -80,7 +87,6 @@
 </template>
 
 <script>
-import { Slide } from 'vue-burger-menu'
 import Login from './components/Login.vue'
 export default {
   data(){
@@ -89,14 +95,14 @@ export default {
       name: '',
       search: '',
       loggedIn: false,
-      isActive: false
+      isActive: false,
+      isSideBarOpen: false
     }
   },
   name: 'App',
 
   components: {
-    Login,
-    Slide
+    Login
   },
 
   computed: {
@@ -165,6 +171,20 @@ export default {
   },
 
   methods: {
+
+    openMenu() {
+      this.$emit('openMenu');
+      this.isSideBarOpen = true;
+      this.$nextTick(function(){
+        this.$refs.sideNav.style.width = "200px";
+      })
+    },
+
+    closeMenu() {
+      this.$emit('closeMenu');
+      this.isSideBarOpen = false;
+      this.$refs.sideNav.style.width = "0px";
+    },
 
     toggleClass: function(event){
        if(!this.isActive){
@@ -348,10 +368,10 @@ transition: 0.3s;
 }
 
 .menu-overlay-extended {
-width: 310px;
+
 
 margin-top: 45px;
-margin-left: 38px;
+
 background-color: #333;
 display: grid;
 justify-content: center;
