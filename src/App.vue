@@ -1,12 +1,12 @@
 <template>
   <div id="app">
 
-    <div class="login-page" v-if="!loggedIn">
-      <login @success="loginSuccess"></login>
+    <div class="login-page" v-if="!isAuthenticated">
+      <login></login>
   </div>
 
 
-    <div class="app-container" v-if="loggedIn">
+    <div class="app-container" v-if="isAuthenticated">
 
       <Slide width="200">
         <div class="menu-overlay-extended">
@@ -47,7 +47,7 @@
             <router-link to="/recipes">recipes</router-link>
             <router-link to="/menus">menus</router-link>
             <router-link to="/tags">index</router-link>
-
+            <button @click="logout()">logout</button>
 
             </nav>
              </div>
@@ -183,7 +183,6 @@ export default {
 
     logout: function(){
         this.$store.commit('AUTH_LOGOUT');
-        this.loggedIn = false;
         this.$router.push('/')
     },
 
@@ -505,7 +504,7 @@ padding: 10px;
 nav {
 display: grid;
 grid-gap: 30px;
-grid-template-columns: auto auto auto auto;
+grid-template-columns: auto auto auto auto auto;
 padding: 0;
 margin: 0;
 align-content: center;

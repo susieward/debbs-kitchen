@@ -35,7 +35,7 @@ export default {
 
     login: function () {
 
-        axios.post('https://debbskitchen-server.herokuapp.com/login', {
+        axios.post('http://localhost:3000/login', {
             username: this.username,
             password: this.password
         },
@@ -47,7 +47,7 @@ export default {
         }).then(response =>{
             this.$store.commit('AUTH_SUCCESS', { token: response.data.token });
             this.$router.push('/');
-            this.$emit('success');
+
             }).catch(error => {
             this.errorText = error.response.data.message;
 
