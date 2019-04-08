@@ -264,7 +264,7 @@ font-size: 18px;
     @media screen and (max-width: 400px){
 
       .tags {
-      width: 400px;
+      width: 380px;
       padding-left: 5px;
       padding-right: 5px;
       }

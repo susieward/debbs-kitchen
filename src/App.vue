@@ -222,6 +222,8 @@ position: relative;
 font-size: 35px;
 }
 
+
+
 .bm-burger-button {
      position: absolute;
      width: 28px;
@@ -232,10 +234,10 @@ font-size: 35px;
      display: none;
 
    }
-   .bm-burger-bars {
+.bm-burger-bars {
      background-color: #fff;
    }
-   .line-style {
+.line-style {
      position: absolute;
      height: 14%;
      left: 0;
@@ -254,7 +256,8 @@ font-size: 35px;
      height: 24px;
      width: 24px;
    }
-   .bm-menu {
+
+.bm-menu {
      height: 100%; /* 100% Full-height */
      width: 0; /* 0 width - change this with JavaScript */
      position: fixed; /* Stay in place */
