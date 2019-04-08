@@ -190,7 +190,7 @@ text-align: center;
     @media screen and (max-width: 400px){
 
       .drafts-page {
-      width: 350px;
+      width: 360px;
       padding-left: 5px;
       padding-right: 5px;
       }
