@@ -35,7 +35,7 @@ export default {
 
     login: function () {
 
-        axios.post('http://localhost:3000/login', {
+        axios.post('https://debbskitchen-server.herokuapp.com/login', {
             username: this.username,
             password: this.password
         },
