@@ -154,7 +154,7 @@
       <button class="pinkbtn" @click="editRecipe(recipe)">save changes</button></span>
 
       <span class="item2">
-      <button class="blackbtn" @click="deleteRecipe(recipe._id)">delete recipe</button>
+      <button class="delete-btn" @click="deleteRecipe(recipe._id)">delete recipe</button>
     </span>
     </span>
 

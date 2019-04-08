@@ -258,7 +258,7 @@ methods: {
 
       });
     } else {
-      this.draftErr = 'Add recipe name to save as draft'
+      this.draftErr = 'Recipe must have a name'
     }
 
 

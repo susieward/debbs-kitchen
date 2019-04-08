@@ -118,11 +118,21 @@ padding: 0;
     background-color: #ddd;
     padding: 6px 8px;
     font-size: 16px;
-    color: #444;
+    color: #222;
     cursor: pointer;
    max-width: 150px;
   font-family: 'Roboto';
-       font-weight: 400;
+       font-weight: 300;
+       transition: 0.2s;
+       letter-spacing: 0.03em;
+    }
+
+
+    .greybtn:hover {
+      background-color: #848484;
+      border: 1px solid #848484;
+      color: #fff;
+
     }
 
     .darkgreybtn {
@@ -135,7 +145,8 @@ padding: 0;
      color: #eee;
      cursor: pointer;
    font-family: 'Roboto';
-        font-weight: 400;
+        font-weight: 300;
+        letter-spacing: 0.03em;
      }
 
     .pinkbtn {
@@ -149,21 +160,62 @@ padding: 0;
     cursor: pointer;
    max-width: 150px;
     font-family: 'Roboto';
-       font-weight: 400;
+       font-weight: 300;
+       transition: 0.2s;
+       letter-spacing: 0.03em;
+    }
+
+    .pinkbtn:hover {
+      background-color: #c06666;
+      border: 1px solid #c06666;
     }
 
      .blackbtn {
        border: none;
-    border: 1px solid #000;
+       background-color: #848484;
+       border: 1px solid #848484;
+       color: #fff;
     border-radius: 4px;
-    background-color: #000;
     padding: 6px 8px;
     font-size: 16px;
-    color: #fff;
     cursor: pointer;
    max-width: 150px;
      font-family: 'Roboto';
+       font-weight: 300;
+        transition: 0.2s;
+        letter-spacing: 0.03em;
+    }
+
+    .blackbtn:hover {
+      background-color: #ddd;
+      border: 1px solid #ddd;
+      color: #000;
+
+    }
+
+    .delete-btn {
+      border: none;
+      background-color: #000;
+      border: 1px solid #000;
+      color: #fff;
+   border-radius: 4px;
+   padding: 6px 10px;
+   font-size: 16px;
+   cursor: pointer;
+  max-width: 150px;
+    font-family: 'Roboto';
+       transition: 0.2s;
+       letter-spacing: 0.03em;
        font-weight: 400;
+
+    }
+
+
+    .delete-btn:hover {
+      background-color: #e50000;
+      border: 1px solid #e50000;
+      font-weight: 400;
+
     }
 
 .remove {

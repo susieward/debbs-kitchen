@@ -14,7 +14,7 @@
         <div class="recipe-name-div"><span v-if="showRecipeEditor === false">{{ recipe.name }}</span><span v-if="showRecipeEditor === true">Edit recipe</span></div>
 
         <div class="recipebtns">
-            <span><button class="pinkbtn" @click="openRecipeEditor(recipe)" v-if="showRecipeEditor == false">edit recipe</button><button class="greybtn" v-if="showRecipeEditor === false" v-print>print</button> </span>
+            <span><button class="greybtn" @click="openRecipeEditor(recipe)" v-if="showRecipeEditor == false">edit recipe</button><button class="pinkbtn" v-if="showRecipeEditor === false" v-print>print</button> </span>
             <span>
 
                     <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">close editor</button>
@@ -453,7 +453,7 @@ margin: auto;
     @media screen and (max-width: 400px){
       .recipe-page-container {
 
-         width: 350px;
+         width: 400px;
 
 
       }

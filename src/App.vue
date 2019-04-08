@@ -1,16 +1,26 @@
 <template>
   <div id="app">
 
-    <div class="menu-overlay">
-                        <a href="javascript:void(0)" class="menu-closebtn">&times;</a>
-            <ul class="menu">
-                <li><router-link to="/">planner</router-link></li>
-                <li><router-link to="/recipes">recipes</router-link></li>
-                <li><router-link to="/menus">menus</router-link></li>
-                <li><router-link to="/tags">index</router-link></li>
+    <div class="login-page" v-if="!loggedIn">
+      <login @success="loginSuccess"></login>
+  </div>
 
-                </ul>
-            </div>
+
+    <div class="app-container" v-if="loggedIn">
+
+      <Slide width="200">
+        <div class="menu-overlay-extended">
+
+                <ul class="menu">
+                    <li><router-link to="/">planner</router-link></li>
+                    <li><router-link to="/recipes">recipes</router-link></li>
+                    <li><router-link to="/menus">menus</router-link></li>
+                    <li><router-link to="/tags">index</router-link></li>
+
+
+                    </ul>
+                </div>
+                </Slide>
 
       <div class="header">
 
@@ -20,10 +30,8 @@
            <div class="title-and-links">
 
              <div class="icon-nav">
-             <a href="javascript:void()" class="icon-item"><i class="material-icons">
-  menu
-  </i>
-     </a>
+             <span class="icon-item">
+</span>
 
 
 
@@ -40,6 +48,7 @@
             <router-link to="/menus">menus</router-link>
             <router-link to="/tags">index</router-link>
 
+
             </nav>
              </div>
              </div>
@@ -47,6 +56,7 @@
 
              <div class="search">
             <input type="text" id="bar" v-model="search" placeholder="search..." @keyup.enter="startSearch"/>
+
             </div>
           </div>
       </div>
@@ -65,21 +75,36 @@
         </p>
       </div>
     </div>
+
+    </div>
   </div>
 </template>
 
 <script>
+import { Slide } from 'vue-burger-menu'
+import Login from './components/Login.vue'
 export default {
   data(){
     return {
       prevRoute: null,
       name: '',
-      search: ''
+      search: '',
+      loggedIn: false,
+      isActive: false
     }
   },
   name: 'App',
 
+  components: {
+    Login,
+    Slide
+  },
+
   computed: {
+
+    isAuthenticated(){
+        return this.$store.getters.isAuthenticated;
+    },
 
     recipes(){
 
@@ -142,6 +167,26 @@ export default {
 
   methods: {
 
+    toggleClass: function(event){
+       if(!this.isActive){
+         this.isActive = true;
+       }else{
+         this.isActive = false;
+       }
+
+    },
+
+    loginSuccess: function(){
+
+      this.loggedIn = true;
+    },
+
+    logout: function(){
+        this.$store.commit('AUTH_LOGOUT');
+        this.loggedIn = false;
+        this.$router.push('/')
+    },
+
     goToHome: function(){
 
       this.$router.push({ name: 'Home'});
@@ -164,12 +209,199 @@ export default {
 </script>
 <style>
 
+
 #app {
 display: grid;
-grid-template-areas: "header header"
-                    "main main"
-                    "footer footer";
+background-color: #fff;
 min-height: 100vh;
+z-index: 1;
+position: relative;
+}
+
+
+.material-icons {
+font-size: 35px;
+}
+
+.bm-burger-button {
+     position: absolute;
+     width: 28px;
+     height: 25px;
+     left: 32px;
+     top: 46px;
+     cursor: pointer;
+     display: none;
+
+   }
+   .bm-burger-bars {
+     background-color: #fff;
+   }
+   .line-style {
+     position: absolute;
+     height: 14%;
+     left: 0;
+     right: 0;
+   }
+   .cross-style {
+     position: absolute;
+     top: 12px;
+     right: 2px;
+     cursor: pointer;
+   }
+   .bm-cross {
+     background: #bdc3c7;
+   }
+   .bm-cross-button {
+     height: 24px;
+     width: 24px;
+   }
+   .bm-menu {
+     height: 100%; /* 100% Full-height */
+     width: 0; /* 0 width - change this with JavaScript */
+     position: fixed; /* Stay in place */
+     z-index: 1000; /* Stay on top */
+     top: 0;
+     left: 0;
+     background-color: #333; /* Black*/
+     overflow-x: hidden; /* Disable horizontal scroll */
+padding-top: 0;
+display: grid;
+justify-content: center;
+align-items: center;
+align-content: flex-start;
+     transition: 0.4s; /*0.5 second transition effect to slide in the sidenav*/
+   }
+
+   .bm-overlay {
+
+   }
+   .bm-item-list {
+     color: #b8b7ad;
+
+     font-size: 20px;
+   }
+   .bm-item-list > * {
+     display: flex;
+     text-decoration: none;
+     padding: 0.7em;
+   }
+   .bm-item-list > * > span {
+
+     font-weight: 700;
+     color: white;
+   }
+
+
+     .menu {
+     list-style-type: none;
+     padding: 0;
+     margin: 0;
+     }
+
+     .menu li {
+       width: 310px;
+         margin: 0;
+     }
+
+     .menu li a {
+         font-size: 18px;
+         padding: 10px 8px 10px 8px;
+         color: #fff;
+         font-family: 'Roboto';
+         text-transform: lowercase;
+         font-weight: 300;
+         display: block;
+         letter-spacing: 0.09em;
+         text-align: center;
+
+     }
+
+     .menu li a.router-link-exact-active {
+       color: #fff;
+     }
+
+     .menu li:first-child a {
+      padding-top: 10px;
+     }
+
+     .menu li:last-child a {
+     padding-bottom: 10px;
+     }
+
+     .menu li a:hover {
+         background-color: #999;
+         color: #fff;
+     }
+
+
+.menu-overlay {
+  height: 100vh;
+background-color: #333;
+overflow: hidden;
+transition: 0.3s;
+
+}
+
+.menu-overlay-extended a {
+
+}
+
+.menu-overlay-extended {
+width: 310px;
+
+margin-top: 45px;
+margin-left: 38px;
+background-color: #333;
+display: grid;
+justify-content: center;
+transition: 0.3s;
+
+padding: 0;
+}
+
+.menu-closebtn {
+position: absolute;
+font-size: 40px;
+top: 5px;
+right: 8px;
+margin-left: 50px;
+cursor: pointer;
+font-weight: 300;
+}
+
+
+
+
+.login-page {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.logout-btn {
+  background-color: #848484;
+  border: 1px solid #848484;
+  color: #fff;
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'Roboto';
+  font-weight: 300;
+   transition: 0.2s;
+   letter-spacing: 0.03em;
+
+}
+
+.app-container {
+
+  display: grid;
+  grid-template-areas: "header header"
+                      "main main"
+                      "footer footer";
+  min-height: 100vh;
+  z-index: 0;
+  position: relative;
 }
 
 .drafts-link {
@@ -310,6 +542,7 @@ display: grid;
 align-content: center;
 justify-content: flex-end;
 
+
 }
 
 #bar {
@@ -414,52 +647,25 @@ text-align: center;
   color: #fff;
   display: grid;
   align-content: center;
+  width: 38px;
+
 
 
 
   }
 
-      .icon-nav {
-    display: grid;
-    grid-area: menu;
+  .icon-nav {
+  display: grid;
+  grid-area: menu;
   border: none;
   color: #fff;
-align-content: center;
+  align-content: center;
 
   }
 
-  .material-icons {
-    font-size: 35px;
-  }
-
-  .menu-overlay {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 2;
-      top: 0;
-      left: 0;
-      background-color: #333;
-      overflow: hidden;
-      transition: 0.3s;
-      padding-top: 50px;
-  }
-
-  .menu-overlay a {
-  padding: 8px 8px 8px 8px;
+.bm-burger-button {
   display: block;
-  color: #fff;
-  }
-
-  .menu-overlay .menu-closebtn {
-  position: absolute;
-  font-size: 40px;
-  top: 5px;
-  right: 8px;
-  margin-left: 50px;
-  cursor: pointer;
-  font-weight: 300;
-  }
+}
 
   .menu-dropdown {
   display: none;
@@ -472,40 +678,6 @@ align-content: center;
   z-index: 500;
   }
 
-  .menu {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  }
-
-  .menu li {
-
-      margin: 0;
-  }
-
-  .menu li a {
-      font-size: 18px;
-      padding: 8px 8px 8px 8px;
-      color:#fff;
-      background-color: #333;
-      font-weight: 300;
-      display: block;
-      letter-spacing: 0.07em;
-      text-align: center;
-
-  }
-
-  .menu li:first-child a {
-   padding-top: 8px;
-  }
-
-  .menu li:last-child a {
-  padding-bottom: 8px;
-  }
-
-  .menu li a:hover {
-      background-color: #999;
-  }
 }
 
 
@@ -552,6 +724,10 @@ align-content: center;
 
     .header h1 {
       font-size: 20px;
+    }
+
+    .icon-item {
+        width: 32px;
     }
 
 

@@ -11,7 +11,9 @@ state: {
     menus: [],
     recipes: [],
     boxes: [],
-    drafts: []
+    drafts: [],
+    token: localStorage.getItem('user-token') || '',
+    status: ''
 },
 
     actions: {
@@ -40,6 +42,32 @@ state: {
     },
 
     mutations: {
+
+      AUTH_REQUEST: (state) => {
+          state.status = 'loading'
+      },
+
+      AUTH_SUCCESS: (state, {token}) => {
+          localStorage.setItem('user-token', token)
+
+           axios.defaults.headers.common['Authorization'] = token
+
+          state.status = 'success'
+          state.token = token
+      },
+
+      AUTH_ERROR: (state) => {
+          localStorage.removeItem('user-token')
+          state.status = 'error'
+
+      },
+
+      AUTH_LOGOUT: (state) => {
+          localStorage.removeItem('user-token')
+          delete axios.defaults.headers.common['Authorization']
+          state.token = ''
+      },
+
 
         setMenus: (state, {menus}) => {
             state.menus = menus
@@ -103,6 +131,10 @@ state: {
     },
 
     getters: {
+
+      isAuthenticated: state => !!state.token,
+
+      authStatus: state => state.status,
 
       tags: state => {
           return state.recipes.map(recipe => recipe.tags);

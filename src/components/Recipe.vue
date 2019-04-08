@@ -175,11 +175,13 @@ padding-bottom: 20px;
     @media screen and (max-width: 400px){
 
       .recipe {
-        width: 345px;
+        width: 340px;
+        padding-right: 5px;
+        padding-left: 5px;
       }
 
       .photo-link-container img {
-        width: 345px;
+        width: 340px;
 
       }
 

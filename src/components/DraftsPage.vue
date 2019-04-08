@@ -3,7 +3,7 @@
  <div class="drafts-page-container">
    <div v-if="!drafts.length">
      <p>
-       No saved drafts!
+       No drafts saved!
      </p>
    </div>
 <div class="drafts" v-if="showDraftEditor == false">

@@ -10,6 +10,11 @@ if (process.env.NODE_ENV === 'production') {
 window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+const token = localStorage.getItem('user-token')
+if (token) {
+  window.axios.defaults.headers.common['Authorization'] = token;
+}
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'

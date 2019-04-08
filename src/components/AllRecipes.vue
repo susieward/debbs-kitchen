@@ -87,8 +87,8 @@ padding: 20px;
     @media screen and (max-width: 590px){
 
       .all-recipes {
-padding-right: 0;
-padding-left: 0;
+        padding-right: 0;
+        padding-left: 0;
       }
 
       .all-recipes-container {
