@@ -16,7 +16,7 @@
                     <li><router-link to="/recipes">recipes</router-link></li>
                     <li><router-link to="/menus">menus</router-link></li>
                     <li><router-link to="/tags">index</router-link></li>
-
+                    <li><router-link to="to" @click.native="logout">logout</router-link></li>
 
                     </ul>
                 </div>
@@ -47,21 +47,20 @@
             <router-link to="/recipes">recipes</router-link>
             <router-link to="/menus">menus</router-link>
             <router-link to="/tags">index</router-link>
-            <button @click="logout()">logout</button>
-
+            <router-link to="to" @click.native="logout">logout</router-link>
             </nav>
              </div>
              </div>
 
 
              <div class="search">
+
             <input type="text" id="bar" v-model="search" placeholder="search..." @keyup.enter="startSearch"/>
 
             </div>
           </div>
       </div>
       <div class="main">
-
       <div class="content">
 
     <router-view @route="displayPrevRoute"></router-view>
