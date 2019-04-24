@@ -1,12 +1,8 @@
 <template>
   <div id="app">
 
-    <div class="login-page" v-if="!isAuthenticated">
-      <login></login>
-  </div>
 
-
-    <div class="app-container" v-if="isAuthenticated">
+    <div class="app-container">
 
       <div ref="sideNav" class="bm-menu">
         <span class="bm-cross-button cross-style" @click="closeMenu">
@@ -20,7 +16,7 @@
                     <li><router-link to="/recipes">recipes</router-link></li>
                     <li><router-link to="/menus">menus</router-link></li>
                     <li><router-link to="/tags">index</router-link></li>
-                    <li><router-link to="to" @click.native="logout">logout</router-link></li>
+                    <li style="display: none"><router-link to="to" @click.native="logout">logout</router-link></li>
 
                     </ul>
                 </div>
@@ -54,7 +50,6 @@
             <router-link to="/recipes">recipes</router-link>
             <router-link to="/menus">menus</router-link>
             <router-link to="/tags">index</router-link>
-            <router-link to="to" @click.native="logout">logout</router-link>
             </nav>
              </div>
              </div>
@@ -391,8 +386,6 @@ transition: 0.3s;
 }
 
 .menu-overlay-extended {
-
-
 margin-top: 55px;
 background-color: #333;
 display: grid;
@@ -548,7 +541,7 @@ padding: 10px;
 nav {
 display: grid;
 grid-gap: 30px;
-grid-template-columns: auto auto auto auto auto;
+grid-template-columns: auto auto auto auto;
 padding: 0;
 margin: 0;
 align-content: center;

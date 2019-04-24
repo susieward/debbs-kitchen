@@ -21,9 +21,13 @@
            <div v-for="menu in menus">
 
                <div v-if="thisDate === menu.date && month === menu.month">
+                 <span class="menu-dot">&#11044;</span>
+                   <div class="menu-text">
+
                    <ul class="menu-list-calendar">
                    <li v-for="dish in menu.dishes">{{ dish.name }}</li>
                    </ul>
+                   </div>
                </div>
             </div>
 
@@ -241,6 +245,10 @@ color: #fff;
         color: #fff;
     }
 
+    .day:hover .menu-dot {
+      color: #fff;
+    }
+
     .day-overlay {
 
     }
@@ -300,6 +308,21 @@ border-bottom: 1px solid #444;
     font-size: 14px;
     line-height: normal;
     letter-spacing: normal;
+    }
+
+
+    .menu-text {
+      display: block;
+    }
+
+    .menu-dot {
+      display: none;
+      color: #F08080;
+      padding: 0;
+      font-size: 14px;
+      line-height: normal;
+      margin-left: 3px;
+
     }
 
 
@@ -478,6 +501,14 @@ border-bottom: 1px solid #444;
     font-size: 16px;
   }
 
+  .menu-text {
+    display: none;
+  }
+
+  .menu-dot {
+    display: block;
+  }
+
 }
 
 @media screen and (max-width: 590px){
@@ -567,7 +598,7 @@ border-bottom: 1px solid #444;
   .day {
   width: 50px;
   height: 50px;
-  padding: 2px;
+  padding: 1px;
   opacity: 1;
   border-right: 1px solid #444;
   border-bottom:  1px solid #444;
@@ -577,7 +608,7 @@ border-bottom: 1px solid #444;
   .day-alt {
   width: 50px;
   height: 50px;
-  padding: 2px;
+  padding: 1px;
   background-color: #F8F4F4;
       border-right: 1px solid #444;
   }
@@ -592,6 +623,11 @@ border-bottom: 1px solid #444;
   .day-title {
     width: 50px;
     font-size: 12px;
+  }
+
+  .menu-dot {
+    font-size: 12px;
+
   }
 
 }
