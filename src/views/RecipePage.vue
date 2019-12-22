@@ -6,92 +6,66 @@
       <router-link to="/recipes" class="regular" v-if="!this.tag">&#x27F5; all recipes</router-link>
       </div>
 <div id="recipePrint">
-
-
     <div class="recipe-page-container">
     <div class="recipe-top">
-
         <div class="recipe-name-div"><span v-if="showRecipeEditor === false">{{ recipe.name }}</span><span v-if="showRecipeEditor === true">Edit recipe</span></div>
-
         <div class="recipebtns">
             <span><button class="greybtn" @click="openRecipeEditor(recipe)" v-if="showRecipeEditor == false">edit recipe</button><button class="pinkbtn" v-if="showRecipeEditor === false" v-print>print</button> </span>
             <span>
 
-                    <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">close editor</button>
-                </span>
+      <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">close editor</button>
+    </span>
     </div>
     </div>
     <div class="recipe-container" v-if="showRecipeEditor == false">
 
-<div class="recipe-photo-container">
-
-
+      <div class="recipe-photo-container">
       <img class="recipe-photo" :src="recipe.photo">
     </div><br />
-
           <span class="section">Ingredients:</span>
             <ul class="recipe-ingredients">
             <li v-for="(ingredient, index) in recipe.ingredients">{{ ingredient.text }}</li>
           </ul>
-            <p class="section">Directions:</p>
-            <div class="recipe-directions">
+      <p class="section">Directions:</p>
+        <div class="recipe-directions">
+        <div v-for="box in recipe.instructions">
+          <div v-if="box.hasImage === false">
+          <p class="directions-text" v-html="box.text"></p>
+          </div>
 
-
-                        <div v-for="box in recipe.instructions">
-                          <div v-if="box.hasImage === false">
-                            <p class="directions-text" v-html="box.text">
-
-                            </p>
-                          </div>
-
-                          <div class="recipe-box-img-container" v-if="box.hasImage === true">
-
-                          <img class="recipe-box-img" :src="box.image" />
-                        </div>
-
-                        </div>
-                        </div>
-            <div class="tags-section">
-
-          <p id="tags-paragraph"><span class="section">Tags:</span> <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p></div>
+        <div class="recipe-box-img-container" v-if="box.hasImage === true">
+          <img class="recipe-box-img" :src="box.image" />
+        </div>
+      </div>
+    </div>
+    <RecipeTags :selectedTag="selectedTag" :recipe="recipe"></RecipeTags>
     </div>
 
     <recipe-editor v-if="showRecipeEditor == true" :recipe="selectedRecipe" @close="closeRecipeEditor"></recipe-editor>
-
     </div>
-    </div>
-
+  </div>
 </div>
 </template>
 <script>
 import axios from 'axios'
-import RecipeEditor from './RecipeEditor.vue'
 export default {
 data(){
     return {
         showRecipeEditor: false,
         selectedRecipe: undefined,
         output: null
-
     }
 },
-    name: 'RecipePage',
-
-
+name: 'RecipePage',
 props: ['selectedTag'],
-
-    components: {
-        RecipeEditor
+components: {
+  RecipeTags: () => import('@/components/RecipeTags.vue'),
+  RecipeEditor: () => import('@/components/RecipeEditor.vue')
+},
+computed: {
+    tag(){
+      return this.$route.params.selectedTag;
     },
-
-
-    computed: {
-
-      tag(){
-
-        return this.$route.params.selectedTag;
-
-      },
 
     id(){
       return this.$route.params.id
@@ -100,31 +74,16 @@ props: ['selectedTag'],
     recipe(){
       return this.$store.getters.getRecipeById(this.id)
     }
+},
+methods: {
+    openRecipeEditor(recipe){
+        this.showRecipeEditor = true;
+        this.selectedRecipe = recipe;
     },
-
-    methods: {
-
-      findTag: function(tag){
-
-      this.selectedTag = tag;
-
-      this.$router.push({ name: 'TagResults', params: { selectedTag: this.selectedTag }});
-
-    },
-
-        openRecipeEditor: function(recipe){
-            this.showRecipeEditor = true;
-            this.selectedRecipe = recipe;
-
-        },
-
-        closeRecipeEditor: function(){
-            this.showRecipeEditor = false;
-
-        }
-
-
+    closeRecipeEditor(){
+        this.showRecipeEditor = false;
     }
+  }
 }
 </script>
 <style>

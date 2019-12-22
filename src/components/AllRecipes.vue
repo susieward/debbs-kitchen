@@ -1,59 +1,39 @@
 <template>
-
-  <div class="all-recipes">
-
-        <div v-for="recipe in sortedRecipes" :key="recipe._id" class="all-recipes-container">
-            <recipe :recipe="recipe"></recipe>
-      </div>
-
-        </div>
-
+<div class="all-recipes">
+  <div v-for="recipe in sortedRecipes" :key="recipe._id" class="all-recipes-container">
+    <recipe :recipe="recipe"></recipe>
+  </div>
+</div>
 </template>
 <script>
 import Recipe from './Recipe.vue'
 export default {
-  data(){
-    return {
-
-    }
-  },
-    name: 'AllRecipes',
-
-    components: {
-        Recipe
-    },
-
+name: 'AllRecipes',
+components: {
+  Recipe
+},
 mounted: function(){
-
   this.$store.dispatch('loadRecipes');
-
 },
 
-    computed: {
-        recipes() {
-        return this.$store.state.recipes;
-      },
+computed: {
+  recipes() {
+    return this.$store.state.recipes;
+},
 
-      sortedRecipes: function(){
-        function compare(a, b){
+sortedRecipes(){
+  function compare(a, b){
+    var nameA = a.name.toLowerCase();
+    var nameB = b.name.toLowerCase();
 
-          var nameA = a.name.toLowerCase();
-          var nameB = b.name.toLowerCase();
-
-          if(nameA < nameB)
-          return -1;
-
-          if(nameA > nameB)
+    if(nameA < nameB) return -1;
+    if(nameA > nameB)
           return 1;
           return 0;
-
         }
-
-        return this.recipes.sort(compare);
-      }
-
-
-    }
+    return this.recipes.sort(compare);
+  }
+}
 }
 </script>
 <style>

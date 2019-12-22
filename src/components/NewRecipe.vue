@@ -231,7 +231,7 @@ components: {
 
 methods: {
 
-  saveDraft: function(){
+  saveDraft(){
 
     let draft = {};
 
@@ -265,7 +265,6 @@ methods: {
   },
 
   backToSelection: function(){
-
     this.itemChosen = false;
     this.text = false;
     this.image = false;
@@ -362,12 +361,11 @@ methods: {
           this.editImg = '';
     },
 
-checkNewText: function(newBox){
-
+checkNewText(newBox){
   this.newBoxText = newBox.text;
 },
 
-    addText: function(){
+    addText(){
 
 if(this.newBoxText){
       var number = Date.now() + Math.random().toString().slice(18);
@@ -392,7 +390,7 @@ if(this.newBoxText){
 
     },
 
-    addIndex: function(){
+    addIndex(){
 
       this.newRecipe.instructions.map((item, index) => {
 
@@ -402,96 +400,64 @@ if(this.newBoxText){
 
     },
 
-    change: function(evt){
-
-      var i = evt.moved.newIndex;
+    change(evt){
+      let i = evt.moved.newIndex;
      this.testIndex = i;
 
-     var e = evt.moved.element;
+     let e = evt.moved.element;
      this.testId = e.id;
-
       this.newRecipe.instructions.forEach((item, index) => {
-
         item.order = index;
-
       });
 
     },
 
-    ingrChange: function(evt){
-
-      var i = evt.moved.newIndex;
-
-
-     var e = evt.moved.element;
-
-
+  ingrChange(evt){
+    let i = evt.moved.newIndex;
+    let e = evt.moved.element;
       this.ingredients.forEach((item, index) => {
-
         item.order = index;
-
       });
-
     },
-
 
     addImage: function(){
-
       if(this.newBoxImg){
-
-      var number = Date.now() + Math.random().toString().slice(18);
-
-  var id = 'a' + number;
+        let number = Date.now() + Math.random().toString().slice(18);
+        let id = 'a' + number;
 
         this.newBox.id = id;
         this.newBox.hasImage = true;
         this.newBox.image = this.newBoxImg;
-
-
-
-      this.newRecipe.instructions.push(this.newBox);
-      this.newBoxImg = '';
-      this.newBox = {};
-      this.itemChosen = false;
-      this.image = false;
-      this.addIndex();
-} else {
-
-  this.imgError = "Please select an image"
-}
-
-    },
+        this.newRecipe.instructions.push(this.newBox);
+        this.newBoxImg = '';
+        this.newBox = {};
+        this.itemChosen = false;
+        this.image = false;
+        this.addIndex();
+      } else {
+        this.imgError = "Please select an image"
+  }
+},
 
     editTrue: function(id){
-
       this.editing = true;
-
       this.editId = id;
-
-
     },
 
     editBoxText: function(id){
-
       this.editing = true;
       this.editId = id;
-
       var box = this.newRecipe.instructions.find(b => b.id === id);
-
       this.boxText = box.text;
     },
 
     checkEditText: function(){
-
-
       this.editText = this.boxText;
 
     },
 
     editBox: function(id){
-
-
-  var boxId = id;
+      let boxId = id;
 
       var index = this.newRecipe.instructions.findIndex(b => b.id === boxId);
 
@@ -506,17 +472,11 @@ if(this.newBoxText){
     order: box.order
   }
 
-
-
       this.newRecipe.instructions.splice(index, 1, updatedBox);
       this.editing = false;
       this.editId = ''
       this.editText = ''
       this.boxText = ''
-
-
-
-
     },
 
     editImage: function(id){

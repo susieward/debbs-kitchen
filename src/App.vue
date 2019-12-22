@@ -1,66 +1,42 @@
 <template>
-  <div id="app">
-
-
-    <div class="app-container">
-
-      <div ref="sideNav" class="bm-menu">
+<div id="app">
+  <div class="app-container">
+    <div ref="sideNav" class="bm-menu">
         <span class="bm-cross-button cross-style" @click="closeMenu">
                <span v-for="(x, index) in 2" :key="x" class="bm-cross" :style="{ position: 'absolute', width: '3px', height: '14px',transform: index === 1 ? 'rotate(45deg)' : 'rotate(-45deg)'}">
                </span>
            </span>
         <div class="menu-overlay-extended">
+            <ul class="menu">
+                <li><router-link to="/">planner</router-link></li>
+                <li><router-link to="/recipes">recipes</router-link></li>
+                <li><router-link to="/menus">menus</router-link></li>
+                <li><router-link to="/tags">index</router-link></li>
+                <li style="display: none"><router-link to="to" @click.native="logout">logout</router-link></li>
+          </ul>
+      </div>
+    </div>
 
-                <ul class="menu">
-                    <li><router-link to="/">planner</router-link></li>
-                    <li><router-link to="/recipes">recipes</router-link></li>
-                    <li><router-link to="/menus">menus</router-link></li>
-                    <li><router-link to="/tags">index</router-link></li>
-                    <li style="display: none"><router-link to="to" @click.native="logout">logout</router-link></li>
+  <div class="header">
+      <div class="header-container">
+        <div class="icon-nav">
+          <span class="icon-item">
+          <div ref="bmBurgerButton" class="bm-burger-button" @click="openMenu">
+          <span class="bm-burger-bars line-style" :style="{top:20 * (index * 2) + '%'}" v-for="(x, index) in 3" :key="index"></span>
+      </div>
+      </span>
+      </div>
 
-                    </ul>
-                </div>
-              </div>
+    <Navbar>
+      <template v-slot:title>
+      <h1 style="cursor: pointer" @click="$router.push({ path: '/' })">Debb's kitchen</h1>
+    </template>
+      </Navbar>
+      <div class="search">
+          <input type="text" id="bar" v-model="search" placeholder="search..." @keyup.enter="startSearch"/>
+      </div>
+    </div>
 
-      <div class="header">
-
-         <div class="header-container">
-
-
-           <div class="title-and-links">
-
-             <div class="icon-nav">
-             <span class="icon-item">
-               <div ref="bmBurgerButton" class="bm-burger-button" @click="openMenu">
-            <span class="bm-burger-bars line-style" :style="{top:20 * (index * 2) + '%'}" v-for="(x, index) in 3" :key="index"></span>
-        </div>
-</span>
-
-
-
-                </div>
-
-             <div class="title">
-              <h1 style="cursor: pointer" @click="goToHome">Debb's kitchen</h1>
-             </div>
-
-             <div class="links">
-              <nav>
-            <router-link to="/">planner</router-link>
-            <router-link to="/recipes">recipes</router-link>
-            <router-link to="/menus">menus</router-link>
-            <router-link to="/tags">index</router-link>
-            </nav>
-             </div>
-             </div>
-
-
-             <div class="search">
-
-            <input type="text" id="bar" v-model="search" placeholder="search..." @keyup.enter="startSearch"/>
-
-            </div>
-          </div>
       </div>
       <div class="main">
       <div class="content">
@@ -80,9 +56,8 @@
     </div>
   </div>
 </template>
-
 <script>
-import Login from './components/Login.vue'
+import Navbar from '@/layout/Navbar.js'
 export default {
   data(){
     return {
@@ -95,13 +70,12 @@ export default {
     }
   },
   name: 'App',
-
   components: {
-    Login
+    Login: () => import('@/components/Login.vue'),
+    Navbar
   },
 
   created: function(){
-
     document.addEventListener('click', this.documentClick);
   },
 
@@ -111,74 +85,13 @@ export default {
   },
 
   computed: {
-
     isAuthenticated(){
         return this.$store.getters.isAuthenticated;
-    },
-
-    recipes(){
-
-      return this.$store.state.recipes;
-    },
-
-      recipeNames(){
-
-        return this.recipes.map(recipe => recipe.name);
-
-
-      },
-
-      tags(){
-        return this.recipes.map(recipe => recipe.tags);
-      },
-
-      tagsList(){
-
-        var t = this.tags;
-
-        return [].concat(...t);
-
-      },
-
-      uniqueTags(){
-
-        var list = this.tagsList;
-
-        var unique = [...new Set(list)];
-
-        return unique;
-      },
-
-      tagsAndRecipes(){
-
-        var arr1 = this.recipeNames;
-        var arr2 = this.uniqueTags;
-
-        var arrs = [arr1, arr2];
-
-        return [].concat(...arrs);
-
-      },
-
-
-
-
-    searchResults(){
-
-      var lowSearch = this.search.toLowerCase();
-
-      return this.tagsAndRecipes.filter(item => item.toLowerCase() === lowSearch);
-
-
-
     }
-
   },
-
   methods: {
 
     openMenu() {
-      this.$emit('openMenu');
       this.isSideBarOpen = true;
       this.$nextTick(function(){
         this.$refs.sideNav.style.width = "200px";
@@ -186,7 +99,6 @@ export default {
     },
 
     closeMenu() {
-      this.$emit('closeMenu');
       this.isSideBarOpen = false;
       this.$refs.sideNav.style.width = "0px";
     },
@@ -204,39 +116,24 @@ export default {
 
     },
 
-    toggleClass: function(event){
-       if(!this.isActive){
-         this.isActive = true;
-       }else{
-         this.isActive = false;
-       }
-
+    toggleClass(){
+       this.isActive = !this.isActive
     },
 
-    loginSuccess: function(){
-
+    loginSuccess(){
       this.loggedIn = true;
     },
 
-    logout: function(){
+    logout(){
         this.$store.commit('AUTH_LOGOUT');
         this.$router.push('/')
     },
-
-    goToHome: function(){
-
-      this.$router.push({ name: 'Home'});
-
-    },
-
     startSearch: function(){
-
       this.$router.push({ name: 'SearchResults', params: { search: this.search }});
     },
 
     displayPrevRoute: function(prevRoute){
       this.prevRoute = prevRoute;
-
       this.name = this.prevRoute.params.name;
 
     }
@@ -244,7 +141,6 @@ export default {
 }
 </script>
 <style>
-
 
 #app {
 display: grid;
@@ -430,12 +326,12 @@ font-weight: 300;
 }
 
 .app-container {
-
   display: grid;
-  grid-template-areas: "header header"
-                      "main main"
-                      "footer footer";
+  grid-template-areas: "header"
+                      "main"
+                      "footer";
   min-height: 100vh;
+  min-width: 100vw;
   z-index: 0;
   position: relative;
 }
@@ -447,13 +343,11 @@ font-weight: 300;
 .header {
 grid-area: header;
 display: grid;
-padding: 40px;
+padding: 0 40px;
 height: 117px;
-width: 100vw;
 text-align: center;
 background-color: #ecc77e;
 margin-bottom: 60px;
-
 }
 
 .header-container {
@@ -461,7 +355,8 @@ display: grid;
 grid-template-areas: "left search";
 grid-template-columns: auto auto;
 align-content: center;
-
+padding: 0;
+margin: 0;
 }
 
 
@@ -474,6 +369,7 @@ align-content: center;
 display: grid;
 grid-area: left;
 grid-template-areas: "title links";
+align-content: center;
 justify-content: flex-start;
 grid-gap: 50px;
 }
@@ -496,7 +392,6 @@ text-align: left;
 font-size: 35px;
 font-family: 'Gotham Rounded Medium';
 letter-spacing: 0.03em;
-
 text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
 }
 
@@ -532,33 +427,29 @@ display: grid;
 align-content: center;
 }
 
-.links-container {
-display: grid;
-padding: 10px;
-}
-
 
 nav {
 display: grid;
 grid-gap: 30px;
-grid-template-columns: auto auto auto auto;
+grid-auto-columns: auto;
+grid-auto-flow: column;
 padding: 0;
 margin: 0;
 align-content: center;
 }
 
 nav a {
-display: inline-block;
+  display: block;
 text-align: center;
 color: #fff;
-padding: 0px;
+padding-top: 4px;
 font-size: 18px;
+line-height: normal;
 letter-spacing: 0.03em;
 transition: 0.3s;
 font-family: 'Gotham Rounded Medium';
 text-transform: uppercase;
-line-height: normal;
-margin: 0;
+margin: auto 0;
 
 }
 

@@ -8,10 +8,8 @@
 
     <div class="month">
     <div class="weekdays">
-
-        <div class="day-title" v-for="day in days">{{ day }}</div>
+    <div class="day-title" v-for="day in days">{{ day }}</div>
          </div>
-
     <div class="week">
         <div class="day" v-for="blank in firstDayOfMonth">&nbsp;</div>
 
@@ -30,22 +28,10 @@
                    </div>
                </div>
             </div>
-
-
-
-
-
-
         </div>
-
        <modal v-if="showModal" @close="closeModal" :this-date="thisDate" :month="month" :year="year"></modal>
-
      </div>
         </div>
-
-
-
-
     </div>
 </template>
 <script>
