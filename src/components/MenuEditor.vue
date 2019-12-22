@@ -1,157 +1,120 @@
 <template>
 <div class="menu-editor">
-
-    <div class="editor-list-container">
+  <div class="editor-list-container">
     <ul class="menu-list-edit">
-                   <li v-for="(dish, index) in menuEdit.dishes"><span class="remove" @click="removeDish(index)">x</span> {{ dish.name }}</li>
-                   </ul>
-
-
-
-                   <div class="inputs">
-                  <input type="text" class="dish-item" v-model="newDish" placeholder="Start typing recipe name"/>
-
-                  <div v-if="newDish">
-
-                     <div class="results-dropdown" v-if="dishResults.length">
-
-
-                   <ul class="dishes-select">
-                     <li v-for="result in dishResults" @click="addToDishes(result)">{{ result.name }}</li>
-                   </ul>
-
-                     </div>
-       </div>
-
-
-                  <p v-if="disabled === true" style="color: red">Can't add dish if input is empty</p>
-                  </div>
-
+      <li v-for="(dish, index) in menuEdit.dishes"><span class="remove" @click="removeDish(index)">x</span> {{ dish.name }}</li>
+    </ul>
+    <div class="inputs">
+      <input type="text" class="dish-item" v-model="newDish" placeholder="Start typing recipe name"/>
+      <div v-if="newDish">
+        <div class="results-dropdown" v-if="dishResults.length">
+          <ul class="dishes-select">
+            <li v-for="result in dishResults" @click="addToDishes(result)">{{ result.name }}</li>
+          </ul>
+        </div>
+      </div>
+      <p v-if="disabled === true" style="color: red">Can't add dish if input is empty</p>
     </div>
-
-
-                 <div class="editor-buttons-container">
-                     <span>
-                     <button class="pinkbtn" @click="editMenu(menu)">save changes</button>
-                     <button class="greybtn" @click="$emit('close')">close editor</button>
-                     </span>
-                         </div>
-
+  </div>
+  <div class="editor-buttons-container">
+    <span>
+      <button class="pinkbtn" @click="editMenu(menu)">save changes</button>
+      <button class="greybtn" @click="$emit('close')">close editor</button>
+    </span>
+ </div>
 </div>
-
-
-
 </template>
 <script>
+import { updateMenu } from '@/services/menusApi.js'
 import axios from 'axios'
 export default {
 data(){
-    return {
-        menuEdit: {
-            dishes: []
-        },
-        newDish: '',
-        disabled: false
-    }
+  return {
+    menuEdit: {
+      dishes: []
+    },
+    newDish: '',
+    disabled: false
+  }
 },
-
 props: ['menu'],
-
 name: 'MenuEditor',
-
 created(){
     this.menuEdit = Object.assign({}, this.menu);
 },
-
 computed: {
   recipes(){
-
     return this.$store.state.recipes;
   },
-
-    recipeNames(){
-
-      return this.recipes.map(recipe => recipe.name);
-
-
-    },
-
-
-
-        dishResults: function(){
-            var lowSearch = this.newDish.toLowerCase();
-
-
-            return this.recipes.filter(recipe => recipe.name.toLowerCase().includes(lowSearch)
-           );
-            }
+  recipeNames(){
+    return this.recipes.map(recipe => recipe.name);
+  },
+  dishResults(){
+    let lowSearch = this.newDish.toLowerCase();
+    return this.recipes.filter(recipe => recipe.name.toLowerCase().includes(lowSearch));
+  }
 },
-
-
 methods: {
-
-  checkInput: function(){
+  checkInput(){
     if(this.newDish === ''){
-
       this.disabled = true;
-
     } else {
-
       this.disabled = false;
       this.addDish();
-
     }
-
   },
-
-  addToDishes: function(result){
-
-
+  addToDishes(result){
     this.menuEdit.dishes.push(result);
     this.newDish = '';
-
+  },
+  addDish(){
+    this.menuEdit.dishes.push(this.newDish);
+    this.newDish = '';
+  },
+  removeDish(index){
+    let dishes = this.menuEdit.dishes;
+    dishes.splice(index, 1);
   },
 
-     addDish: function(){
-            this.menuEdit.dishes.push(this.newDish);
-            this.newDish = '';
-        },
+  async editMenu(menu){
+    let data = {
+      _id: this.menu._id,
+      date: this.menu.date,
+      month: this.menu.month,
+      year: this.menu.year,
+      dishes: this.menuEdit.dishes
+    };
+    try {
+      let res = await updateMenu(data)
+      this.$store.commit('editMenu', {menu: res.data});
+      this.$emit('close');
+    } catch(err) {
+        console.log('err')
+      }
+  },
 
-        removeDish: function(index){
-            var dishes = this.menuEdit.dishes;
-
-            dishes.splice(index, 1);
-        },
-
-        editMenu: function(menu){
-
-            let path = 'https://debbskitchen-server.herokuapp.com/menus/' + menu._id;
-
-            let data = {
-                _id: this.menu._id,
-                date: this.menu.date,
-                month: this.menu.month,
-                year: this.menu.year,
-                dishes: this.menuEdit.dishes
-            };
-
-            axios.put(path, data).then((response) => {
-                this.$store.commit('editMenu', {menu: response.data});
-                this.$store.dispatch('loadMenus');
-            });
-            this.$emit('close');
-
-
-                      }
-
-
-
+/*
+  editMenu(menu){
+      let path = 'https://debbskitchen-server.herokuapp.com/menus/' + menu._id;
+      let data = {
+        _id: this.menu._id,
+        date: this.menu.date,
+        month: this.menu.month,
+        year: this.menu.year,
+        dishes: this.menuEdit.dishes
+      };
+      axios.put(path, data).then((response) => {
+          this.$store.commit('editMenu', {menu: response.data});
+          this.$store.dispatch('loadMenus');
+        });
+      this.$emit('close');
     }
+
+    */
+  }
 }
 </script>
 <style>
-
-
     .menu-editor {
         display: grid;
         grid-template-columns: auto auto;

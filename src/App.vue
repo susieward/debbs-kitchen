@@ -18,15 +18,14 @@
     </div>
 
   <div class="header">
-      <div class="header-container">
-        <div class="icon-nav">
-          <span class="icon-item">
+    <div class="header-container">
+      <div class="icon-nav">
+        <span class="icon-item">
           <div ref="bmBurgerButton" class="bm-burger-button" @click="openMenu">
           <span class="bm-burger-bars line-style" :style="{top:20 * (index * 2) + '%'}" v-for="(x, index) in 3" :key="index"></span>
       </div>
       </span>
       </div>
-
     <Navbar>
       <template v-slot:title>
       <h1 style="cursor: pointer" @click="$router.push({ path: '/' })">Debb's kitchen</h1>
@@ -74,68 +73,54 @@ export default {
     Login: () => import('@/components/Login.vue'),
     Navbar
   },
-
   created: function(){
     document.addEventListener('click', this.documentClick);
   },
-
   destroyed: function(){
     document.removeEventListener('click', this.documentClick);
-
   },
-
   computed: {
     isAuthenticated(){
-        return this.$store.getters.isAuthenticated;
+      return this.$store.getters.isAuthenticated;
     }
   },
   methods: {
-
     openMenu() {
       this.isSideBarOpen = true;
       this.$nextTick(function(){
         this.$refs.sideNav.style.width = "200px";
       })
     },
-
     closeMenu() {
       this.isSideBarOpen = false;
       this.$refs.sideNav.style.width = "0px";
     },
-
-    documentClick: function(e){
+    documentClick(e){
       let element = this.$refs.bmBurgerButton;
       let target = null;
       if (e && e.target) {
         target = e.target;
       }
-
       if (element && element !== target && !element.contains(target) && e.target.className !== 'bm-menu' && this.isSideBarOpen){
         this.closeMenu();
       }
-
     },
-
     toggleClass(){
        this.isActive = !this.isActive
     },
-
     loginSuccess(){
       this.loggedIn = true;
     },
-
     logout(){
         this.$store.commit('AUTH_LOGOUT');
         this.$router.push('/')
     },
-    startSearch: function(){
+    startSearch(){
       this.$router.push({ name: 'SearchResults', params: { search: this.search }});
     },
-
-    displayPrevRoute: function(prevRoute){
+    displayPrevRoute(prevRoute){
       this.prevRoute = prevRoute;
       this.name = this.prevRoute.params.name;
-
     }
   }
 }

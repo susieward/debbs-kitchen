@@ -1,55 +1,39 @@
 <template>
 <div class="new-recipe">
   <div class="recipe-form">
+    <span><label for="name">Name:</label> <input id="name" type="text" class="recipe-input" v-model="newRecipe.name"/></span>
+    <span style="font-weight: 400">Finished recipe photo:</span>
+    <div v-if="!newRecipe.photo">
+        <input type="file" @change="onPhotoChange">
+    </div>
+    <div v-else>
+      <img class="box-img" v-bind:src="newRecipe.photo"/>
+      <button @click="removeRecipePhoto">Remove image</button>
+    </div>
 
+    <span><label for="ingredients">Ingredients:</label> <input type="text" id="ingredient" class="recipe-input" v-model="newIngredient.text" placeholder="eggs, flour, pasta, etc"/> <button class="blackbtn" @click="addIngredient">add ingredient</button><span style="color: red">{{ ingrErr }}</span></span>
 
-       <span><label for="name">Name:</label> <input id="name" type="text" class="recipe-input" v-model="newRecipe.name"/></span>
-
-       <span style="font-weight: 400">Finished recipe photo:</span>
-
-         <div v-if="!newRecipe.photo">
-           <input type="file" @change="onPhotoChange">
-         </div>
-
-         <div v-else>
-
-
-         <img class="box-img" v-bind:src="newRecipe.photo"/>
-
-         <button @click="removeRecipePhoto">Remove image</button>
- </div>
-
-        <span><label for="ingredients">Ingredients:</label> <input type="text" id="ingredient" class="recipe-input" v-model="newIngredient.text" placeholder="eggs, flour, pasta, etc"/> <button class="blackbtn" @click="addIngredient">add ingredient</button><span style="color: red">{{ ingrErr }}</span></span>
-
-        <div class="ingredients">
-
-          <draggable :list="ingredients" @change="ingrChange" :options="{draggable: '.recipe-ingr', animation: 200}">
-
-            <div class="recipe-ingr" v-for="(ingredient, index) in ingredients" :key="index">
-                <span class="remove" @click="removeIngr(index)">x</span> {{ ingredient.text }}</li>
-          </div>
-
-          </draggable>
+    <div class="ingredients">
+      <draggable :list="ingredients" @change="ingrChange" :options="{draggable: '.recipe-ingr', animation: 200}">
+        <div class="recipe-ingr" v-for="(ingredient, index) in ingredients" :key="index">
+          <span class="remove" @click="removeIngr(index)">x</span> {{ ingredient.text }}</li>
         </div>
+      </draggable>
+    </div>
 
     <label for="instructions">Recipe directions:</label>
-
-      <div class="instructions">
-
-
-    <draggable :list="newRecipe.instructions" @change="change" :options="{draggable:'.recipe-text', animation: 200}">
-
-      <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="index">
-
-        <div class="box-item" v-if="editId !== box.id && box.hasImage === false"><span v-html="box.text"></span>
-        <span class="box-item-buttons"><button class="box-edit" @click="editBoxText(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
-        </button></span></div>
-
-
+    <div class="instructions">
+      <draggable :list="newRecipe.instructions" @change="change" :options="{draggable:'.recipe-text', animation: 200}">
+        <div v-for="(box, index) in newRecipe.instructions" class="recipe-text" :key="index">
+        <div class="box-item" v-if="editId !== box.id && box.hasImage === false">
+          <span v-html="box.text"></span>
+          <span class="box-item-buttons"><button class="box-edit" @click="editBoxText(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
+          </button></span>
+        </div>
         <div class="box-item" v-if="editId !== box.id && box.hasImage === true">
           <img class="box-img" :src="box.image" /><span class="box-item-buttons"><button class="box-edit" @click="editTrue(box.id)">edit</button><button class="box-edit" @click="remove(index)">x
-        </button></span></div>
-
+          </button></span>
+        </div>
         <div class="box-edit-item" v-if="editing === true && editId === box.id && box.hasImage === false">
           <ckeditor :editor="editor" tag-name="textarea" v-model="boxText" :config="editorConfig" @input="checkEditText">{{ boxText }}</ckeditor><br /><br />
 
@@ -57,125 +41,93 @@
         </div>
 
         <div class="box-edit-item" v-if="editing === true && editId === box.id && box.hasImage === true">
-
           <div v-if="!editImg">
             <img class="box-img" v-bind:src="box.image"/>
           </div>
-
           <div v-else>
             <img class="box-img" v-bind:src="editImg"/>
-  </div>
+          </div>
 
-  <input type="file" @change="onImgChange">
-        <br />
+          <input type="file" @change="onImgChange">
+          <br />
           <span class="lil-buttons"><button @click="editImage(box.id)" class="box-edit">save changes</button> <button class="box-edit" @click="cancel(box)">cancel</button></span>
-
         </div>
-
-
         <br />
-
       </div>
   </draggable>
-
-
-<div v-if="editing === false">
-
-<div class="new-box">
-
-  <div class="new-box-text-cover" @click="showText" v-if="itemChosen === false">
-    <p>
-      add text
-    </p>
-    </div>
-
+  <div v-if="editing === false">
+    <div class="new-box">
+      <div class="new-box-text-cover" @click="showText" v-if="itemChosen === false">
+        <p>add text</p>
+      </div>
   <div class="new-box-text" v-if="text === true && itemChosen === true">
-
-<ckeditor class="box-editor" :editor="editor" v-model="newBoxText" :config="editorConfig"></ckeditor>
-
-
-        <span class="lil-buttons">
+    <ckeditor class="box-editor" :editor="editor" v-model="newBoxText" :config="editorConfig"></ckeditor>
+    <span class="lil-buttons">
         <button v-if="newBoxText" class="box-edit" @click="addText">add text</button>
         <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
         </button>
-      </span>
-        <p style="color: red">{{ textError }}</p>
-</div>
+    </span>
+      <p style="color: red">{{ textError }}</p>
+  </div>
 
   <div class="new-box-img-cover" @click="showImage" v-if="itemChosen === false">
-    <p>
-      add image
-    </p>
+    <p>add image</p>
   </div>
-      <div class="new-box-img" v-if="itemChosen === true && text === false">
-        <div v-if="!newBoxImg">
-          <p style="font-weight: 300">
-            Choose an image:
-          </p>
-          <input type="file" @change="onFileChange">
-        </div>
-
-        <div v-else>
-
-
-        <img class="box-img" v-bind:src="newBoxImg"/>
-
-        <button @click="removeImage">Remove image</button>
-</div>
+  <div class="new-box-img" v-if="itemChosen === true && text === false">
+    <div v-if="!newBoxImg">
+      <p style="font-weight: 300">Choose an image:</p>
+      <input type="file" @change="onFileChange">
+    </div>
+    <div v-else>
+      <img class="box-img" v-bind:src="newBoxImg"/>
+      <button @click="removeImage">Remove image</button>
+    </div>
     </div>
   </div>
 
-<div v-if="itemChosen === true && text === false">
-  <span class="lil-buttons">
+  <div v-if="itemChosen === true && text === false">
+    <span class="lil-buttons">
         <button v-if="newBoxImg" class="box-edit" @click="addImage">add image</button> <button class="box-edit" v-if="itemChosen === true" @click="backToSelection">back
         </button>
         </span>
         <p>
           <span style="color: red">{{ imgError }}</span>
         </p>
-
         </div>
-
-
-
+  </div>
 </div>
-    </div>
 
-      <span><label for="tags">Tags:</label> <input type="text" id="tag" class="recipe-input" v-model="newTag" placeholder="dinner, holiday, etc"/> <button class="blackbtn" @click="addTag">add tag</button> <span style="color: red">{{ tagErr }}</span></span>
+  <span><label for="tags">Tags:</label> <input type="text" id="tag" class="recipe-input" v-model="newTag" placeholder="dinner, holiday, etc"/> <button class="blackbtn" @click="addTag">add tag</button> <span style="color: red">{{ tagErr }}</span></span>
 
-        <p>
-        <ul class="tag-ul">
-            <li v-for="(t, index) in tags" :key="index">
-                <span class="remove" @click="removeTag(index)">x</span> <span class="tag-text">{{ t }}</span></li>
-            </ul>
-        </p>
+    <p><ul class="tag-ul">
+      <li v-for="(t, index) in tags" :key="index">
+        <span class="remove" @click="removeTag(index)">x</span> <span class="tag-text">{{ t }}</span></li>
+        </ul>
+    </p>
 
-<span class="btnsrow-simple">
-
+    <span class="btnsrow-simple">
       <button class="pinkbtn" @click="saveRecipe">publish recipe</button>
-
-
-<button class="darkgreybtn" @click="saveDraft">save as draft</button>
+      <button class="darkgreybtn" @click="saveDraft">save as draft</button>
     </span>
       <span style="color: red">{{ draftErr }}</span>
-<span style="color: red">{{ error }}</span>
-</div>
-
-
+      <span style="color: red">{{ error }}</span>
+    </div>
 </div>
 </template>
 <script>
 import draggable from 'vuedraggable'
+import recipesMixin from '@/mixins/recipesMixin'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios'
 export default {
+mixins: [recipesMixin],
 data(){
     return {
       editor: ClassicEditor,
-                editorData: '<p>Content of the editor.</p>',
-                editorConfig: {
+        editorData: '<p>Content of the editor.</p>',
+        editorConfig: {
                     // The configuration of the editor.
-                },
+            },
         newRecipe: {
             name: '',
             instructions: [],
@@ -224,17 +176,13 @@ data(){
         draftErr: ''
       }
 },
-
+name: 'NewRecipe',
 components: {
   draggable
 },
-
 methods: {
-
   saveDraft(){
-
     let draft = {};
-
     draft.name = this.newRecipe.name;
     draft.instructions = this.newRecipe.instructions;
     draft.photo = this.newRecipe.photo;
@@ -251,20 +199,16 @@ methods: {
       photo: draft.photo,
       hasPhoto: draft.hasPhoto
     }).then((response) => {
-          this.$store.commit('saveDraft', {draft: response.data});
-
-          this.$store.dispatch('loadDrafts');
+      this.$store.commit('saveDraft', {draft: response.data});
+      this.$store.dispatch('loadDrafts');
       this.$router.push('/recipes/drafts');
-
       });
     } else {
       this.draftErr = 'Recipe must have a name'
     }
-
-
   },
 
-  backToSelection: function(){
+  backToSelection(){
     this.itemChosen = false;
     this.text = false;
     this.image = false;
@@ -275,17 +219,15 @@ methods: {
     this.newBoxImg = '';
   },
 
-  showText: function(){
+  showText(){
     this.text = true;
     this.itemChosen = true;
   },
 
-  showImage: function(){
+  showImage(){
     this.image = true;
     this.itemChosen = true;
   },
-
-
 
   onFileChange(e) {
     var files = e.target.files || e.dataTransfer.files;
@@ -294,37 +236,34 @@ methods: {
     this.createImage(files[0]);
   },
 
-  createImage: function(file) {
+  createImage(file) {
     var image = new Image();
     var reader = new FileReader();
     var vm = this;
-
     reader.onload = (e) => {
       vm.image = e.target.result;
         this.newBoxImg = vm.image;
     };
     reader.readAsDataURL(file);
-
   },
 
-  removeImage: function (e) {
+  removeImage(e) {
     this.newBoxImg = '';
   },
 
 // FINISHED RECIPE PHOTO UPLOAD
 
   onPhotoChange(e) {
-    var files = e.target.files || e.dataTransfer.files;
+    let files = e.target.files || e.dataTransfer.files;
        if (!files.length)
       return;
     this.createPhoto(files[0]);
   },
 
   createPhoto(file) {
-    var im = new Image();
-    var reader = new FileReader();
-    var vm = this;
-
+    let im = new Image();
+    let reader = new FileReader();
+    let vm = this;
     reader.onload = (e) => {
       vm.im = e.target.result;
         this.newRecipe.photo = vm.im;
@@ -333,89 +272,76 @@ methods: {
     reader.readAsDataURL(file);
   },
 
-  removeRecipePhoto: function (e) {
+  removeRecipePhoto (e) {
     this.newRecipe.photo = '';
     this.newRecipe.hasPhoto = false;
   },
 
   onImgChange(e) {
-    var files = e.target.files || e.dataTransfer.files;
+    let files = e.target.files || e.dataTransfer.files;
      if (!files.length)
      return;
      this.createEditImage(files[0]);
    },
 
-        createEditImage(file) {
-              var im = new Image();
-              var reader = new FileReader();
-              var vm = this;
-
-              reader.onload = (e) => {
-                vm.im = e.target.result;
-                this.editImg = vm.im;
+  createEditImage(file) {
+        let im = new Image();
+        let reader = new FileReader();
+        let vm = this;
+        reader.onload = (e) => {
+          vm.im = e.target.result;
+          this.editImg = vm.im;
         };
-          reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
     },
 
-      removeEditImage: function (e) {
-          this.editImg = '';
-    },
+  removeEditImage(e) {
+    this.editImg = '';
+  },
 
-checkNewText(newBox){
-  this.newBoxText = newBox.text;
-},
+  checkNewText(newBox){
+    this.newBoxText = newBox.text;
+  },
 
     addText(){
-
-if(this.newBoxText){
-      var number = Date.now() + Math.random().toString().slice(18);
-
-  var id = 'a' + number;
-
+      if(this.newBoxText){
+        let number = Date.now() + Math.random().toString().slice(18);
+        let id = 'a' + number;
         this.newBox.id = id;
         this.newBox.hasImage = false;
         this.newBox.text = this.newBoxText;
-
-
-      this.newRecipe.instructions.push(this.newBox);
-      this.newBox = {};
-      this.itemChosen = false;
-      this.text = false;
-      this.newBoxText = '';
-      this.addIndex();
-    } else {
-
-      this.textError = "Text field cannot be blank"
-    }
-
+        this.newRecipe.instructions.push(this.newBox);
+        this.newBox = {};
+        this.itemChosen = false;
+        this.text = false;
+        this.newBoxText = '';
+        this.addIndex();
+      } else {
+        this.textError = "Text field cannot be blank"
+      }
     },
 
     addIndex(){
-
       this.newRecipe.instructions.map((item, index) => {
-
         return item.order = index;
-
       });
-
     },
 
     change(evt){
       let i = evt.moved.newIndex;
-     this.testIndex = i;
+      this.testIndex = i;
 
-     let e = evt.moved.element;
-     this.testId = e.id;
+      let e = evt.moved.element;
+      this.testId = e.id;
       this.newRecipe.instructions.forEach((item, index) => {
         item.order = index;
       });
-
     },
 
   ingrChange(evt){
     let i = evt.moved.newIndex;
     let e = evt.moved.element;
-      this.ingredients.forEach((item, index) => {
+    this.ingredients.forEach((item, index) => {
         item.order = index;
       });
     },
@@ -424,7 +350,6 @@ if(this.newBoxText){
       if(this.newBoxImg){
         let number = Date.now() + Math.random().toString().slice(18);
         let id = 'a' + number;
-
         this.newBox.id = id;
         this.newBox.hasImage = true;
         this.newBox.image = this.newBoxImg;
@@ -436,42 +361,36 @@ if(this.newBoxText){
         this.addIndex();
       } else {
         this.imgError = "Please select an image"
-  }
-},
+      }
+    },
 
-    editTrue: function(id){
+    editTrue(id){
       this.editing = true;
       this.editId = id;
     },
 
-    editBoxText: function(id){
+    editBoxText(id){
       this.editing = true;
       this.editId = id;
-      var box = this.newRecipe.instructions.find(b => b.id === id);
+      let box = this.newRecipe.instructions.find(b => b.id === id);
       this.boxText = box.text;
     },
 
-    checkEditText: function(){
+    checkEditText(){
       this.editText = this.boxText;
-
     },
 
-    editBox: function(id){
+    editBox(id){
       let boxId = id;
-
-      var index = this.newRecipe.instructions.findIndex(b => b.id === boxId);
-
-      var box = this.newRecipe.instructions.find(b => b.id === boxId);
-
-
-  var updatedBox = {
-    text: this.editText,
-    id: boxId,
-    image: box.image,
-    hasImage: false,
-    order: box.order
-  }
-
+      let index = this.newRecipe.instructions.findIndex(b => b.id === boxId);
+      let box = this.newRecipe.instructions.find(b => b.id === boxId);
+      let updatedBox = {
+        text: this.editText,
+        id: boxId,
+        image: box.image,
+        hasImage: false,
+        order: box.order
+      }
       this.newRecipe.instructions.splice(index, 1, updatedBox);
       this.editing = false;
       this.editId = ''
@@ -479,114 +398,80 @@ if(this.newBoxText){
       this.boxText = ''
     },
 
-    editImage: function(id){
-
-      var boxId = id;
-
-          var index = this.newRecipe.instructions.findIndex(b => b.id === boxId);
-
-          var box = this.newRecipe.instructions.find(b => b.id === boxId);
-
-
-
-          var updatedBox = {
-            text: box.text,
-            id: boxId,
-            image: this.editImg,
-            hasImage: true,
-            order: box.order
-          }
-
-          this.newRecipe.instructions.splice(index, 1, updatedBox);
-          this.editing = false;
-          this.editId = '';
-          this.editImg = ''
-
+    editImage(id){
+      let boxId = id;
+      let index = this.newRecipe.instructions.findIndex(b => b.id === boxId);
+      let box = this.newRecipe.instructions.find(b => b.id === boxId);
+      let updatedBox = {
+        text: box.text,
+        id: boxId,
+        image: this.editImg,
+        hasImage: true,
+        order: box.order
+      }
+      this.newRecipe.instructions.splice(index, 1, updatedBox);
+      this.editing = false;
+      this.editId = '';
+      this.editImg = ''
     },
 
-    cancel: function(){
+    cancel(){
       this.editing = false;
       this.editId = '';
       this.editText = '';
       this.boxText = ''
     },
 
-
-
-    remove: function(index){
-
+    remove(index){
       this.newRecipe.instructions.splice(index, 1);
-
       this.newRecipe.instructions.forEach((item, index) => {
-
         item.order = index;
-
       });
-
     },
 
-    addIngredient: function(){
+    addIngredient(){
       if(this.newIngredient.text !== ''){
-
-        var number = Date.now() + Math.random().toString().slice(18);
-        var id = 'b' + number;
-
+        let number = Date.now() + Math.random().toString().slice(18);
+        let id = 'b' + number;
         this.newIngredient.id = id;
+        this.ingredients.push(this.newIngredient);
+        this.newIngredient = {};
+        this.addIngrIndex();
+      } else {
+        this.ingrErr = "*Input can't be blank."
+      }
+    },
 
-            this.ingredients.push(this.newIngredient);
-            this.newIngredient = {};
+    addIngrIndex(){
+      this.ingredients.map((item, index) => {
+        return item.order = index;
+      });
+    },
 
-            this.addIngrIndex();
-          } else {
-            this.ingrErr = "*Input can't be blank."
-          }
-        },
-
-        addIngrIndex: function(){
-
-          this.ingredients.map((item, index) => {
-
-            return item.order = index;
-
-          });
-
-        },
-
-        removeIngr: function(index){
-            var ingredients = this.ingredients;
-
-            ingredients.splice(index, 1);
-
-            ingredients.forEach((item, index) => {
-
-              item.order = index;
+    removeIngr(index){
+      let ingredients = this.ingredients;
+      ingredients.splice(index, 1);
+      ingredients.forEach((item, index) => {
+          item.order = index;
         });
-      },
+    },
 
-    addTag: function(){
+    addTag(){
       if(this.newTag !== ''){
-            this.tags.push(this.newTag);
-            this.newTag = '';
-          } else {
-            this.tagErr = "*Input can't be blank."
-          }
-        },
+        this.tags.push(this.newTag);
+        this.newTag = '';
+      } else {
+        this.tagErr = "*Input can't be blank."
+      }
+    },
 
-        removeTag: function(index){
-            var tags = this.tags;
+    removeTag(index){
+      let tags = this.tags;
+      tags.splice(index, 1);
+    },
 
-            tags.splice(index, 1);
-        },
-
-    saveRecipe: function(){
-
-
-
-
+/*    saveRecipe(){
       if(this.newRecipe.name !== '' && this.ingredients !== [] && this.newRecipe.instructions !== [] && this.tags !== [] && this.newRecipe.photo){
-
-
-
         axios.post('https://debbskitchen-server.herokuapp.com/recipes', {
 
           name: this.newRecipe.name,
@@ -598,21 +483,18 @@ if(this.newBoxText){
 
         }).then((response) => {
             this.$store.commit('saveRecipe', {recipe: response.data});
-
-            var data = response.data;
+            let data = response.data;
             this.$store.dispatch('loadRecipes');
             this.$router.push({ name: 'RecipePage', params: { id: data._id }});
-
         });
 
       } else {
         this.error = "*Please fill out all fields"
       }
+    }
 
-}
-},
-
-name: 'NewRecipe'
+    */
+  }
 }
 </script>
 <style>

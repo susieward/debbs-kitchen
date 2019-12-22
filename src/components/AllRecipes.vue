@@ -12,34 +12,28 @@ name: 'AllRecipes',
 components: {
   Recipe
 },
-mounted: function(){
-  this.$store.dispatch('loadRecipes');
-},
-
 computed: {
   recipes() {
     return this.$store.state.recipes;
-},
+  },
+  sortedRecipes(){
+    function compare(a, b){
+      let nameA = a.name.toLowerCase();
+      let nameB = b.name.toLowerCase();
 
-sortedRecipes(){
-  function compare(a, b){
-    var nameA = a.name.toLowerCase();
-    var nameB = b.name.toLowerCase();
-
-    if(nameA < nameB) return -1;
-    if(nameA > nameB)
+      if(nameA < nameB) return -1;
+      if(nameA > nameB)
           return 1;
           return 0;
-        }
+    }
     return this.recipes.sort(compare);
   }
 }
 }
 </script>
 <style>
-
-    .all-recipes {
-    display: grid;
+.all-recipes {
+display: grid;
 align-content: flex-start;
 justify-content: center;
   padding: 30px;
@@ -76,9 +70,4 @@ padding: 20px;
       }
 
     }
-
-
-
-
-
 </style>

@@ -4,7 +4,6 @@
 <h1>Menu Archive</h1>
         </div>
  <div class="menus-list-container">
-
    <p>
      <span>
      <span>Select year: <select v-model="selectedYear">
@@ -13,7 +12,6 @@
          </option>
           </select>
      </span>
-
      <span v-if="selectedYear"> Select month: <select v-model="selectedMonth">
         <option disabled value="">select</option>
       <option v-for="month in availableMonths" v-bind:value="month"> {{ month }}
@@ -22,8 +20,6 @@
      </span>
    </span>
    </p>
-
-
        <div v-for="menu in chronologicalMenus">
     <div v-if="selectedMonth === menu.month && selectedYear === menu.year">
 
@@ -37,10 +33,8 @@
 
 </div>
 </div>
-
 </template>
 <script>
-
 import moment from 'moment'
 export default {
 data() {
@@ -58,18 +52,12 @@ data() {
         },
 
         chronologicalMenus: function(){
-
           var menuDates = this.menus.map(menu => menu.date);
           var sortedDates = menuDates.sort();
-
           function compare(a, b) {
             return a.date - b.date;
           }
-
         return this.menus.sort(compare);
-
-
-
         },
 
         months(){
@@ -109,24 +97,17 @@ data() {
         year: function() {
             var t = this;
             return t.dateContext.format('Y');
-
         },
 
-        month: function(){
-            var t = this;
-            return t.dateContext.format('MMMM');
-
-        }
+      month(){
+        let t = this;
+        return t.dateContext.format('MMMM');
+      }
     },
 
-    methods: {
-
-      onChange: function(event){
-
+  methods: {
+      onChange(event){
         var year = event.target.value;
-
-
-
       }
     },
 
