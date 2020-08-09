@@ -47,13 +47,12 @@
 </div>
 </template>
 <script>
-import axios from 'axios'
 export default {
 data(){
     return {
-        showRecipeEditor: false,
-        selectedRecipe: undefined,
-        output: null
+      showRecipeEditor: false,
+      selectedRecipe: undefined,
+      output: null
     }
 },
 name: 'RecipePage',
@@ -66,11 +65,9 @@ computed: {
     tag(){
       return this.$route.params.selectedTag;
     },
-
     id(){
       return this.$route.params.id
     },
-
     recipe(){
       return this.$store.getters.getRecipeById(this.id)
     }
