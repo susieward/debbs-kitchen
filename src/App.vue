@@ -16,7 +16,6 @@
           </ul>
       </div>
     </div>
-
   <div class="header">
     <div class="header-container">
       <div class="icon-nav">
@@ -46,7 +45,7 @@
     <div class="footer">
       <div class="footer-container">
         <p>
-          &copy; Debbie Ward 2019<br />
+          &copy; Debbie Ward 2020<br />
           website by <a href="https://susieward.dev">Susie Ward</a>
         </p>
       </div>

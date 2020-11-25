@@ -1,22 +1,24 @@
-import { getMenus } from '@/services/api.js'
+import { Api } from '@/services/api.js'
 
 const actions = {
-  setMenus({commit}, menus) {
+  init({ dispatch }) {
+    Promise.all([
+      dispatch('setMenus'),
+      dispatch('setRecipes'),
+      dispatch('setDrafts')
+    ])
+  },
+  async setMenus({ commit }) {
+    const menus = await Api.$menus.getMenus()
     commit('setMenus', menus)
   },
-  setRecipes({commit}, recipes) {
+  async setRecipes({ commit }) {
+    const recipes = await Api.$recipes.getRecipes()
     commit('setRecipes', recipes)
   },
-  setDrafts({commit}, drafts) {
+  async setDrafts({ commit }) {
+    const drafts = await Api.$drafts.getDrafts()
     commit('setDrafts', drafts)
-  },
-  async getMenus(){
-    try {
-      return await getMenus()
-    } catch(err){
-      console.log('get menus store err', err)
-      throw err
-    }
   }
 }
 export default actions;

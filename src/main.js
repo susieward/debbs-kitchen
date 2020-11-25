@@ -1,5 +1,4 @@
 require('../src/css/main.css');
-require('../src/js/main.js');
 // Global Variables
 window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -19,9 +18,11 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import "fullcalendar/dist/fullcalendar.min.css";
 import VueHtmlToPaper from 'vue-html-to-paper';
 import Print from 'vue-print-nb'
-import { loadAll } from '@/services/api.js'
+import { Api } from '@/services/api.js'
 
-loadAll()
+(async () => {
+  await Api.init()
+})()
 
 Vue.use(Print);
 Vue.use(FullCalendar);

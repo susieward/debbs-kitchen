@@ -36,7 +36,6 @@ const mutations = {
     let index = state.menus.findIndex(menuItem => menuItem._id === id);
     state.menus.splice(index, 1, menu);
   },
-
   deleteMenu: (state, id) => {
     let index = state.menus.findIndex(menu => menu._id === id);
     state.menus.splice(index, 1);
@@ -47,17 +46,14 @@ const mutations = {
     state.recipes = recipes
     console.log('recipes set')
   },
-
   saveRecipe: (state, {recipe}) => {
     state.recipes.push({recipe})
   },
-
   editRecipe: (state, {recipe}) =>{
     let id = recipe._id;
     let index = state.recipes.findIndex(recipeItem => recipeItem._id === id);
     state.recipes.splice(index, 1, recipe);
   },
-
   deleteRecipe: (state, id) => {
     let index = state.recipes.findIndex(recipe => recipe._id === id);
     state.recipes.splice(index, 1);
@@ -68,17 +64,14 @@ const mutations = {
     state.drafts = drafts
     console.log('drafts set')
   },
-
-  saveDraft: (state, {draft}) =>{
-    state.drafts.push({draft});
+  saveDraft: (state, { draft }) =>{
+    state.drafts.push({ draft });
   },
-
   editDraft: (state, {draft}) =>{
     let id = draft._id;
     let index = state.drafts.findIndex(draftItem => draftItem._id === id);
     state.drafts.splice(index, 1, draft);
   },
-
   deleteDraft: (state, id) => {
     let index = state.drafts.findIndex(draft => draft._id === id);
     state.drafts.splice(index, 1);

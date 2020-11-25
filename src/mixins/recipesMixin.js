@@ -1,5 +1,4 @@
-import { saveRecipe, updateRecipe, deleteRecipe } from '@/services/recipesApi.js'
-import { loadRecipes } from '@/services/api.js'
+import { Api } from '@/services/api.js'
 
 export default {
 computed: {
@@ -22,7 +21,7 @@ methods: {
         hasPhoto: this.newRecipe.hasPhoto
       }
     try {
-      let res = await saveRecipe(recipe)
+      let res = await Api.$recipes.saveRecipe(recipe)
       this.$store.commit('saveRecipe', {recipe: res.data});
       this.$router.push({ name: 'RecipePage', params: { id: data._id }});
       loadRecipes()
@@ -43,7 +42,7 @@ methods: {
       photo: this.recipeEdit.photo
     };
     try {
-      let res = await updateRecipe(data)
+      let res = await  Api.$recipes.updateRecipe(data)
       this.$store.commit('editRecipe', {recipe: res.data});
       this.$emit('close');
     } catch(err) {
@@ -52,14 +51,14 @@ methods: {
   },
   async deleteRecipe(_id){
     try {
-      let res = await deleteRecipe(_id)
+      let res = await  Api.$recipes.deleteRecipe(_id)
       this.$store.commit('deleteRecipe', {id: res.data});
     } catch(err) {
         console.log('err')
       }
     },
     async loadRecipes(){
-      return await loadRecipes()
+      return await  Api.$recipes.loadRecipes()
     }
   }
 }

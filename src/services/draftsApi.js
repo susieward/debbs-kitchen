@@ -1,30 +1,27 @@
-import { createItem, updateItem, deleteItem } from './crud.js'
+import { CrudService } from './crud.js'
 import { DraftsUrl } from './api.js'
 
-export async function saveDraft(draft){
-  try {
-    console.log('saving draft')
-    return await createItem(DraftsUrl, menu)
-  } catch(err){
-    console.log('saveDraft err', err)
-    throw err
+class DraftsApi extends CrudService {
+  constructor(){
+    super()
+  }
+  getDrafts(){
+    return this.$get(DraftsUrl)
+  }
+  getDraft(draft){
+    const id = `${draft._id}`
+    return this.$get(DraftsUrl, id)
+  }
+  saveDraft(draft){
+    return this.$create(DraftsUrl, draft)
+  }
+  updateDraft(draft){
+    const id = `${draft._id}`
+    return this.$update(DraftsUrl, draft, id)
+  }
+  deleteDraft(draft){
+    const id = `${draft._id}`
+    return this.$delete(DraftsUrl, id)
   }
 }
-export async function updateDraft(draft){
-  try {
-    console.log('updating draft')
-    return await createItem(DraftsUrl, draft)
-  } catch(err){
-    console.log('updateDraft err', err)
-    throw err
-  }
-}
-export async function deleteDraft(_id){
-  try {
-    let path = `${DraftsUrl}/${_id}`
-    return await deleteItem(path)
-  } catch(err){
-    console.log('deleteDraft err', err)
-    throw err
-  }
-}
+export default new DraftsApi()

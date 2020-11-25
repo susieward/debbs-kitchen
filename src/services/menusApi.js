@@ -1,31 +1,27 @@
-import { createItem, updateItem, deleteItem } from './crud.js'
+import { CrudService } from './crud.js'
 import { MenusUrl } from './api.js'
 
-export async function createMenu(menu){
-  try {
-    console.log('creating menu')
-    return await createItem(MenusUrl, menu)
-  } catch(err){
-    console.log('createMenu err', err)
-    throw err
+class MenusApi extends CrudService {
+  constructor(){
+    super()
+  }
+  getMenus(){
+    return this.$get(MenusUrl)
+  }
+  getMenu(menu){
+    const id = `${menu._id}`
+    return this.$get(MenusUrl, id)
+  }
+  createMenu(menu){
+    return this.$create(MenusUrl, menu)
+  }
+  updateMenu(menu){
+    const id = `${menu._id}`
+    return this.$update(MenusUrl, menu, id)
+  }
+  deleteMenu(menu){
+    const id = `${menu._id}`
+    return this.$delete(MenusUrl, id)
   }
 }
-export async function updateMenu(menu){
-  try {
-    let path = `${MenusUrl}/${menu._id}`
-    console.log('updating menu')
-    return await updateItem(path, menu)
-  } catch(err){
-    console.log('createMenu err', err)
-    throw err
-  }
-}
-export async function deleteMenu(_id){
-  try {
-    let path = `${MenusUrl}/${_id}`
-    return await deleteItem(path)
-  } catch(err){
-    console.log('deleteMenu err', err)
-    throw err
-  }
-}
+export default new MenusApi()

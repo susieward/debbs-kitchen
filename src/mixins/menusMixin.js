@@ -1,5 +1,4 @@
-import { createMenu, updateMenu, deleteMenu } from '@/services/menusApi.js'
-import { loadMenus } from '@/services/api.js'
+import { Api } from '@/services/api.js'
 
 export default {
 computed: {
@@ -30,7 +29,7 @@ methods: {
       dishes: this.dishes
     }
     try {
-      let res = await createMenu(menu)
+      let res = await Api.$menus.createMenu(menu)
       this.$store.commit('createMenu', {menu: res.data});
       this.$emit('close');
     } catch(err) {
@@ -46,7 +45,7 @@ methods: {
       dishes: this.menuEdit.dishes
     };
     try {
-      let res = await updateMenu(data)
+      let res = await Api.$menus.updateMenu(data)
       this.$store.commit('editMenu', {menu: res.data});
       this.$emit('close');
     } catch(err) {
@@ -55,7 +54,7 @@ methods: {
   },
   async deleteMenu(_id){
     try {
-      let res = await deleteMenu(_id)
+      let res = await Api.$menus.deleteMenu(_id)
       this.$store.commit('deleteMenu', {id: res.data});
       this.$emit('close');
     } catch(err) {
@@ -63,7 +62,7 @@ methods: {
       }
     },
     async loadMenus(){
-      return await loadMenus()
+      return await Api.$menus.loadMenus()
     }
   }
 }

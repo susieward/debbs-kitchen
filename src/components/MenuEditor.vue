@@ -25,7 +25,7 @@
 </div>
 </template>
 <script>
-import { updateMenu } from '@/services/menusApi.js'
+import { Api } from '@/services/api.js'
 import axios from 'axios'
 export default {
 data(){
@@ -85,7 +85,7 @@ methods: {
       dishes: this.menuEdit.dishes
     };
     try {
-      let res = await updateMenu(data)
+      let res = await Api.$menus.updateMenu(data)
       this.$store.commit('editMenu', {menu: res.data});
       this.$emit('close');
     } catch(err) {

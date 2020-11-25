@@ -2,7 +2,7 @@
   <div class="tags-section">
     <p id="tags-paragraph">
       <span class="section">Tags:</span>
-      <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span></p>
+      <span class="tag" v-for="(tag, i) in recipe.tags" :key="i" @click="findTag(tag)">{{ tag }}</span></p>
   </div>
 </template>
 <script>
