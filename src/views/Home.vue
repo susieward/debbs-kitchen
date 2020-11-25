@@ -1,18 +1,33 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
-</template>
+<div class="home">
+    <div class="home-content">
+    <menu-planner></menu-planner>
+    </div>
+</div>
 
+</template>
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
-  name: 'home',
-  components: {
-    HelloWorld
-  }
+
+name: 'Home',
+
+components: {
+    MenuPlanner: () => import('@/components/MenuPlanner.vue')
+            }
 }
 </script>
+<style>
+
+.home-content {
+display: grid;
+min-height: 500px;
+background-color: #f9f9f9;
+
+
+
+}
+
+
+
+</style>

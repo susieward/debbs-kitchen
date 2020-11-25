@@ -30,7 +30,6 @@
   </div>
 </template>
 <script>
-import Recipe from './Recipe.vue'
 export default {
 data(){
     return {
@@ -42,7 +41,7 @@ name: 'TaggedRecipe',
 props: ['selectedTag', 'id'],
 
 components: {
-    Recipe
+    Recipe: () => import('@/components/Recipe.vue')
 },
 
     computed: {

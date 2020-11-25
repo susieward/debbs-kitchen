@@ -1,168 +1,114 @@
 <template>
 <div class="menu-planner">
-
 <div class="page-title">
-
   <button class="monthbtn" @click="subtractMonth">&#x27F5;</button> <h1>{{month + ' - ' + year}}</h1> <button class="monthbtn" @click="addMonth">&#x27F6;</button>
     </div>
-
     <div class="month">
     <div class="weekdays">
-
-        <div class="day-title" v-for="day in days">{{ day }}</div>
+    <div class="day-title" v-for="day in days">{{ day }}</div>
          </div>
-
     <div class="week">
         <div class="day" v-for="blank in firstDayOfMonth">&nbsp;</div>
-
         <div class="day" v-for="thisDate in daysInMonth" @click="openModal(thisDate, month, year)">
             {{ thisDate }}
-
            <div v-for="menu in menus">
-
                <div v-if="thisDate === menu.date && month === menu.month">
                  <span class="menu-dot">&#11044;</span>
                    <div class="menu-text">
-
                    <ul class="menu-list-calendar">
                    <li v-for="dish in menu.dishes">{{ dish.name }}</li>
                    </ul>
                    </div>
                </div>
             </div>
-
-
-
-
-
-
         </div>
-
        <modal v-if="showModal" @close="closeModal" :this-date="thisDate" :month="month" :year="year"></modal>
-
      </div>
-        </div>
-
-
-
-
     </div>
+  </div>
 </template>
 <script>
+import menusMixin from '@/mixins/menusMixin.js'
 import modal from './modal.vue'
 import moment from 'moment'
 export default {
-
+mixins: [menusMixin],
+data() {
+  return {
+    today: moment(),
+    dateContext: moment(),
+    days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    showModal: false,
+    thisDate: this.thisDate,
+    showMenu: false
+  }
+},
+name: 'MenuPlanner',
 components: {
     modal
 },
-
-data() {
-    return {
-        today: moment(),
-        dateContext: moment(),
-        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
-          months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        showModal: false,
-         thisDate: this.thisDate,
-        showMenu: false
-
-    }
-},
-
-    computed: {
-
-        menus(){
-
-            return this.$store.state.menus
-        },
-
-        year: function() {
-            var t = this;
-            return t.dateContext.format('Y');
-
-        },
-
-        month: function(){
-            var t = this;
-            return t.dateContext.format('MMMM');
-
-        },
-
-        daysInMonth: function () {
-            var t = this;
-            return t.dateContext.daysInMonth();
-
-        },
-
-        currentDate: function () {
-            var t = this;
-            return t.dateContext.get('date');
-
+computed: {
+    year() {
+      let t = this;
+      return t.dateContext.format('Y');
     },
-
-        firstDayOfMonth: function () {
-            var t = this;
-            var firstDay = moment(t.dateContext).subtract((t.currentDate - 1), 'days');
-        return firstDay.weekday();
-
+    month(){
+      let t = this;
+      return t.dateContext.format('MMMM');
     },
-
-        initialDate: function(){
-            var t = this;
-            return t.today.get('date');
-        },
-
-         initialMonth: function () {
-        var t = this;
+    daysInMonth() {
+      let t = this;
+      return t.dateContext.daysInMonth();
+    },
+    currentDate() {
+      let t = this;
+      return t.dateContext.get('date');
+    },
+    firstDayOfMonth() {
+      let t = this;
+      let firstDay = moment(t.dateContext).subtract((t.currentDate - 1), 'days');
+      return firstDay.weekday();
+    },
+    initialDate(){
+      let t = this;
+      return t.today.get('date');
+    },
+    initialMonth() {
+      let t = this;
         return t.today.format('MMMM');
     },
-    initialYear: function () {
-        var t = this;
-        return t.today.format('Y');
+    initialYear() {
+      let t = this;
+      return t.today.format('Y');
     }
+  },
+methods: {
+    menuToggle(){
+      this.showMenu === true;
     },
-
-
-    methods: {
-
-        menuToggle: function(){
-            this.showMenu === true;
-        },
-
-        addMonth: function () {
-        var t = this;
-        t.dateContext = moment(t.dateContext).add(1, 'month');
+    addMonth() {
+      let t = this;
+      t.dateContext = moment(t.dateContext).add(1, 'month');
     },
-    subtractMonth: function () {
-        var t = this;
-        t.dateContext = moment(t.dateContext).subtract(1, 'month');
+    subtractMonth() {
+      let t = this;
+      t.dateContext = moment(t.dateContext).subtract(1, 'month');
     },
-
-    openModal: function(thisDate, month, year){
-           this.thisDate = thisDate;
-            this.month = month;
-            this.year = year;
-           this.showModal = true;
-       },
-
-      closeModal() {
-            this.showModal = false;
-           this.$store.dispatch('loadMenus');
-
-        }
+    openModal(thisDate, month, year){
+      this.thisDate = thisDate;
+      this.month = month;
+      this.year = year;
+      this.showModal = true;
     },
-
-
-
-
-
-
-name: 'MenuPlanner'
+    closeModal() {
+      this.showModal = false;
+      this.loadMenus()
+    }
+  }
 }
 </script>
 <style>
-
 .menu-planner {
 display: grid;
 background-color:#f9f9f9;

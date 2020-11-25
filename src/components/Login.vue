@@ -1,22 +1,16 @@
 <template>
   <div class="login-container">
-
-
-                <form class="login" @submit.prevent="login">
-                  <div class="login-inputs">
-                <input type="text" name="username" required v-model="username" placeholder="Username"/>
-                <input type="password" name="password" required v-model="password" placeholder="Password"/>
-                  </div>
-
-                     <button class="login-greybtn" type="submit">login</button>
-                </form>
-
-        <p style="color:red; text-align: center" v-show="errorText"> {{ errorText }}</p>
-
+    <form class="login" @submit.prevent="login">
+      <div class="login-inputs">
+      <input type="text" name="username" required v-model="username" placeholder="Username"/>
+      <input type="password" name="password" required v-model="password" placeholder="Password"/>
+      </div>
+      <button class="login-greybtn" type="submit">login</button>
+    </form>
+    <p style="color:red; text-align: center" v-show="errorText">
+      {{ errorText }}
+    </p>
   </div>
-
-
-
 </template>
 <script>
 import axios from 'axios'
@@ -28,21 +22,17 @@ export default {
       errorText: ''
     }
   },
-
   name: 'Login',
-
   methods: {
-
-    login: function () {
-
+    login(){
         axios.post('https://debbskitchen-server.herokuapp.com/login', {
-            username: this.username,
-            password: this.password
+          username: this.username,
+          password: this.password
         },
         {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('user-token')
-            }
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('user-token')
+        }
 
         }).then(response =>{
             this.$store.commit('AUTH_SUCCESS', { token: response.data.token });
@@ -51,13 +41,10 @@ export default {
             }).catch(error => {
             this.errorText = error.response.data.message;
 
-    })
+        })
     }
-
   }
-
 }
-
 </script>
 <style>
 

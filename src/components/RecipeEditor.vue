@@ -552,32 +552,23 @@ components: {
             tags.splice(index, 1);
         },
 
-
-    editRecipe: function(recipe){
-
-
-
-        let path = 'https://debbskitchen-server.herokuapp.com/recipes/' +recipe._id;
-
-        let data = {
-            _id: this.recipe._id,
-            name: this.recipeEdit.name,
-            ingredients: this.recipeEdit.ingredients,
-            instructions: this.recipeEdit.instructions,
-            tags: this.recipeEdit.tags,
-            photo: this.recipeEdit.photo
-
-            };
-
-        axios.put(path, data).then((response) => {
-            this.$store.commit('editRecipe', {recipe: response.data});
-            this.$store.dispatch('loadRecipes');
-
-        });
+    async editRecipe(recipe){
+      let data = {
+        _id: this.recipe._id,
+        name: this.recipeEdit.name,
+        ingredients: this.recipeEdit.ingredients,
+        instructions: this.recipeEdit.instructions,
+        tags: this.recipeEdit.tags,
+        photo: this.recipeEdit.photo
+      };
+      try {
+        let res = await updateRecipe(data)
+        this.$store.commit('editRecipe', {recipe: res.data});
         this.$emit('close');
-
-
-      },
+      } catch(err) {
+        console.log('err')
+      }
+    },
 
 
 

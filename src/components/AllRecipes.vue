@@ -1,65 +1,39 @@
 <template>
-
-  <div class="all-recipes">
-
-        <div v-for="recipe in sortedRecipes" :key="recipe._id" class="all-recipes-container">
-            <recipe :recipe="recipe"></recipe>
-      </div>
-
-        </div>
-
+<div class="all-recipes">
+  <div v-for="recipe in sortedRecipes" :key="recipe._id" class="all-recipes-container">
+    <recipe :recipe="recipe"></recipe>
+  </div>
+</div>
 </template>
 <script>
 import Recipe from './Recipe.vue'
 export default {
-  data(){
-    return {
-
-    }
-  },
-    name: 'AllRecipes',
-
-    components: {
-        Recipe
-    },
-
-mounted: function(){
-
-  this.$store.dispatch('loadRecipes');
-
+name: 'AllRecipes',
+components: {
+  Recipe
 },
+computed: {
+  recipes() {
+    return this.$store.state.recipes;
+  },
+  sortedRecipes(){
+    function compare(a, b){
+      let nameA = a.name.toLowerCase();
+      let nameB = b.name.toLowerCase();
 
-    computed: {
-        recipes() {
-        return this.$store.state.recipes;
-      },
-
-      sortedRecipes: function(){
-        function compare(a, b){
-
-          var nameA = a.name.toLowerCase();
-          var nameB = b.name.toLowerCase();
-
-          if(nameA < nameB)
-          return -1;
-
-          if(nameA > nameB)
+      if(nameA < nameB) return -1;
+      if(nameA > nameB)
           return 1;
           return 0;
-
-        }
-
-        return this.recipes.sort(compare);
-      }
-
-
     }
+    return this.recipes.sort(compare);
+  }
+}
 }
 </script>
 <style>
-
-    .all-recipes {
-    display: grid;
+.all-recipes {
+display: grid;
 align-content: flex-start;
 justify-content: center;
   padding: 30px;
@@ -96,9 +70,4 @@ padding: 20px;
       }
 
     }
-
-
-
-
-
 </style>

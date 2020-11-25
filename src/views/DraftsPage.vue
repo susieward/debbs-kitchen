@@ -24,7 +24,6 @@
 
 </template>
 <script>
-import DraftEditor from './DraftEditor.vue'
 export default {
 data() {
     return {
@@ -34,7 +33,7 @@ data() {
 },
 
 components: {
-  DraftEditor
+  DraftEditor: () => import('@/components/DraftEditor.vue')
 },
     computed: {
 

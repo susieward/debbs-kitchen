@@ -1,20 +1,14 @@
 <template>
-
     <transition name="modal">
         <div class="modal-mask">
      <div class="modal-content">
-
          <div class="modal-title">
              <h2 class="menu-date">Menu for {{ month + ' ' + thisDate }}</h2>
-
              <span class="close"><span class="close-button" @click="$emit('close')">&times;</span></span>
          </div>
-
          <div class="modal-container">
          <div class="modal-items">
-
              <div v-for="(menu, index) in createdMenus" class="menus" v-if="showEditor == false">
-
                <div class="menu-list-container">
                  <ul class="menu-list">
                    <li v-for="dish in menu.dishes" @click="linkRecipe(dish)">{{ dish.name }}</li>
@@ -25,10 +19,6 @@
                      <button class="blackbtn" @click="deleteMenu(menu._id)">delete menu</button></span></div>
 
             </div>
-
-
-
-
               <menu-editor v-if="showEditor == true" :menu="selectedMenu" @close="closeEditor"></menu-editor>
 
 
@@ -63,7 +53,6 @@
 
              <button class="pinkbtn" v-if="dishes.length" @click="createMenu">save new menu</button>
              </div>
-
              </div>
              <span>
                <div v-if="createdMenus.length === 0">
@@ -73,24 +62,18 @@
                 </span>
              </div>
              </span>
-
-
-
          </div>
         </div>
-
-
-
         </div>
     </transition>
 </template>
 <script>
+import menusMixin from '@/mixins/menusMixin.js'
 import MenuEditor from './MenuEditor.vue'
-import axios from 'axios'
 export default {
+mixins: [menusMixin],
 data() {
     return {
-
         dishes: [],
         newDish: '',
         showEditor: false,
@@ -101,173 +84,69 @@ data() {
         isOpen: false,
         inputErr: '',
         disabled: false
-        }
-
-
+    }
 },
 
-    name: 'modal',
+name: 'modal',
+components: {
+  MenuEditor
+},
 
-    components: {
-        MenuEditor
+props: ['this-date', 'month', 'year'],
 
-    },
-
-    props: ['this-date', 'month', 'year'],
-
-    computed: {
-
-
-
-        menus(){
-            return this.$store.state.menus
-        },
-
-        createdMenus(){
-            var x = this.menus.filter(({date}) => date === this.thisDate);
-
-            return x.filter(({month}) => month === this.month);
-    },
-
-    recipes(){
-
-      return this.$store.state.recipes;
-    },
-
-      recipeNames(){
-
-        return this.recipes.map(recipe => recipe.name);
-
-
-      },
-
-          dishResults: function(){
-              var lowSearch = this.newDish.toLowerCase();
-
-
-              return this.recipes.filter(recipe => recipe.name.toLowerCase().includes(lowSearch)
-             );
-          }
-
-    },
-
-    methods: {
-
-      linkRecipe: function(dish){
-
-        var dishId = dish._id;
-
+methods: {
+      linkRecipe(dish){
+        let dishId = dish._id;
         this.$router.push({ name: 'RecipePage', params: { id: dishId }});
-
       },
 
-      onChange: function(){
-
+      onChange(){
         this.isOpen = true;
         this.filterResults();
-
       },
 
-      filterResults: function(){
+      filterResults(){
         this.results = this.recipeNames.filter(recipe => recipe.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
-
       },
-
-      checkInput: function(){
+      checkInput(){
         if(this.newDish === ''){
-
           this.disabled = true;
-
         } else {
-
           this.disabled = false;
           this.addDish();
-
         }
-
       },
-
-      addToDishes: function(result){
-
-
+      addToDishes(result){
         this.dishes.push(result);
         this.newDish = '';
-
       },
-
-        addDish: function(){
-
-
-            this.dishes.push(this.newDish);
-            this.newDish = '';
-
-        },
-
-        removeDish: function(index){
-            var dishes = this.dishes;
-
-            dishes.splice(index, 1);
-        },
-
-        createMenu: function(){
-
-            axios.post('https://debbskitchen-server.herokuapp.com/menus', {
-                date: this.thisDate,
-                month: this.month,
-                year: this.year,
-                dishes: this.dishes
-
-            }).then((response) => {
-                this.$store.commit('createMenu', {menu: response.data});
-                this.$emit('close');
-            });
-
-        },
-
-
-        deleteMenu: function(_id){
-
-
-            let path = 'https://debbskitchen-server.herokuapp.com/menus/' +_id;
-
-            axios.delete(path).then((response) => {
-                this.$store.commit('deleteMenu', {id: response.data});
-
-              });
-            this.$emit('close');
-            this.$store.dispatch('loadMenus');
-
-
-            },
-
-        openEditor: function(menu){
-            this.selectedMenu = menu;
-            this.showEditor = true;
-        },
-
-        closeEditor: function(){
-            this.showEditor = false;
-            this.$store.dispatch('loadMenus');
-        },
-
-        addNewMenu: function(){
-            this.newMenuContainer = true;
-        },
-
-        closeNewMenu: function(){
-            if(this.disabled = true){
-              this.disabled = false;
-            }
-
-            this.newMenuContainer = false;
+      addDish(){
+        this.dishes.push(this.newDish);
+        this.newDish = '';
+      },
+      removeDish(index){
+        let dishes = this.dishes;
+        dishes.splice(index, 1);
+      },
+      openEditor(menu){
+        this.selectedMenu = menu;
+        this.showEditor = true;
+      },
+      closeEditor(){
+        this.showEditor = false;
+        this.loadMenus()
+      },
+      addNewMenu(){
+        this.newMenuContainer = true;
+      },
+      closeNewMenu(){
+        if(this.disabled = true){
+          this.disabled = false;
         }
+        this.newMenuContainer = false;
+      }
+  }
 }
-
-
-
-}
-
-
 </script>
 <style>
 
