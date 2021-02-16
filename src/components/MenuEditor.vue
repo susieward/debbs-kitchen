@@ -2,23 +2,34 @@
 <div class="menu-editor">
   <div class="editor-list-container">
     <ul class="menu-list-edit">
-      <li v-for="(dish, index) in menuEdit.dishes"><span class="remove" @click="removeDish(index)">x</span> {{ dish.name }}</li>
+      <li v-for="(dish, index) in menuEdit.dishes">
+        <span class="remove" @click="removeDish(index)">x</span>
+        {{ dish.name }}
+      </li>
     </ul>
     <div class="inputs">
-      <input type="text" class="dish-item" v-model="newDish" placeholder="Start typing recipe name"/>
+      <input type="text" class="dish-item" v-model="newDish" placeholder="Add new item or start typing recipe name"/>
       <div v-if="newDish">
         <div class="results-dropdown" v-if="dishResults.length">
           <ul class="dishes-select">
-            <li v-for="result in dishResults" @click="addToDishes(result)">{{ result.name }}</li>
+            <li v-for="result in dishResults" @click="addToDishes(result)">
+              {{ result.name }}
+            </li>
           </ul>
         </div>
       </div>
-      <p v-if="disabled === true" style="color: red">Can't add dish if input is empty</p>
+      <p v-if="disabled === true" style="color: red">
+        Can't add dish if input is empty
+      </p>
+    </div>
+    <div class="note-container">
+      <textarea v-model="menuEdit.menuNote" placeholder="Add note">
+      </textarea>
     </div>
   </div>
   <div class="editor-buttons-container">
     <span>
-      <button class="pinkbtn" @click="editMenu(menu)">save changes</button>
+      <button class="pinkbtn" @click="save">save changes</button>
       <button class="greybtn" @click="$emit('close')">close editor</button>
     </span>
  </div>
@@ -26,21 +37,35 @@
 </template>
 <script>
 import { Api } from '@/services/api.js'
-import axios from 'axios'
 export default {
 data(){
   return {
-    menuEdit: {
-      dishes: []
-    },
+    menuEdit: null,
     newDish: '',
-    disabled: false
+    disabled: false,
   }
 },
-props: ['menu'],
+props: {
+  menu: {
+    required: false
+  },
+  date: {},
+  month: {},
+  year: {}
+},
 name: 'MenuEditor',
 created(){
-    this.menuEdit = Object.assign({}, this.menu);
+  if(typeof this.$props.menu === "undefined"){
+    this.menuEdit = {
+      date: this.date,
+      month: this.month,
+      year: this.year,
+      dishes: [],
+      menuNote: ''
+    }
+  } else {
+    this.menuEdit = { ...this.$props.menu }
+  }
 },
 computed: {
   recipes(){
@@ -75,42 +100,13 @@ methods: {
     let dishes = this.menuEdit.dishes;
     dishes.splice(index, 1);
   },
-
-  async editMenu(menu){
-    let data = {
-      _id: this.menu._id,
-      date: this.menu.date,
-      month: this.menu.month,
-      year: this.menu.year,
-      dishes: this.menuEdit.dishes
-    };
-    try {
-      let res = await Api.$menus.updateMenu(data)
-      this.$store.commit('editMenu', {menu: res.data});
-      this.$emit('close');
-    } catch(err) {
-        console.log('err')
-      }
-  },
-
-/*
-  editMenu(menu){
-      let path = 'https://debbskitchen-server.herokuapp.com/menus/' + menu._id;
-      let data = {
-        _id: this.menu._id,
-        date: this.menu.date,
-        month: this.menu.month,
-        year: this.menu.year,
-        dishes: this.menuEdit.dishes
-      };
-      axios.put(path, data).then((response) => {
-          this.$store.commit('editMenu', {menu: response.data});
-          this.$store.dispatch('loadMenus');
-        });
-      this.$emit('close');
+  save(){
+    if(typeof this.$props.menu === "undefined"){
+      return this.createMenu(this.menuEdit)
+    } else {
+      return this.editMenu(this.menuEdit)
     }
-
-    */
+  }
   }
 }
 </script>
@@ -130,7 +126,10 @@ methods: {
     }
 
     .inputs {
+      display: grid;
+      border: 1px solid red;
      margin-top: 20px;
+
     }
 
      .editor-list-container {
@@ -238,7 +237,7 @@ box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     }
 
     .dish-item{
-    width: 220px;
+    width: 400px;
     border: 1px solid #777;
     border-radius: 6px;
     padding: 6px 8px;

@@ -21,13 +21,15 @@ computed: {
     }
   },
 methods: {
-  async createMenu(){
+  async createMenu(menu){
+    /*
     let menu = {
       date: this.thisDate,
       month: this.month,
       year: this.year,
       dishes: this.dishes
     }
+    */
     try {
       let res = await Api.$menus.createMenu(menu)
       this.$store.commit('createMenu', {menu: res.data});

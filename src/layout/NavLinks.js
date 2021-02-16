@@ -7,7 +7,7 @@ export default {
       NavRoutes.map((route) => {
         return createElement('router-link', {
           attrs: { to: route.path }
-        }, route.name)
+        }, route.name || 'Recipes')
       })
     )
   }

@@ -24,6 +24,8 @@ import { Api } from '@/services/api.js'
   await Api.init()
 })()
 
+Vue.prototype.$api = Api
+
 Vue.use(Print);
 Vue.use(FullCalendar);
 Vue.use( CKEditor );

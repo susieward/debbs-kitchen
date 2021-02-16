@@ -1,6 +1,8 @@
 <template>
 <div class="all-recipes">
-  <div v-for="recipe in sortedRecipes" :key="recipe._id" class="all-recipes-container">
+  <div v-for="recipe in sortedRecipes"
+    :key="recipe._id"
+    class="all-recipes-container">
     <recipe :recipe="recipe"></recipe>
   </div>
 </div>
@@ -8,27 +10,40 @@
 <script>
 import Recipe from './Recipe.vue'
 export default {
-name: 'AllRecipes',
-components: {
-  Recipe
-},
-computed: {
-  recipes() {
-    return this.$store.state.recipes;
+  data(){
+    return {
+      recipes: []
+    }
   },
-  sortedRecipes(){
-    function compare(a, b){
-      let nameA = a.name.toLowerCase();
-      let nameB = b.name.toLowerCase();
+  name: 'AllRecipes',
+  components: {
+    Recipe
+  },
+  async created(){
+    if(this.$store.state.recipes.length > 0){
+      return this.recipes = this.$store.state.recipes
+    }
+    this.recipes = await this.$api.$recipes.getRecipes()
+  },
+  computed: {
+    /*
+    recipes() {
+      return this.$store.state.recipes;
+    },
+    */
+    sortedRecipes(){
+      function compare(a, b){
+        let nameA = a.name.toLowerCase();
+        let nameB = b.name.toLowerCase();
 
-      if(nameA < nameB) return -1;
-      if(nameA > nameB)
+        if(nameA < nameB) return -1;
+        if(nameA > nameB)
           return 1;
           return 0;
+        }
+      return this.recipes.sort(compare);
     }
-    return this.recipes.sort(compare);
   }
-}
 }
 </script>
 <style>

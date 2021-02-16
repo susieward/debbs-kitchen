@@ -8,19 +8,19 @@ class RecipesApi extends CrudService {
   getRecipes(){
     return this.$get(RecipesUrl)
   }
-  getRecipe(recipe){
-    const id = `${recipe._id}`
+  getRecipeById(id){
+  //  const id = `${recipe._id}`
     return this.$get(RecipesUrl, id)
   }
-  saveRecipe(recipe){
+  postRecipe(recipe){
     return this.$create(RecipesUrl, recipe)
   }
-  updateRecipe(recipe){
-    const id = `${recipe._id}`
+  putRecipe(recipe, id){
+    //const id = `${recipe._id}`
     return this.$update(RecipesUrl, recipe, id)
   }
-  deleteRecipe(recipe){
-    const id = `${recipe._id}`
+  deleteRecipe(id){
+    //const id = `${recipe._id}`
     return this.$delete(RecipesUrl, id)
   }
 }

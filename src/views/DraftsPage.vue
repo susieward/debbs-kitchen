@@ -28,20 +28,26 @@ export default {
 data() {
     return {
       showDraftEditor: false,
-      selectedDraft: undefined
+      selectedDraft: undefined,
+      drafts: []
     }
 },
 
 components: {
   DraftEditor: () => import('@/components/DraftEditor.vue')
 },
+  async created(){
+    this.drafts = await this.$api.$drafts.getDrafts()
+  },
     computed: {
+      /*
 
       drafts(){
 
-        return this.$store.state.drafts;
+        return this.$store.getters.drafts;
 
       }
+      */
     },
 
     methods: {

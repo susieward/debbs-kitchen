@@ -45,7 +45,7 @@
     <div class="footer">
       <div class="footer-container">
         <p>
-          &copy; Debbie Ward 2020<br />
+          &copy; Debbie Ward {{ new Date().getFullYear() }}<br />
           website by <a href="https://susieward.dev">Susie Ward</a>
         </p>
       </div>

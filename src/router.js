@@ -4,8 +4,8 @@ import Router from 'vue-router'
 const Home = () => import('@/views/Home.vue')
 const Recipes = () => import('@/views/Recipes.vue')
 const RecipePage = () => import('@/views/RecipePage.vue')
-const AllRecipes = () => import('@/components/AllRecipes.vue')
-const NewRecipe = () => import('@/components/NewRecipe.vue')
+const AllRecipes = () => import('@/components/recipes/AllRecipes.vue')
+const NewRecipe = () => import('@/components/recipes/NewRecipe.vue')
 const MenusList = () => import('@/views/MenusList.vue')
 const Tags = () => import('@/views/Tags.vue')
 const TagResults = () => import('@/views/TagResults.vue')
@@ -24,7 +24,6 @@ const routes = [
     },
     {
       path: '/recipes',
-      name: 'recipes',
       component: Recipes,
       props: { navDisplay: true, sidenav: true },
         children: [

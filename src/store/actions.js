@@ -2,7 +2,7 @@ import { Api } from '@/services/api.js'
 
 const actions = {
   init({ dispatch }) {
-    Promise.all([
+    return Promise.all([
       dispatch('setMenus'),
       dispatch('setRecipes'),
       dispatch('setDrafts')

@@ -52,6 +52,9 @@ const getters = {
 
   getRecipeById: (state, getters) => (id) => {
     return state.recipes.find(recipe => recipe._id == id)
+  },
+  drafts(state){
+    return state.drafts
   }
 }
 

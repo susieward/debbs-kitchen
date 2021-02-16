@@ -1,8 +1,12 @@
 <template>
 <div class="recipe">
-  <router-link :to="url"><p><span class="recipe-name">{{ recipe.name }}</span></p></router-link>
-  <div class="photo-link-container">
-      <router-link :to="url"><img class="recipe-photo-link" :src="recipe.photo"></router-link>
+  <router-link :to="url">
+    <p><span class="recipe-name">{{ recipe.name }}</span></p>
+  </router-link>
+  <div class="photo-link-container" v-if="recipe.photo !== ''">
+      <router-link :to="url">
+        <img class="recipe-photo-link" :src="recipe.photo">
+      </router-link>
   </div>
   <div class="tags-box">
     Tags: <span class="tag" v-for="tag in recipe.tags" @click="findTag(tag)">{{ tag }}</span>
@@ -40,7 +44,8 @@ export default {
 .recipe {
 display: grid;
 align-content: flex-start;
-justify-content: center;
+justify-content: flex-start;
+margin: 0 auto;
 width: 700px;
 }
 

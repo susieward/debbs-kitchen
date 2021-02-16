@@ -41,7 +41,7 @@ name: 'TaggedRecipe',
 props: ['selectedTag', 'id'],
 
 components: {
-    Recipe: () => import('@/components/Recipe.vue')
+    Recipe: () => import('@/components/recipes/Recipe.vue')
 },
 
     computed: {

@@ -23,17 +23,17 @@ export class CrudService {
       throw err
     }
   }
-  async $update(endpoint, item){
+  async $update(endpoint, item, id){
     try {
-      return await axios.put(endpoint, item)
+      return await axios.put(`${endpoint}/${id}`, item)
     } catch(err){
       console.log('updateItem err', err)
       throw err
     }
   }
-  async $delete(endpoint){
+  async $delete(endpoint, id){
     try {
-      return await axios.delete(endpoint)
+      return await axios.delete(`${endpoint}/${id}`)
     } catch(err){
       console.log('deleteItem err', err)
       throw err

@@ -10,18 +10,19 @@ computed: {
   }
 },
 methods: {
+  /*
   async saveRecipe(){
-    if(this.newRecipe.name !== '' && this.ingredients !== [] && this.newRecipe.instructions !== [] && this.tags !== [] && this.newRecipe.photo){
+    if(this.newRecipe.name !== '' && this.ingredients !== [] && this.newRecipe.instructions !== [] && this.tags !== []){
       let recipe = {
         name: this.newRecipe.name,
         ingredients: this.ingredients,
         instructions: this.newRecipe.instructions,
         tags: this.tags,
-        photo: this.newRecipe.photo,
+        photo: this.newRecipe.photo || "",
         hasPhoto: this.newRecipe.hasPhoto
       }
     try {
-      let res = await Api.$recipes.saveRecipe(recipe)
+      let res = await Api.$recipes.postRecipe(recipe)
       this.$store.commit('saveRecipe', {recipe: res.data});
       this.$router.push({ name: 'RecipePage', params: { id: data._id }});
       loadRecipes()
@@ -32,21 +33,14 @@ methods: {
     return this.error = "*Please fill out all fields"
   }
   },
-  async editRecipe(recipe){
-    let data = {
-      _id: this.recipe._id,
-      name: this.recipeEdit.name,
-      ingredients: this.recipeEdit.ingredients,
-      instructions: this.recipeEdit.instructions,
-      tags: this.recipeEdit.tags,
-      photo: this.recipeEdit.photo
-    };
+  */
+  async editRecipe(data, id){
     try {
-      let res = await  Api.$recipes.updateRecipe(data)
-      this.$store.commit('editRecipe', {recipe: res.data});
-      this.$emit('close');
+      let res = await  Api.$recipes.putRecipe(data, id)
+      this.$store.commit('editRecipe', { recipe: res.data});
+      return this.$emit('close');
     } catch(err) {
-        console.log('err')
+        console.log('err', err)
       }
   },
   async deleteRecipe(_id){

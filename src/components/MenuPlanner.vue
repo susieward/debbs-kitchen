@@ -22,14 +22,19 @@
                </div>
             </div>
         </div>
-       <modal v-if="showModal" @close="closeModal" :this-date="thisDate" :month="month" :year="year"></modal>
+       <modal v-if="showModal"
+        @close="closeModal"
+        :thisDate="thisDate"
+        :month="month"
+        :year="year">
+      </modal>
      </div>
     </div>
   </div>
 </template>
 <script>
 import menusMixin from '@/mixins/menusMixin.js'
-import modal from './modal.vue'
+const modal = () => import('./modal.vue')
 import moment from 'moment'
 export default {
 mixins: [menusMixin],

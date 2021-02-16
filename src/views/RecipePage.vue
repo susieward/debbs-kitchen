@@ -1,26 +1,27 @@
 <template>
 <div class="recipe-page">
-
   <div class="recipe-back">
     <router-link :to="{ name: 'TagResults', params: { selectedTag: this.tag }}" class="regular" v-if="this.tag">&#x27F5; tagged: {{ tag }}</router-link>
-      <router-link to="/recipes" class="regular" v-if="!this.tag">&#x27F5; all recipes</router-link>
+      <router-link to="/recipes" class="regular" v-else>&#x27F5; all recipes</router-link>
       </div>
 <div id="recipePrint">
-    <div class="recipe-page-container">
+    <div class="recipe-page-container" v-if="typeof recipe !== 'undefined'">
     <div class="recipe-top">
         <div class="recipe-name-div"><span v-if="showRecipeEditor === false">{{ recipe.name }}</span><span v-if="showRecipeEditor === true">Edit recipe</span></div>
         <div class="recipebtns">
             <span><button class="greybtn" @click="openRecipeEditor(recipe)" v-if="showRecipeEditor == false">edit recipe</button><button class="pinkbtn" v-if="showRecipeEditor === false" v-print>print</button> </span>
             <span>
 
-      <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">close editor</button>
+      <button class="greybtn" @click="closeRecipeEditor" v-if="showRecipeEditor == true">
+        close editor
+      </button>
     </span>
     </div>
     </div>
     <div class="recipe-container" v-if="showRecipeEditor == false">
 
       <div class="recipe-photo-container">
-      <img class="recipe-photo" :src="recipe.photo">
+      <img v-if="recipe.photo !== ''" class="recipe-photo" :src="recipe.photo">
     </div><br />
           <span class="section">Ingredients:</span>
             <ul class="recipe-ingredients">
@@ -38,10 +39,16 @@
         </div>
       </div>
     </div>
-    <RecipeTags :selectedTag="selectedTag" :recipe="recipe"></RecipeTags>
+    <RecipeTags
+      :selectedTag="selectedTag"
+      :recipe="recipe">
+    </RecipeTags>
     </div>
-
-    <recipe-editor v-if="showRecipeEditor == true" :recipe="selectedRecipe" @close="closeRecipeEditor"></recipe-editor>
+    <RecipeEditor
+      v-if="showRecipeEditor == true"
+      :recipe="selectedRecipe"
+      @close="closeRecipeEditor">
+    </RecipeEditor>
     </div>
   </div>
 </div>
@@ -52,33 +59,44 @@ data(){
     return {
       showRecipeEditor: false,
       selectedRecipe: undefined,
-      output: null
+      output: null,
+      recipe: undefined
     }
 },
 name: 'RecipePage',
-props: ['selectedTag'],
+props: ['selectedTag', 'id'],
 components: {
-  RecipeTags: () => import('@/components/RecipeTags.vue'),
-  RecipeEditor: () => import('@/components/RecipeEditor.vue')
+  RecipeTags: () => import('@/components/recipes/RecipeTags.vue'),
+  RecipeEditor: () => import('@/components/recipes/RecipeEditor.vue')
+},
+async created(){
+  const id = this.$route.params.id
+  this.recipe = await this.$api.$recipes.getRecipeById(id)
 },
 computed: {
     tag(){
       return this.$route.params.selectedTag;
     },
+    /*
     id(){
       return this.$route.params.id
     },
+
     recipe(){
       return this.$store.getters.getRecipeById(this.id)
     }
+    */
 },
 methods: {
     openRecipeEditor(recipe){
         this.showRecipeEditor = true;
         this.selectedRecipe = recipe;
     },
-    closeRecipeEditor(){
-        this.showRecipeEditor = false;
+    async closeRecipeEditor(){
+      this.showRecipeEditor = false;
+        const id = this.$route.params.id
+        this.recipe = await this.$api.$recipes.getRecipeById(id)
+
     }
   }
 }
@@ -113,11 +131,8 @@ margin-bottom: 20px;
 }
 
     .recipe-page {
-display: grid;
-
-align-content: flex-start;
-
-
+      display: grid;
+      align-content: flex-start;
 }
 
     .recipe-page-container {
@@ -126,7 +141,7 @@ min-height: 500px;
 width: 900px;
 padding: 30px;
 align-content: flex-start;
-justify-content: center;
+margin: 0 auto;
 background-color: #f9f9f9;
     }
 
@@ -137,7 +152,7 @@ display: grid;
 align-content: flex-start;
 padding: 30px;
 font-size: 18px;
-margin: auto;
+width: 100%;
 }
 
 .tags-section {
@@ -160,7 +175,6 @@ margin: auto;
     justify-content: flex-start;
     align-content: center;
     padding-bottom: 20px;
-
     }
 
     .recipebtns {

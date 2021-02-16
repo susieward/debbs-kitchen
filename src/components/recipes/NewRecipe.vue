@@ -116,11 +116,9 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import recipesMixin from '@/mixins/recipesMixin'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios'
 export default {
-mixins: [recipesMixin],
 data(){
     return {
       editor: ClassicEditor,
@@ -198,7 +196,7 @@ methods: {
       hasPhoto: draft.hasPhoto
     }).then((response) => {
       this.$store.commit('saveDraft', {draft: response.data});
-      this.$store.dispatch('loadDrafts');
+    //  this.$store.dispatch('loadDrafts');
       this.$router.push('/recipes/drafts');
       });
     } else {
@@ -466,6 +464,31 @@ methods: {
     removeTag(index){
       let tags = this.tags;
       tags.splice(index, 1);
+    },
+    async saveRecipe(recipe){
+      if(this.newRecipe.name !== '' && this.ingredients !== [] && this.newRecipe.instructions !== [] && this.tags !== []){
+        let recipe = {
+          name: this.newRecipe.name,
+          ingredients: this.ingredients,
+          instructions: this.newRecipe.instructions,
+          tags: this.tags,
+          photo: this.newRecipe.photo || "",
+          hasPhoto: this.newRecipe.hasPhoto
+        }
+      try {
+        let res = await Api.$recipes.postRecipe(recipe)
+        if(res && res.data && res.data._id){
+          return this.$router.push('/recipes')
+        }
+      //  this.$store.commit('saveRecipe', {recipe: res.data});
+        //this.$store.dispatch('loadRecipes');
+      //  this.$router.push({ name: 'RecipePage', params: { id: res.data._id }});
+      } catch(err) {
+          console.log('err', err)
+      }
+    } else {
+      return this.error = "*Please fill out all fields"
+    }
     },
 
 /*    saveRecipe(){
