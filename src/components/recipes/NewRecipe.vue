@@ -115,6 +115,7 @@
 </div>
 </template>
 <script>
+import { Api } from '@/services/api.js'
 import draggable from 'vuedraggable'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios'
@@ -203,7 +204,6 @@ methods: {
       this.draftErr = 'Recipe must have a name'
     }
   },
-
   backToSelection(){
     this.itemChosen = false;
     this.text = false;
@@ -214,24 +214,20 @@ methods: {
     this.newBoxText = '';
     this.newBoxImg = '';
   },
-
   showText(){
     this.text = true;
     this.itemChosen = true;
   },
-
   showImage(){
     this.image = true;
     this.itemChosen = true;
   },
-
   onFileChange(e) {
     var files = e.target.files || e.dataTransfer.files;
        if (!files.length)
       return;
     this.createImage(files[0]);
   },
-
   createImage(file) {
     var image = new Image();
     var reader = new FileReader();
@@ -242,7 +238,6 @@ methods: {
     };
     reader.readAsDataURL(file);
   },
-
   removeImage(e) {
     this.newBoxImg = '';
   },
@@ -255,7 +250,6 @@ methods: {
       return;
     this.createPhoto(files[0]);
   },
-
   createPhoto(file) {
     let im = new Image();
     let reader = new FileReader();
@@ -267,19 +261,16 @@ methods: {
     };
     reader.readAsDataURL(file);
   },
-
   removeRecipePhoto (e) {
     this.newRecipe.photo = '';
     this.newRecipe.hasPhoto = false;
   },
-
   onImgChange(e) {
     let files = e.target.files || e.dataTransfer.files;
      if (!files.length)
      return;
      this.createEditImage(files[0]);
    },
-
   createEditImage(file) {
         let im = new Image();
         let reader = new FileReader();
@@ -290,15 +281,12 @@ methods: {
         };
         reader.readAsDataURL(file);
     },
-
   removeEditImage(e) {
     this.editImg = '';
   },
-
   checkNewText(newBox){
     this.newBoxText = newBox.text;
   },
-
     addText(){
       if(this.newBoxText){
         let number = Date.now() + Math.random().toString().slice(18);
@@ -316,13 +304,11 @@ methods: {
         this.textError = "Text field cannot be blank"
       }
     },
-
     addIndex(){
       this.newRecipe.instructions.map((item, index) => {
         return item.order = index;
       });
     },
-
     change(evt){
       let i = evt.moved.newIndex;
       this.testIndex = i;
@@ -333,7 +319,6 @@ methods: {
         item.order = index;
       });
     },
-
   ingrChange(evt){
     let i = evt.moved.newIndex;
     let e = evt.moved.element;
@@ -341,7 +326,6 @@ methods: {
         item.order = index;
       });
     },
-
     addImage: function(){
       if(this.newBoxImg){
         let number = Date.now() + Math.random().toString().slice(18);
@@ -359,23 +343,19 @@ methods: {
         this.imgError = "Please select an image"
       }
     },
-
     editTrue(id){
       this.editing = true;
       this.editId = id;
     },
-
     editBoxText(id){
       this.editing = true;
       this.editId = id;
       let box = this.newRecipe.instructions.find(b => b.id === id);
       this.boxText = box.text;
     },
-
     checkEditText(){
       this.editText = this.boxText;
     },
-
     editBox(id){
       let boxId = id;
       let index = this.newRecipe.instructions.findIndex(b => b.id === boxId);
@@ -393,7 +373,6 @@ methods: {
       this.editText = ''
       this.boxText = ''
     },
-
     editImage(id){
       let boxId = id;
       let index = this.newRecipe.instructions.findIndex(b => b.id === boxId);
@@ -410,21 +389,18 @@ methods: {
       this.editId = '';
       this.editImg = ''
     },
-
     cancel(){
       this.editing = false;
       this.editId = '';
       this.editText = '';
       this.boxText = ''
     },
-
     remove(index){
       this.newRecipe.instructions.splice(index, 1);
       this.newRecipe.instructions.forEach((item, index) => {
         item.order = index;
       });
     },
-
     addIngredient(){
       if(this.newIngredient.text !== ''){
         let number = Date.now() + Math.random().toString().slice(18);
@@ -437,13 +413,11 @@ methods: {
         this.ingrErr = "*Input can't be blank."
       }
     },
-
     addIngrIndex(){
       this.ingredients.map((item, index) => {
         return item.order = index;
       });
     },
-
     removeIngr(index){
       let ingredients = this.ingredients;
       ingredients.splice(index, 1);
@@ -451,7 +425,6 @@ methods: {
           item.order = index;
         });
     },
-
     addTag(){
       if(this.newTag !== ''){
         this.tags.push(this.newTag);
@@ -460,7 +433,6 @@ methods: {
         this.tagErr = "*Input can't be blank."
       }
     },
-
     removeTag(index){
       let tags = this.tags;
       tags.splice(index, 1);
@@ -477,12 +449,13 @@ methods: {
         }
       try {
         let res = await Api.$recipes.postRecipe(recipe)
-        if(res && res.data && res.data._id){
-          return this.$router.push('/recipes')
+        if (res && res.data && res.data._id) {
+          this.$store.dispatch('loadRecipes');
+          return this.$router.push({
+            name: 'RecipePage',
+            params: { id: res.data._id }
+          })
         }
-      //  this.$store.commit('saveRecipe', {recipe: res.data});
-        //this.$store.dispatch('loadRecipes');
-      //  this.$router.push({ name: 'RecipePage', params: { id: res.data._id }});
       } catch(err) {
           console.log('err', err)
       }

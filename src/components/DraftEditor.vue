@@ -185,24 +185,19 @@ export default {
       editId: ''
     };
   },
-
   components: {
     draggable,
   },
-
   props: ["draft"],
   name: "DraftEditor",
-
   created() {
     this.draftEdit = Object.assign({}, this.draft);
   },
-
   methods: {
-    closeDraftEditor: function () {
+    closeDraftEditor() {
       this.$emit("close");
     },
-
-    backToSelection: function () {
+    backToSelection() {
       this.itemChosen = false;
       this.text = false;
       this.image = false;
@@ -211,23 +206,19 @@ export default {
       this.newBoxImg = "";
       this.newBoxText = "";
     },
-
-    showText: function () {
+    showText() {
       this.text = true;
       this.itemChosen = true;
     },
-
-    showImage: function () {
+    showImage() {
       this.image = true;
       this.itemChosen = true;
     },
-
     onPhotoChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.createPhoto(files[0]);
     },
-
     createPhoto(file) {
       var image = new Image();
       var reader = new FileReader();
@@ -240,18 +231,15 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-
-    removeDraftPhoto: function (e) {
+    removeDraftPhoto(e) {
       this.draftEdit.photo = "";
       this.draftEdit.hasPhoto = false;
     },
-
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.createImage(files[0]);
     },
-
     createImage(file) {
       var image = new Image();
       var reader = new FileReader();
@@ -263,17 +251,14 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-
-    removeImage: function (e) {
+    removeImage(e) {
       this.newBoxImg = "";
     },
-
     onImgChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.createEditImage(files[0]);
     },
-
     createEditImage(file) {
       var image = new Image();
       var reader = new FileReader();
@@ -285,19 +270,16 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-
-    removeEditImage: function (e) {
+    removeEditImage(e) {
       this.editImg = "";
     },
-
-    onInput: function (value, index) {
+    onInput(value, index) {
       this.newText.text = value;
       this.newText.order = index;
 
       this.contentArray.push(this.newtext);
       this.newText = {};
     },
-
     addText: function () {
       if (this.newBoxText) {
         var number = Date.now() + Math.random().toString().slice(18);
@@ -315,7 +297,6 @@ export default {
         this.textError = "Text field cannot be blank";
       }
     },
-
     addImage: function () {
       if (this.newBoxImg) {
         var number = Date.now() + Math.random().toString().slice(18);
@@ -336,12 +317,12 @@ export default {
         this.imgError = "Please select an image";
       }
     },
-    addIndex: function () {
+    addIndex() {
       this.draftEdit.instructions.map((item, index) => {
         return (item.order = index);
       });
     },
-    change: function (evt) {
+    change(evt) {
       var i = evt.moved.newIndex;
       this.testIndex = i;
       var e = evt.moved.element;
@@ -350,24 +331,20 @@ export default {
         item.order = index;
       });
     },
-
-    editTrue: function (id) {
+    editTrue(id) {
       this.editing = true;
       this.editId = id;
     },
-
-    editBoxText: function (id) {
+    editBoxText(id) {
       this.editing = true;
       this.editId = id;
       let box = this.draftEdit.instructions.find((b) => b.id === id);
       this.boxText = box.text;
     },
-
-    checkEditText: function () {
+    checkEditText() {
       this.editText = this.boxText;
     },
-
-    editBox: function (id) {
+    editBox(id) {
       var boxId = id;
       var index = this.draftEdit.instructions.findIndex((b) => b.id === boxId);
       var box = this.draftEdit.instructions.find((b) => b.id === boxId);
@@ -384,12 +361,9 @@ export default {
       this.editText = "";
       this.boxText = "";
     },
-
-    editImage: function (id) {
+    editImage(id) {
       var boxId = id;
-
       var index = this.draftEdit.instructions.findIndex((b) => b.id === boxId);
-
       var box = this.draftEdit.instructions.find((b) => b.id === boxId);
 
       var updatedBox = {
@@ -405,23 +379,20 @@ export default {
       this.editId = "";
       this.editImg = "";
     },
-
-    cancel: function () {
+    cancel() {
       this.editing = false;
       this.editId = "";
       this.editText = "";
       this.boxText = "";
     },
-
-    remove: function (index) {
+    remove(index) {
       this.draftEdit.instructions.splice(index, 1);
 
       this.draftEdit.instructions.forEach((item, index) => {
         item.order = index;
       });
     },
-
-    addIngredient: function () {
+    addIngredient() {
       if (this.newIngredient.text !== "") {
         var number = Date.now() + Math.random().toString().slice(18);
         var id = "b" + number;
@@ -436,14 +407,12 @@ export default {
         this.ingrErr = "*Input can't be blank.";
       }
     },
-
-    addIngrIndex: function () {
+    addIngrIndex() {
       this.draftEdit.ingredients.map((item, index) => {
         return (item.order = index);
       });
     },
-
-    removeIngr: function (index) {
+    removeIngr(index) {
       this.draftEdit.ingredients.splice(index, 1);
 
       this.draftEdit.ingredients.forEach((item, index) => {
@@ -457,18 +426,16 @@ export default {
           item.order = index;
         });
       },
-    addTag: function () {
+    addTag() {
       this.draftEdit.tags.push(this.newTag);
       this.newTag = "";
     },
-
-    removeTag: function (index) {
+    removeTag(index) {
       var tags = this.draftEdit.tags;
 
       tags.splice(index, 1);
     },
-
-    editDraft: function (draft) {
+    editDraft(draft) {
       if (this.draftEdit.name) {
         let path = "https://debbskitchen-server.herokuapp.com/drafts/" + draft._id;
 
@@ -490,8 +457,7 @@ export default {
         this.draftErr = "Draft must have a name";
       }
     },
-
-    deleteDraft: function (_id) {
+    deleteDraft(_id) {
       let path = "https://debbskitchen-server.herokuapp.com/drafts/" + _id;
 
       axios.delete(path).then((response) => {
@@ -502,8 +468,7 @@ export default {
       });
       this.$emit("close");
     },
-
-    publishDraft: function () {
+    publishDraft() {
       if (this.draftEdit.name && this.draftEdit.ingredients && this.draftEdit.instructions && this.draftEdit.tags) {
         axios
           .post("https://debbskitchen-server.herokuapp.com/recipes", {
